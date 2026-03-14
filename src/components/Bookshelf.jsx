@@ -74,256 +74,23 @@ function ScatteredObject({ seed }) {
   const r = (offset) => seedRandom(seed * 17 + offset);
   const kind = Math.floor(r(0) * 11); // 0-10: many different items
 
-  if (kind === 0) {
-    // Ceramic vase
-    const hue = Math.floor(r(1) * 360);
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        <div style={{
-          width: 26, height: 54,
-          background: `hsl(${hue},22%,52%)`,
-          borderRadius: "40% 40% 22% 22% / 30% 30% 16% 16%",
-          boxShadow: "inset -4px 0 8px rgba(0,0,0,0.28), 2px 3px 12px rgba(0,0,0,0.4)",
-          position:"relative", flexShrink:0,
-        }}>
-          <div style={{ position:"absolute", top:0, left:0, right:0, height:"30%", background:"rgba(255,255,255,0.07)", borderRadius:"40% 40% 0 0" }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 1) {
-    // Decorative sphere
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px" }}>
-        <div style={{
-          width: 38, height: 38, borderRadius:"50%",
-          background: "radial-gradient(circle at 35% 32%, #e8dfc8 0%, #bfb090 45%, #7a6840 100%)",
-          boxShadow: "3px 4px 14px rgba(0,0,0,0.45), inset -4px -4px 10px rgba(0,0,0,0.25)",
-          flexShrink: 0,
-        }} />
-      </div>
-    );
-  }
-
-  if (kind === 2) {
-    // Small framed picture
-    const tones = ["#8a7a9a","#9a7a5a","#6a8a7a","#8a6a4a"];
-    const bg = tones[Math.floor(r(2) * tones.length)];
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px" }}>
-        <div style={{
-          background: "linear-gradient(135deg,#6a5030,#4a3820)",
-          padding: 4, borderRadius:1,
-          boxShadow: "2px 3px 10px rgba(0,0,0,0.45)",
-        }}>
-          <div style={{ width:46, height:60, background:bg, opacity:0.85 }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 3) {
-    // Candle pair
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", gap:5, flexShrink:0, margin:"0 10px" }}>
-        {[58, 40].map((h, i) => (
-          <div key={i} style={{ position:"relative" }}>
-            {/* flame */}
-            <div style={{
-              position:"absolute", top: -14, left:"50%", transform:"translateX(-50%)",
-              width:7, height:10,
-              background:"radial-gradient(ellipse at 50% 80%, #ffe066 20%, #f4a020 70%, transparent 100%)",
-              borderRadius:"50% 50% 30% 30%",
-              boxShadow:"0 0 6px 2px rgba(255,180,30,0.35)",
-            }} />
-            {/* wick */}
-            <div style={{ position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)", width:1.5, height:4, background:"#2a1a08", borderRadius:1 }} />
-            <div style={{ width:13, height:h, background:"linear-gradient(180deg,#f4e8cc,#e2d4a8)", borderRadius:"2px 2px 1px 1px", boxShadow:"2px 2px 8px rgba(0,0,0,0.35)" }} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (kind === 4) {
-    // Sticky notes stack
-    const colors = ["#f4e066","#ffd080","#a6ffb3","#87ceeb","#ffb3d9"];
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px", position:"relative" }}>
-        {[0, 1, 2].map((i) => (
-          <div key={i} style={{
-            position:"absolute",
-            width: 24, height: 26,
-            background: colors[Math.floor(r(4 + i) * colors.length)],
-            border: "1px solid rgba(0,0,0,0.1)",
-            boxShadow: "2px 2px 6px rgba(0,0,0,0.2)",
-            transform: `translateY(${i * 3}px) rotate(${-2 + i * 2}deg)`,
-            left: i * 8,
-          }}>
-            <div style={{ position:"absolute", top:6, left:6, width:3, height:3, background:"rgba(100,100,100,0.3)", borderRadius:"50%" }} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (kind === 5) {
-    // Plant in pot
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {/* Pot */}
-        <div style={{
-          width: 28, height: 24,
-          background: "linear-gradient(180deg, #c97d4a 0%, #a85c2f 100%)",
-          borderRadius: "0 0 4px 4px",
-          boxShadow: "inset 0 1px 3px rgba(0,0,0,0.3), 2px 3px 8px rgba(0,0,0,0.3)",
-          position:"relative", flexShrink:0,
-        }}>
-          {/* Plant leaves */}
-          <div style={{
-            position:"absolute", bottom: -18, left:2, width:8, height:20,
-            background: "linear-gradient(135deg, #2d7a3e 0%, #1a4a22 100%)",
-            borderRadius: "50% 20% 50% 20%",
-            transform: "rotate(-25deg)",
-          }} />
-          <div style={{
-            position:"absolute", bottom: -16, left:10, width:8, height:22,
-            background: "linear-gradient(45deg, #3d8a4e 0%, #2a5a35 100%)",
-            borderRadius: "20% 50% 20% 50%",
-            transform: "rotate(15deg)",
-          }} />
-          <div style={{
-            position:"absolute", bottom: -20, left:18, width:7, height:24,
-            background: "linear-gradient(135deg, #2d7a3e 0%, #1a4a22 100%)",
-            borderRadius: "50% 20% 50% 20%",
-            transform: "rotate(35deg)",
-          }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 6) {
-    // Ink bottle
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {/* Bottle */}
-        <div style={{
-          width: 14, height: 36,
-          background: "linear-gradient(90deg, #1a1a3a 0%, #2a2a4a 50%, #1a1a3a 100%)",
-          borderRadius: "2px 2px 0 0",
-          boxShadow: "inset 1px 0 2px rgba(80,80,120,0.3), 2px 3px 8px rgba(0,0,0,0.5)",
-          position:"relative",
-        }}>
-          {/* Ink inside */}
-          <div style={{ position:"absolute", top:2, left:1, right:1, bottom:4, background:"rgba(26,26,58,0.8)", borderRadius:"1px 1px 0 0" }} />
-          {/* Cork cap */}
-          <div style={{
-            position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)",
-            width: 8, height: 6,
-            background: "linear-gradient(180deg, #8b6f47 0%, #6a5c3a 100%)",
-            borderRadius: "2px 2px 1px 1px",
-          }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 7) {
-    // Teddy bear (simple)
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 12px" }}>
-        <div style={{ position:"relative", width:32, height:40 }}>
-          {/* Body */}
-          <div style={{
-            position:"absolute", left:6, top:12, width:20, height:18,
-            background: "#a87835",
-            borderRadius: "50%",
-            boxShadow: "inset -2px -2px 4px rgba(0,0,0,0.2)",
-          }} />
-          {/* Head */}
-          <div style={{
-            position:"absolute", left:8, top:0, width:16, height:16,
-            background: "#b88845",
-            borderRadius: "50%",
-            boxShadow: "inset -2px -2px 3px rgba(0,0,0,0.15)",
-          }} />
-          {/* Ears */}
-          {[{left:2}, {right:2}].map((pos, i) => (
-            <div key={i} style={{
-              position:"absolute", ...pos, top:2, width:6, height:6,
-              background: "#a87835",
-              borderRadius: "50%",
-              boxShadow: "inset -1px -1px 2px rgba(0,0,0,0.2)",
-            }} />
-          ))}
-          {/* Eyes */}
-          {[{left:10}, {right:10}].map((pos, i) => (
-            <div key={i} style={{
-              position:"absolute", ...pos, top:6, width:2, height:2,
-              background: "#2a1a0a",
-              borderRadius: "50%",
-            }} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 8) {
-    // Quill pen
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px", position:"relative" }}>
-        <div style={{
-          width: 4, height: 42,
-          background: "linear-gradient(180deg, #2a1a0a 0%, #4a3a2a 100%)",
-          borderRadius: "2px 2px 0 0",
-          transform: "rotate(-30deg)",
-          transformOrigin: "bottom center",
-          boxShadow: "1px 1px 4px rgba(0,0,0,0.4)",
-        }} />
-        {/* Feather */}
-        <div style={{
-          position:"absolute", bottom:34, right:-8,
-          width: 16, height: 24,
-          background: "linear-gradient(to right, #e8e0d0 0%, #d4c8b$ 100%)",
-          borderRadius: "50% 0 0 50%",
-          transform: "rotate(-45deg)",
-          opacity: 0.7,
-        }} />
-      </div>
-    );
-  }
-
-  if (kind === 9) {
-    // Stacked books
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {["#6b3a3a", "#3a5a6b", "#5a4a2a"].map((color, i) => (
-          <div key={i} style={{
-            position:"absolute",
-            width: 30, height: 8,
-            background: color,
-            border: "1px solid rgba(0,0,0,0.2)",
-            boxShadow: "1px 1px 4px rgba(0,0,0,0.3)",
-            transform: `translateY(${-i * 10}px) rotate(${-3 + i * 2}deg)`,
-            left: i * 2,
-          }} />
-        ))}
-      </div>
-    );
-  }
-
-  // Crystal / gem
+  // DEBUG: Show that object is rendering
   return (
-    <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px" }}>
+    <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
       <div style={{
-        width: 16, height: 24,
-        background: "linear-gradient(135deg, #6b8adb 0%, #4a6ab3 50%, #2a4a8a 100%)",
-        clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
-        boxShadow: "2px 3px 10px rgba(20,40,120,0.5), inset -2px -2px 4px rgba(0,0,0,0.3)",
-      }} />
+        width: 50, height: 60,
+        background: "#ff6b9d",
+        borderRadius: "4px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontSize: "12px",
+        fontWeight: "bold",
+      }}>
+        {kind}
+      </div>
     </div>
   );
 }
@@ -335,8 +102,7 @@ function ScatteredObject({ seed }) {
 function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onHoverEnd, onClick }) {
   const { hasBand, rawHeight, ...cssStyle } = style;
 
-  const pullY    = isActive && phase === "pull"  ? -18 : 0;
-  const zIndex   = isActive ? 30 : 1;
+  const zIndex = isActive ? 30 : 1;
 
   return (
     <motion.div
@@ -350,12 +116,32 @@ function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onH
         zIndex,
         display: "flex",
       }}
-      animate={{ y: pullY, scale: isActive && phase === "zoom" ? 1.06 : 1 }}
-      transition={{ duration: 0.22, ease: [0.34, 1.4, 0.64, 1] }}
+      animate={{
+        y: !isActive ? 0
+          : phase === "pull"  ? -30
+          : phase === "lift"  ? -66
+          : phase === "float" ? -104
+          : 0,
+        scale: !isActive ? 1
+          : phase === "pull"  ? 1.05
+          : phase === "lift"  ? 1.12
+          : phase === "float" ? 0.78
+          : 1,
+        opacity: isActive && phase === "float" ? 0 : 1,
+        rotate:  isActive && phase === "lift"  ? -3
+               : isActive && phase === "float" ? -7
+               : 0,
+      }}
+      transition={{
+        y:       { type: "spring", stiffness: 260, damping: 18 },
+        scale:   { duration: 0.25, ease: "easeOut" },
+        opacity: { duration: 0.15 },
+        rotate:  { duration: 0.22, ease: "easeOut" },
+      }}
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
       onClick={onClick}
-      whileHover={{ y: -16, transition: { duration: 0.2 } }}
+      whileHover={phase === "idle" ? { y: -16, transition: { duration: 0.2 } } : {}}
     >
       {/* Main spine */}
       <div style={{
@@ -537,7 +323,7 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
         project,
         style: generateBookStyle(index, shelfIndex),
         objectSeed: index * 31 + shelfIndex * 13,
-        insertObject: index % 5 === 3, // every ~5 books, insert a decorative obj
+        insertObject: index === 1 || index === 4, // one decoration per shelf
       });
     });
     return shelvesArray;
@@ -560,12 +346,12 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
     onBookPullSound?.();
     setActiveId(project.id);
     setPhase("pull");
-    queue(() => setPhase("zoom"),  220);
-    queue(() => setPhase("open"),  450);
-    queue(() => { onOpenProject(project); setPhase("idle"); setActiveId(null); }, 850);
+    queue(() => setPhase("lift"),  200);
+    queue(() => setPhase("float"), 420);
+    queue(() => { onOpenProject(project); setPhase("idle"); setActiveId(null); }, 640);
   }
 
-  const stageScale = phase === "zoom" || phase === "open" ? 1.03 : 1;
+  const stageScale = phase === "lift" || phase === "float" ? 1.02 : 1;
 
   function handleScroll(direction) {
     const node = corridorRef.current;
@@ -708,7 +494,7 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
                 }}>
                   {laneItems.map((item, idx) => (
                     <div key={item.project.id} style={{ display:"flex", alignItems:"flex-end" }}>
-                      {item.insertObject && idx > 0 && (
+                      {item.insertObject && (
                         <ScatteredObject seed={item.objectSeed} />
                       )}
                       <RealisticBookSpine

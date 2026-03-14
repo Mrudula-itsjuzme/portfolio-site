@@ -63,18 +63,23 @@ function PageBody({ project, page }) {
     return (
       <article className="page-surface">
         <h3>{page.title}</h3>
-        <div className="architecture-flow" role="img" aria-label="Architecture flow">
+        <div className="arch-flow-vertical" role="img" aria-label="System architecture flowchart">
           {(page.diagram || []).map((step, idx) => (
-            <div key={step} className="flow-step-wrap">
-              <div className="flow-step">{step}</div>
-              {idx < page.diagram.length - 1 ? <div className="flow-arrow">→</div> : null}
+            <div key={step} className="arch-step-wrap">
+              <div className="arch-step-box">{step}</div>
+              {idx < page.diagram.length - 1 && (
+                <div className="arch-connector">
+                  <div className="arch-line" />
+                  <div className="arch-arrowhead" />
+                </div>
+              )}
             </div>
           ))}
         </div>
-        <p>{page.text}</p>
+        <p className="arch-caption">{page.text}</p>
         {page.image ? (
           <figure className="page-figure compact">
-            <img src={page.image} alt={`${page.title} reference visual`} loading="lazy" />
+            <img src={page.image} alt={`${page.title} visual`} loading="lazy" />
           </figure>
         ) : null}
       </article>

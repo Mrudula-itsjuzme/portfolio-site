@@ -46,6 +46,127 @@ function repoImageUrls(project) {
   };
 }
 
+const COVER_HEX = {
+  "leather-oxblood": "#5c1a1a",
+  "leather-forest": "#1a3d22",
+  "leather-navy": "#152236",
+  "leather-charcoal": "#222228",
+  "leather-brown": "#4a2e14",
+};
+const COVER_DARK_HEX = {
+  "leather-oxblood": "#380808",
+  "leather-forest": "#091610",
+  "leather-navy": "#080e1c",
+  "leather-charcoal": "#0e0e12",
+  "leather-brown": "#28100a",
+};
+function coverHex(project) {
+  return COVER_HEX[project?.leather] || "#3d2810";
+}
+function coverDarkHex(project) {
+  return COVER_DARK_HEX[project?.leather] || "#1c0c04";
+}
+
+function buildArchDiagram(lang, topics) {
+  const l = (lang || "").toLowerCase();
+  const t = (topics || []).join(" ").toLowerCase();
+  if (t.match(/train|model|neural|deep|classif|nlp|vision|keras|torch|sklearn|tensorflow/)) {
+    return ["Raw Dataset", "Feature Engineering", "Model Training", "Evaluation", "Inference API"];
+  }
+  if (t.match(/aircraft|flight|sensor|signal|embed|firmware|iot/)) {
+    return ["Sensor / Data Source", "Ingestion & Parsing", "Processing Engine", "Decision Layer", "Output / Control"];
+  }
+  if (t.match(/react|vue|angular|frontend|ui|component|next/)) {
+    return ["Browser / Client", "Component Tree", "State Management", "API Client", "Backend Service"];
+  }
+  if (t.match(/api|rest|express|fastapi|flask|django|backend|server|graphql/)) {
+    return ["HTTP Request", "Route Handler", "Service Layer", "Data Access", "Database"];
+  }
+  if (t.match(/data|pipeline|etl|warehouse|spark|kafka|stream|analytics/)) {
+    return ["Data Source", "Ingestion Pipeline", "Transformation Layer", "Storage", "Analytics / Report"];
+  }
+  if (l === "javascript" || l === "typescript") {
+    return ["Client Layer", "Application Logic", "State Store", "API Integration", "External Services"];
+  }
+  if (l === "java" || l === "kotlin") {
+    return ["REST Endpoint", "Controller", "Service", "Repository", "Database"];
+  }
+  if (l === "rust" || l === "go") {
+    return ["Input Stream", "Parser / Lexer", "Core Engine", "Optimizer", "Output"];
+  }
+  if (l === "python") {
+    return ["Input Source", "Processing Pipeline", "Core Logic", "Analysis Layer", "Output & Report"];
+  }
+  return ["Input", "Validation", "Core Logic", "Processing", "Output"];
+}
+
+function buildContextParagraphs(project, topics) {
+  const lang = project.language || "various languages";
+  const desc = project.description || null;
+  const name = project.spineTitle;
+  const p1 = desc
+    ? `${name} — ${desc}. Written primarily in ${lang}, every decision is shaped by real engineering constraints: reliability under load, clear failure modes, and low onboarding friction.`
+    : `${name} is a ${lang} project built around practical patterns in the ${project.category || "software engineering"} domain. Choices are grounded in operational realities rather than theoretical ideals.`;
+  const p2 = topics.length
+    ? `Core areas covered in this volume include ${topics.slice(0, 5).join(", ")}. Each surfaces distinct trade-offs between performance, maintainability, and deployment simplicity — all documented across the chapters ahead.`
+    : `The project follows a modular design: each component holds a single clear responsibility, enabling independent testing, clean failure paths, and confident incremental changes.`;
+  const p3 = `Observability, explicit error paths, and incremental delivery are first-class requirements alongside functional correctness. The goal is a system that behaves predictably under pressure — not just in development.`;
+  return [p1, p2, p3];
+}
+
+function buildImplementationNotes(project) {
+  const lang = project.language || "the primary stack";
+  const name = project.spineTitle;
+  const langReason = {
+    Python: "its rich data-manipulation ecosystem, wide library coverage, and fast iteration loop for this class of problem",
+    JavaScript: "its ubiquity in the browser and Node.js runtime, enabling shared types and logic across the full stack",
+    TypeScript: "its type safety characteristics that eliminate an entire class of runtime errors before deployment",
+    Java: "its mature concurrency model, strong ecosystem, and proven track record in production systems",
+    Rust: "its memory safety guarantees without a garbage collector, delivering predictable latency at the systems level",
+    Go: "its simplicity, fast compilation, and excellent concurrency primitives for I/O-heavy workloads",
+  }[lang] || "its maintainability characteristics and strong community support";
+  return [
+    `${name} is structured as a sequence of auditable stages, each producing verifiable intermediate artifacts. This makes debugging and stakeholder walkthroughs straightforward — no opaque end-to-end scripts.`,
+    `${lang} was selected for ${langReason}. Supporting dependencies are chosen for composability and long-term stability over trend-following.`,
+    `Critical decision points are annotated throughout the repository: naming is intentional, interfaces are narrow, and observability is embedded in each layer rather than bolted on afterward.`,
+  ];
+}
+
+function buildLessons(project, topics) {
+  const hasML = topics.some(t => /\b(ml|model|train|neural|ai|deep|classif|dataset)\b/.test(t));
+  const hasWeb = topics.some(t => /\b(react|vue|api|frontend|web|ui|node)\b/.test(t));
+  const firstTopic = topics[0] || project.category || "engineering";
+  if (hasML) {
+    return [
+      "Data quality dominates model quality. Effort spent on clean, representative inputs pays back faster than architectural complexity in the model itself.",
+      "Evaluation metrics are contracts: vague metrics produce vague systems. Making success criteria explicit before implementation avoids expensive post-hoc rationalization.",
+      "Incremental experimentation beats large refactors. Each logged run becomes a reference point rather than a discarded draft — the archive metaphor applies literally here.",
+    ];
+  }
+  if (hasWeb) {
+    return [
+      "Component boundaries should follow data boundaries, not visual groupings. Splitting components visually while they share data accumulates accidental coupling quickly.",
+      "State management simplifies when sources of truth are minimized. Derived state is easier than synchronized state in every framework.",
+      "API contracts written before implementation prevent the most expensive integration rewrites. A typed interface spec is worth more than a week of ad-hoc debugging.",
+    ];
+  }
+  return [
+    `Reliable ${firstTopic} systems are built through consistent small quality habits: explicit contracts, measurable outcomes, and incremental hardening rather than heroic last-minute fixes.`,
+    "Most complexity becomes manageable when surfaced early through visual traces and plain-language documentation that the whole team can read.",
+    "The archive metaphor reflects this process — each iteration is another annotated page, not a discarded draft. History is a feature, not a liability.",
+  ];
+}
+
+function buildStackRationale(project, stack) {
+  const lang = project.language || stack[0] || "the core technology";
+  const name = project.spineTitle;
+  return [
+    `${lang} anchors ${name}. The choice reflects ecosystem maturity, strong package support, and well-established patterns for this class of problem that the community has stress-tested in production.`,
+    `Supporting libraries were selected for composability — each should be replaceable independently without triggering cascading rewrites in adjacent layers. Abstraction boundaries are respected, not leaked.`,
+    `Dependency decisions prioritize long-term maintainability over short-term novelty. A library understood and maintained in two years is worth more than a trending one that disappears.`,
+  ];
+}
+
 function buildPages(project) {
   const cover = pickPage(project, "cover");
   const overview = pickPage(project, "overview");
@@ -118,21 +239,23 @@ function buildPages(project) {
     id: "context",
     kind: "essay",
     title: "Research Context",
-    paragraphs: [
-      `This volume addresses the ${project?.category || "engineering"} domain with a practical build-first lens. The guiding principle is to keep each layer understandable under pressure while preserving room for rapid iteration.`,
-      "The project is framed as a living system rather than a static artifact: assumptions are explicit, interfaces are composable, and outcomes are measured against operational expectations.",
-      `Primary thematic threads include ${topics.slice(0, 4).join(", ")}. These threads shape trade-offs across reliability, performance, and readability.`
-    ],
+    paragraphs: buildContextParagraphs(project, topics),
     image: images.dashboard,
-    caption: "Domain and technology texture for this volume."
+    caption: "Repository language breakdown and activity metrics."
   });
 
   pages.push({
     id: "architecture",
     kind: "architecture",
-    title: architecture?.title || "Architecture",
-    diagram: architecture?.diagram || ["Input", "Process", "Output"],
-    text: architecture?.text || "Architecture description unavailable.",
+    title: architecture?.title || "System Architecture",
+    diagram: (() => {
+      const d = architecture?.diagram || buildArchDiagram(project.language, topics);
+      return d;
+    })(),
+    text: architecture?.text || (() => {
+      const d = architecture?.diagram || buildArchDiagram(project.language, topics);
+      return `A clean ${d.length}-stage pipeline: ${d.join(" → ")}. Each stage owns a focused responsibility with a testable boundary — enabling isolated debugging and confident refactors without cascade risk.`;
+    })(),
     image: images.architecture
   });
 
@@ -160,13 +283,9 @@ function buildPages(project) {
     id: "implementation-notes",
     kind: "essay",
     title: "Implementation Notes",
-    paragraphs: [
-      "Implementation is structured as a sequence of auditable steps, each producing verifiable intermediate artifacts. This makes debugging and stakeholder walkthroughs far easier than opaque end-to-end scripts.",
-      "Code paths are written for maintainers first: naming is explicit, boundaries are narrow, and observability is built in rather than patched later.",
-      "Critical decision points are documented with rationale so the project can evolve without losing historical context."
-    ],
+    paragraphs: buildImplementationNotes(project),
     image: images.cover,
-    caption: "Representative project visual captured for this manuscript."
+    caption: "GitHub repository preview for this project."
   });
 
   pages.push({
@@ -207,11 +326,7 @@ function buildPages(project) {
     id: "stack-notes",
     kind: "essay",
     title: "Stack Rationale",
-    paragraphs: [
-      `${stack[0] || "Core tooling"} anchors the implementation due to ecosystem maturity and strong package support for this class of problem.`,
-      "Supporting technologies are selected to preserve composability, observability, and straightforward deployment paths.",
-      "Dependency decisions are reviewed with an emphasis on long-term maintainability instead of short-term novelty."
-    ]
+    paragraphs: buildStackRationale(project, stack)
   });
 
   pages.push({
@@ -236,11 +351,7 @@ function buildPages(project) {
     id: "lessons",
     kind: "essay",
     title: "Lessons Learned",
-    paragraphs: [
-      "Reliable systems are built through repetition of small quality habits: explicit contracts, measurable outcomes, and incremental hardening.",
-      "Most complexity becomes manageable when surfaced early through visual traces and plain-language documentation.",
-      "The archive metaphor reflects this process: each iteration is another annotated page rather than a discarded draft."
-    ]
+    paragraphs: buildLessons(project, topics)
   });
 
   pages.push({
@@ -270,8 +381,13 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
 
   const pages = useMemo(() => buildPages(project), [project]);
 
+  const [bookOpen, setBookOpen] = useState(false);
+
   useEffect(() => {
     setPage(0);
+    setBookOpen(false);
+    const t = setTimeout(() => setBookOpen(true), 400);
+    return () => clearTimeout(t);
   }, [project.id]);
 
   function flipNext() {
@@ -311,10 +427,10 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
     >
       <motion.section
         className="viewer-desk"
-        initial={{ scale: 0.92, y: 30 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.9, y: 20 }}
-        transition={{ type: "spring", stiffness: 180, damping: 20 }}
+        initial={{ scale: 0.86, y: 60, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.88, y: 30, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 200, damping: 22 }}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="close-viewer" onClick={onClose}>
@@ -326,7 +442,24 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
           <p>{project.category}</p>
         </header>
 
-        <div className="flipbook-wrap">
+        <div className="flipbook-wrap" style={{ perspective: "1200px" }}>
+          {/* Closed book cover that physically flips open */}
+          <motion.div
+            className="cover-flip-overlay"
+            initial={{ rotateY: 0 }}
+            animate={{ rotateY: bookOpen ? -100 : 0 }}
+            transition={{ duration: 0.75, ease: [0.4, 0, 0.15, 1] }}
+            style={{
+              transformOrigin: "1.5% 50%",
+              pointerEvents: bookOpen ? "none" : "auto",
+              background: `linear-gradient(150deg, ${coverHex(project)} 0%, ${coverDarkHex(project)} 100%)`,
+            }}
+          >
+            <p className="cover-flip-kicker">Portfolio Archive</p>
+            <h2 className="cover-flip-title">{project.spineTitle}</h2>
+            <p className="cover-flip-sub">{project.category || project.language || "Engineering"}</p>
+            <p className="cover-flip-year">{project.publishedYear || new Date().getFullYear()}</p>
+          </motion.div>
           <HTMLFlipBook
             ref={flipRef}
             width={500}
