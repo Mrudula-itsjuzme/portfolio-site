@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import ArchitectureDiagram from "./ArchitectureDiagram";
 
 function PageBody({ project, page }) {
   if (page.kind === "cover") {
@@ -63,19 +64,7 @@ function PageBody({ project, page }) {
     return (
       <article className="page-surface">
         <h3>{page.title}</h3>
-        <div className="arch-flow-vertical" role="img" aria-label="System architecture flowchart">
-          {(page.diagram || []).map((step, idx) => (
-            <div key={step} className="arch-step-wrap">
-              <div className="arch-step-box">{step}</div>
-              {idx < page.diagram.length - 1 && (
-                <div className="arch-connector">
-                  <div className="arch-line" />
-                  <div className="arch-arrowhead" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        <ArchitectureDiagram steps={page.diagram || []} />
         <p className="arch-caption">{page.text}</p>
         {page.image ? (
           <figure className="page-figure compact">

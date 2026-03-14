@@ -1,7 +1,7 @@
 export const projects = [
   {
     id: "fraud-detection-system",
-    spineTitle: "Fraud Detection",
+    spineTitle: "Fraud Detector",
     category: "Machine Learning",
     leather: "leather-oxblood",
     accent: "#8e3b2f",
@@ -64,7 +64,7 @@ export const projects = [
   },
   {
     id: "smart-grid-ids",
-    spineTitle: "Smart Grid IDS",
+    spineTitle: "Grid Security",
     category: "Cybersecurity",
     leather: "leather-emerald",
     accent: "#3f6648",
@@ -105,7 +105,7 @@ export const projects = [
   },
   {
     id: "feature-lab",
-    spineTitle: "Feature Lab",
+    spineTitle: "Feature Analysis",
     category: "Explainable AI",
     leather: "leather-navy",
     accent: "#37506f",
@@ -145,7 +145,7 @@ export const projects = [
   },
   {
     id: "traffic-atlas",
-    spineTitle: "Traffic Atlas",
+    spineTitle: "Network Flow",
     category: "Network Analysis",
     leather: "leather-charcoal",
     accent: "#4a4a4a",
@@ -185,7 +185,7 @@ export const projects = [
   },
   {
     id: "crypto-notebook",
-    spineTitle: "Crypto Notebook",
+    spineTitle: "Encrypt Lab",
     category: "Security Engineering",
     leather: "leather-amber",
     accent: "#8f6a29",
@@ -225,7 +225,7 @@ export const projects = [
   },
   {
     id: "forecast-engine",
-    spineTitle: "Forecast Engine",
+    spineTitle: "Time Series",
     category: "Time Series",
     leather: "leather-plum",
     accent: "#594168",
