@@ -288,48 +288,52 @@ export default function Home() {
       try {
         setIsLoading(true);
 
-        // Fetch directly from GitHub API — works on static hosting (GitHub Pages)
+        // Prefer the static repos.json baked at build time by scripts/fetch-repos.js
+        // (avoids GitHub API rate limits entirely on the live site)
         const res = await fetch(
-          "https://api.github.com/users/Mrudula-itsjuzme/repos?per_page=100&sort=updated&direction=desc",
-          {
-            signal: controller.signal,
-            headers: { Accept: "application/vnd.github+json" }
-          }
+          `${import.meta.env.BASE_URL}repos.json`,
+          { signal: controller.signal }
         );
 
         if (!res.ok) {
-          throw new Error(`GitHub API ${res.status}`);
+          throw new Error(`repos.json ${res.status}`);
         }
 
         const raw = await res.json();
-
-        // Filter out forks and the portfolio-site repo itself
-        const repos = Array.isArray(raw)
-          ? raw.filter(r => !r.fork && r.name !== "portfolio-site")
-          : [];
+        const repos = Array.isArray(raw) ? raw : [];
 
         if (repos.length) {
-          // Map GitHub API shape to the internal repo shape mapRepoToProject expects
-          const normalized = repos.map(r => ({
-            id: r.id,
-            name: r.name,
-            fullName: r.full_name,
-            description: r.description,
-            language: r.language,
-            url: r.html_url,
-            homepage: r.homepage,
-            topics: Array.isArray(r.topics) ? r.topics : [],
-            stars: r.stargazers_count,
-            forks: r.forks_count,
-          }));
-
-          const mapped = normalized.map((repo, i) => mapRepoToProject(repo, i));
-          setProjects(mapped.map((project, index) => enrichProject(project, index)));
+          const mapped = repos.map((repo, i) => mapRepoToProject(repo, i));
+          setProjects(mapped.map((p, i) => enrichProject(p, i)));
         }
       } catch (err) {
         if (err.name !== "AbortError") {
-          console.error("Project load failed:", err);
-          setLoadError(err.message);
+          console.warn("Static repos.json failed, trying GitHub API:", err.message);
+          // Fallback: call GitHub API directly (may be rate-limited)
+          try {
+            const apiRes = await fetch(
+              "https://api.github.com/users/Mrudula-itsjuzme/repos?per_page=100&sort=updated",
+              { headers: { Accept: "application/vnd.github+json" } }
+            );
+            if (apiRes.ok) {
+              const raw = await apiRes.json();
+              const repos = Array.isArray(raw)
+                ? raw.filter(r => !r.fork && r.name !== "portfolio-site").map(r => ({
+                    id: r.id, name: r.name, fullName: r.full_name,
+                    description: r.description || "", language: r.language || "Code",
+                    url: r.html_url, homepage: r.homepage || "",
+                    topics: r.topics || [], stars: r.stargazers_count, forks: r.forks_count,
+                  }))
+                : [];
+              if (repos.length) {
+                const mapped = repos.map((repo, i) => mapRepoToProject(repo, i));
+                setProjects(mapped.map((p, i) => enrichProject(p, i)));
+              }
+            }
+          } catch (apiErr) {
+            console.warn("GitHub API also failed, using hardcoded fallback:", apiErr.message);
+          }
+          setLoadError(null); // hardcoded fallback is fine, don't show error
         }
       } finally {
         setIsLoading(false);
