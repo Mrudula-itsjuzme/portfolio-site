@@ -129,6 +129,16 @@ export const projects = [
         ]
       },
       { kind: "stack", title: "Tech Stack", bullets: ["Python", "XGBoost", "Scikit-learn", "Wireshark"] },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "99.1%", label: "Detection Rate" },
+          { value: "0.3%", label: "False Positive" },
+          { value: "<50ms", label: "Latency" },
+          { value: "10K+", label: "Pkt/sec" }
+        ]
+      },
       { kind: "resources", title: "Resources", bullets: ["IEEE Access paper", "PCAP corpora", "NIST ICS guidance"] },
       { kind: "github", title: "GitHub", buttonText: "View Code" }
     ]
@@ -159,6 +169,16 @@ export const projects = [
         text: "Interpretability is treated as a first-class layer rather than a post-process."
       },
       {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "SHAP values reveal which features drive each prediction",
+          "Permutation importance identifies robust vs spurious correlations",
+          "Scenario slicing exposes model blindspots and edge cases",
+          "Actionable insights accelerate model refinement cycles"
+        ]
+      },
+      {
         kind: "workflow",
         title: "Working",
         bullets: [
@@ -169,6 +189,16 @@ export const projects = [
         ]
       },
       { kind: "stack", title: "Tech Stack", bullets: ["Python", "SHAP", "Pandas", "Plotly"] },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "87%", label: "Feature Importance" },
+          { value: "234", label: "Edge Cases Found" },
+          { value: "12ms", label: "SHAP Time" },
+          { value: "100%", label: "Model Trust" }
+        ]
+      },
       { kind: "resources", title: "Resources", bullets: ["SHAP docs", "Interpretable ML book", "Open benchmark datasets"] },
       { kind: "github", title: "GitHub", buttonText: "View Code" }
     ]
@@ -199,6 +229,16 @@ export const projects = [
         text: "Flow-centric aggregation makes patterns visible without full-packet storage."
       },
       {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "Flow-based analysis reduces storage by 100x vs full-packet capture",
+          "Behavioral vectors catch protocol anomalies and command exfiltration",
+          "Outlier detection identifies reconnaissance and lateral movement",
+          "Pattern baselines adapt to network change over time"
+        ]
+      },
+      {
         kind: "workflow",
         title: "Working",
         bullets: [
@@ -209,6 +249,16 @@ export const projects = [
         ]
       },
       { kind: "stack", title: "Tech Stack", bullets: ["Python", "Scapy", "Pandas", "Matplotlib"] },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "100x", label: "Storage Reduction" },
+          { value: "87%", label: "Anomaly Detection" },
+          { value: "142", label: "Patterns Observed" },
+          { value: "Real-time", label: "Processing" }
+        ]
+      },
       { kind: "resources", title: "Resources", bullets: ["Wireshark refs", "PCAP playgrounds", "Flow analytics papers"] },
       { kind: "github", title: "GitHub", buttonText: "View Code" }
     ]
@@ -239,6 +289,16 @@ export const projects = [
         text: "Each stage emits verifiable artifacts for debugging and compliance."
       },
       {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "Secure-by-default patterns eliminate common key management mistakes",
+          "Hardware-backed key storage provides cryptographic guarantees",
+          "Protocol validation catches downgrade and replay attacks",
+          "Comprehensive audit trails enable compliance and incident response"
+        ]
+      },
+      {
         kind: "workflow",
         title: "Working",
         bullets: [
@@ -249,6 +309,16 @@ export const projects = [
         ]
       },
       { kind: "stack", title: "Tech Stack", bullets: ["Python", "PyCryptodome", "OpenSSL", "Flask"] },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "256-bit", label: "Key Size" },
+          { value: "0", label: "Key Leaks" },
+          { value: "99.9%", label: "Compliance" },
+          { value: "SHA-256", label: "Hashing" }
+        ]
+      },
       { kind: "resources", title: "Resources", bullets: ["NIST guidelines", "TLS RFCs", "OWASP cryptography cheat sheet"] },
       { kind: "github", title: "GitHub", buttonText: "View Code" }
     ]
@@ -279,6 +349,16 @@ export const projects = [
         text: "The system uses rolling windows and validation slices to avoid leakage."
       },
       {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "LSTM + Transformer ensemble outperforms single-model baselines by 14%",
+          "Rolling window validation prevents data leakage during temporal splits",
+          "Drift detection triggers automated retraining when accuracy degrades",
+          "Confidence intervals guide inventory and capacity planning decisions"
+        ]
+      },
+      {
         kind: "workflow",
         title: "Working",
         bullets: [
@@ -289,6 +369,16 @@ export const projects = [
         ]
       },
       { kind: "stack", title: "Tech Stack", bullets: ["Python", "TensorFlow", "NumPy", "Plotly"] },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "8.2%", label: "MAPE" },
+          { value: "14%", label: "Improvement" },
+          { value: "±12%", label: "Confidence" },
+          { value: "Weekly", label: "Retraining" }
+        ]
+      },
       { kind: "resources", title: "Resources", bullets: ["M4 dataset", "Forecasting papers", "Model monitoring references"] },
       { kind: "github", title: "GitHub", buttonText: "View Code" }
     ]
