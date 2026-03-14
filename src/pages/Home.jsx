@@ -288,39 +288,47 @@ export default function Home() {
       try {
         setIsLoading(true);
 
+        // Fetch directly from GitHub API — works on static hosting (GitHub Pages)
         const res = await fetch(
-          "/api/projects",
-          { signal: controller.signal }
+          "https://api.github.com/users/Mrudula-itsjuzme/repos?per_page=100&sort=updated&direction=desc",
+          {
+            signal: controller.signal,
+            headers: { Accept: "application/vnd.github+json" }
+          }
         );
 
         if (!res.ok) {
-          throw new Error(
-            `HTTP ${res.status}`
-          );
+          throw new Error(`GitHub API ${res.status}`);
         }
 
-        const payload = await res.json();
+        const raw = await res.json();
 
-        const repos = Array.isArray(
-          payload?.projects
-        )
-          ? payload.projects
+        // Filter out forks and the portfolio-site repo itself
+        const repos = Array.isArray(raw)
+          ? raw.filter(r => !r.fork && r.name !== "portfolio-site")
           : [];
 
         if (repos.length) {
-          const mapped = repos.map(
-            (repo, i) =>
-              mapRepoToProject(repo, i)
-          );
+          // Map GitHub API shape to the internal repo shape mapRepoToProject expects
+          const normalized = repos.map(r => ({
+            id: r.id,
+            name: r.name,
+            fullName: r.full_name,
+            description: r.description,
+            language: r.language,
+            url: r.html_url,
+            homepage: r.homepage,
+            topics: Array.isArray(r.topics) ? r.topics : [],
+            stars: r.stargazers_count,
+            forks: r.forks_count,
+          }));
 
+          const mapped = normalized.map((repo, i) => mapRepoToProject(repo, i));
           setProjects(mapped.map((project, index) => enrichProject(project, index)));
         }
       } catch (err) {
         if (err.name !== "AbortError") {
-          console.error(
-            "Project load failed:",
-            err
-          );
+          console.error("Project load failed:", err);
           setLoadError(err.message);
         }
       } finally {
