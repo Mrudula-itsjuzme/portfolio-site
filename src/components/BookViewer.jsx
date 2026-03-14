@@ -25,6 +25,8 @@ function safeTopicList(project) {
 }
 
 function repoImageUrls(project) {
+  const repoAssets = project?.repoAssets || {};
+  const galleryUrls = Array.isArray(repoAssets.galleryUrls) ? repoAssets.galleryUrls.filter(Boolean) : [];
   const seedBase = encodeURIComponent(project?.id || project?.spineTitle || "project");
   const picsumA = `https://picsum.photos/seed/${seedBase}-a/900/540`;
   const picsumB = `https://picsum.photos/seed/${seedBase}-b/900/540`;
@@ -32,7 +34,12 @@ function repoImageUrls(project) {
 
   const full = String(project?.repoName || "").trim();
   if (!full || !full.includes("/")) {
-    return { cover: picsumA, architecture: picsumB, dashboard: picsumC };
+    return {
+      cover: galleryUrls[0] || picsumA,
+      architecture: repoAssets.diagramUrl || null,
+      dashboard: galleryUrls[1] || picsumC,
+      gallery: galleryUrls.length ? galleryUrls : [picsumA, picsumB, picsumC],
+    };
   }
 
   const [owner, repo] = full.split("/");
@@ -40,9 +47,16 @@ function repoImageUrls(project) {
   const encodedRepo = encodeURIComponent(repo || "repo");
 
   return {
-    cover: `https://opengraph.githubassets.com/1/${encodedOwner}/${encodedRepo}`,
-    architecture: `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}.svg`,
-    dashboard: `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}/languages.svg`
+    cover: galleryUrls[0] || `https://opengraph.githubassets.com/1/${encodedOwner}/${encodedRepo}`,
+    architecture: repoAssets.diagramUrl || null,
+    dashboard: galleryUrls[1] || `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}/languages.svg`,
+    gallery: galleryUrls.length
+      ? galleryUrls
+      : [
+          `https://opengraph.githubassets.com/1/${encodedOwner}/${encodedRepo}`,
+          `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}/languages.svg`,
+          picsumC,
+        ]
   };
 }
 
@@ -101,8 +115,8 @@ function buildArchDiagram(lang, topics) {
 }
 
 function buildContextParagraphs(project, topics) {
-  const lang = project.language || "various languages";
-  const desc = project.description || null;
+  const lang = project.language || project.category || "various languages";
+  const desc = project.description || project.synopsis || null;
   const name = project.spineTitle;
   const p1 = desc
     ? `${name} — ${desc}. Written primarily in ${lang}, every decision is shaped by real engineering constraints: reliability under load, clear failure modes, and low onboarding friction.`
@@ -115,7 +129,7 @@ function buildContextParagraphs(project, topics) {
 }
 
 function buildImplementationNotes(project) {
-  const lang = project.language || "the primary stack";
+  const lang = project.language || project.category || "the primary stack";
   const name = project.spineTitle;
   const langReason = {
     Python: "its rich data-manipulation ecosystem, wide library coverage, and fast iteration loop for this class of problem",
@@ -158,7 +172,7 @@ function buildLessons(project, topics) {
 }
 
 function buildStackRationale(project, stack) {
-  const lang = project.language || stack[0] || "the core technology";
+  const lang = project.language || project.category || stack[0] || "the core technology";
   const name = project.spineTitle;
   return [
     `${lang} anchors ${name}. The choice reflects ecosystem maturity, strong package support, and well-established patterns for this class of problem that the community has stress-tested in production.`,
@@ -198,6 +212,14 @@ function buildPages(project) {
   const stack = stackPage?.technologies || stackPage?.bullets || topics;
   const resourceLinks = resources?.links || resources?.bullets || [];
   const implementationSteps = workflow?.steps || workflow?.bullets || ["Workflow unavailable."];
+  const architectureDiagram = architecture?.diagram || buildArchDiagram(project.language || project.category, topics);
+  const galleryItems = (images.gallery || [])
+    .filter(Boolean)
+    .slice(0, 4)
+    .map((src, index) => ({
+      src,
+      alt: `${project?.spineTitle} visual ${index + 1}`,
+    }));
 
   const pages = [];
 
@@ -248,14 +270,8 @@ function buildPages(project) {
     id: "architecture",
     kind: "architecture",
     title: architecture?.title || "System Architecture",
-    diagram: (() => {
-      const d = architecture?.diagram || buildArchDiagram(project.language, topics);
-      return d;
-    })(),
-    text: architecture?.text || (() => {
-      const d = architecture?.diagram || buildArchDiagram(project.language, topics);
-      return `A clean ${d.length}-stage pipeline: ${d.join(" → ")}. Each stage owns a focused responsibility with a testable boundary — enabling isolated debugging and confident refactors without cascade risk.`;
-    })(),
+    diagram: architectureDiagram,
+    text: architecture?.text || `A clean ${architectureDiagram.length}-stage pipeline: ${architectureDiagram.join(" → ")}. Each stage owns a focused responsibility with a testable boundary, enabling isolated debugging and confident refactors without cascade risk.`,
     image: images.architecture
   });
 
@@ -340,11 +356,13 @@ function buildPages(project) {
     id: "gallery",
     kind: "gallery",
     title: "Visual Appendix",
-    images: [
-      { src: images.cover, alt: `${project?.spineTitle} project snapshot` },
-      { src: images.architecture, alt: `${project?.spineTitle} architecture chart` },
-      { src: images.dashboard, alt: `${project?.spineTitle} language or metrics view` }
-    ]
+    images: galleryItems.length
+      ? galleryItems
+      : [
+          { src: images.cover, alt: `${project?.spineTitle} project snapshot` },
+          ...(images.architecture ? [{ src: images.architecture, alt: `${project?.spineTitle} architecture diagram` }] : []),
+          { src: images.dashboard, alt: `${project?.spineTitle} language or metrics view` }
+        ]
   });
 
   pages.push({
@@ -442,7 +460,22 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
           <p>{project.category}</p>
         </header>
 
-        <div className="flipbook-wrap" style={{ perspective: "1200px" }}>
+        <motion.div
+          className="flipbook-wrap"
+          initial={{ rotateX: 0, rotateY: 0, opacity: 0, scale: 0.8 }}
+          animate={bookOpen ?
+            { rotateX: 0, rotateY: 0, opacity: 1, scale: 1 }
+            : { rotateX: -25, rotateY: 8, opacity: 1, scale: 0.95 }
+          }
+          transition={{
+            duration: bookOpen ? 0.5 : 0.35,
+            ease: [0.34, 1.56, 0.64, 1],
+            type: "spring",
+            stiffness: 200,
+            damping: 18
+          }}
+          style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
+        >
           {/* Closed book cover that physically flips open */}
           <motion.div
             className="cover-flip-overlay"
@@ -486,7 +519,7 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
               />
             ))}
           </HTMLFlipBook>
-        </div>
+        </motion.div>
 
         <footer className="viewer-controls">
           <button onClick={flipPrev} disabled={page === 0}>
