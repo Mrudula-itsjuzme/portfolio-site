@@ -978,6 +978,67 @@ body::after {
   gap: 0.55rem;
 }
 
+.highlights-surface {
+  gap: 0.5rem;
+}
+
+.highlights-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
+.highlight-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: #e6dccb;
+}
+
+.highlight-icon {
+  color: #d4af37;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+.metrics-surface {
+  gap: 1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.6rem;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 4px;
+}
+
+.metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #d4af37;
+  font-family: "Cinzel", serif;
+}
+
+.metric-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a89968;
+  font-family: "Cinzel", serif;
+}
+
 .code-button {
   text-decoration: none;
   display: inline-block;

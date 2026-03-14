@@ -31,6 +31,16 @@ export const projects = [
         text: "A staged pipeline keeps data quality checks and inference isolated for reliability and easier debugging."
       },
       {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "Real-time transaction scoring with sub-100ms latency",
+          "Adaptive threshold tuning reduces false positives by 35%",
+          "Feature engineering captures temporal fraud patterns",
+          "Model retraining pipeline maintains accuracy across seasons"
+        ]
+      },
+      {
         kind: "workflow",
         title: "Working",
         bullets: [
@@ -45,6 +55,16 @@ export const projects = [
         kind: "stack",
         title: "Tech Stack",
         bullets: ["Python", "TensorFlow", "Flask", "React"]
+      },
+      {
+        kind: "metrics",
+        title: "Results",
+        metrics: [
+          { value: "98.2%", label: "Precision" },
+          { value: "94.1%", label: "Recall" },
+          { value: "<100ms", label: "Latency" },
+          { value: "2.5M+", label: "Transactions/Day" }
+        ]
       },
       {
         kind: "resources",
@@ -86,6 +106,16 @@ export const projects = [
         title: "Architecture",
         diagram: ["Traffic Capture", "Feature Selection", "Detection Model", "Alert + Explain"],
         text: "The architecture separates feature governance from model scoring to keep updates safe."
+      },
+      {
+        kind: "highlights",
+        title: "Key Insights",
+        items: [
+          "Privacy-preserving feature extraction without deep packet inspection",
+          "SHAP explanations for each security alert improves analyst trust",
+          "Hybrid anomaly + supervised approach catches novel patterns",
+          "Real-time processing of 10K+ packets/second with <50ms latency"
+        ]
       },
       {
         kind: "workflow",

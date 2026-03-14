@@ -343,13 +343,18 @@ function createAmbientMusic(contextRef, gainRef, oscillatorsRef, enabled) {
     window.AudioContext ||
     window.webkitAudioContext;
 
-  if (!Context) return;
+  if (!Context) {
+    console.warn("Web Audio API not supported");
+    return;
+  }
 
+  // Initialize context if needed
   if (!contextRef.current) {
     try {
       contextRef.current = new Context();
+      console.log("Audio context created");
     } catch (e) {
-      console.warn("AudioContext creation failed:", e);
+      console.error("AudioContext creation failed:", e);
       return;
     }
   }
@@ -358,11 +363,45 @@ function createAmbientMusic(contextRef, gainRef, oscillatorsRef, enabled) {
 
   // Resume suspended context
   if (ctx.state === "suspended") {
-    ctx.resume().catch(() => {});
+    ctx.resume().then(() => {
+      console.log("Audio context resumed");
+    }).catch((err) => {
+      console.warn("Failed to resume audio context:", err);
+    });
   }
 
-  // Stop existing oscillators
-  if (oscillatorsRef.current && oscillatorsRef.current.length) {
+  if (!enabled) {
+    // Fade out and stop all oscillators
+    console.log("Stopping audio...");
+    if (gainRef.current) {
+      gainRef.current.gain.setValueAtTime(
+        gainRef.current.gain.value,
+        ctx.currentTime
+      );
+      gainRef.current.gain.exponentialRampToValueAtTime(
+        0.001,
+        ctx.currentTime + 1.5
+      );
+    }
+
+    // Schedule stopping oscillators
+    setTimeout(() => {
+      if (oscillatorsRef.current?.length) {
+        oscillatorsRef.current.forEach((osc) => {
+          try {
+            osc.stop();
+          } catch (e) {
+            // Already stopped
+          }
+        });
+        oscillatorsRef.current = [];
+      }
+    }, 1500);
+    return;
+  }
+
+  // Clear any existing oscillators
+  if (oscillatorsRef.current?.length) {
     oscillatorsRef.current.forEach((osc) => {
       try {
         osc.stop();
@@ -371,60 +410,49 @@ function createAmbientMusic(contextRef, gainRef, oscillatorsRef, enabled) {
     oscillatorsRef.current = [];
   }
 
-  if (!enabled) {
-    if (gainRef.current) {
-      gainRef.current.gain.setValueAtTime(
-        gainRef.current.gain.value,
-        ctx.currentTime
-      );
-      gainRef.current.gain.exponentialRampToValueAtTime(
-        0.001,
-        ctx.currentTime + 2
-      );
-    }
-    return;
-  }
-
-  // Create master gain
+  // Create master gain if needed
   if (!gainRef.current) {
     gainRef.current = ctx.createGain();
     gainRef.current.connect(ctx.destination);
-    gainRef.current.gain.value = 0.08; // Soft ambient level
-  } else {
-    gainRef.current.gain.setValueAtTime(0.001, ctx.currentTime);
-    gainRef.current.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 2);
+    console.log("Gain node created");
   }
 
-  // Dark ambient base notes (minor key progression)
+  // Fade in
+  gainRef.current.gain.setValueAtTime(0.001, ctx.currentTime);
+  gainRef.current.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 2);
+
+  // More audible base frequencies (one octave higher)
   const baseNotes = [
-    65.41, // C2
-    97.99, // G2
-    146.83, // D3
-    110, // A2
+    130.81, // C3
+    195.99, // G3
+    246.94, // B3
+    164.81, // E3
   ];
 
-  // Add layered sine waves for atmospheric pad
+  console.log("Starting ambient music with notes:", baseNotes);
+
+  // Add layered sine waves with longer sustain
   baseNotes.forEach((freq, idx) => {
+    // Main oscillator
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = freq;
 
-    // Add subtle vibrato
+    // Subtle vibrato
     const vibratoOsc = ctx.createOscillator();
-    vibratoOsc.frequency.value = 0.5 + idx * 0.1; // 0.5Hz - 0.8Hz wobble
+    vibratoOsc.frequency.value = 0.3 + idx * 0.15; // Slower wobble
 
     const vibratoGain = ctx.createGain();
-    vibratoGain.gain.value = 2; // 2Hz vibrato depth
+    vibratoGain.gain.value = 3; // Deeper modulation
 
     vibratoOsc.connect(vibratoGain);
     vibratoGain.connect(osc.frequency);
 
-    // Create per-note gain for fade in
+    // Per-note gain
     const noteGain = ctx.createGain();
-    noteGain.gain.value = 0;
     noteGain.gain.setValueAtTime(0, ctx.currentTime);
     noteGain.gain.exponentialRampToValueAtTime(
-      0.04 - idx * 0.008,
+      0.08 - idx * 0.01,
       ctx.currentTime + 3
     );
 
@@ -437,36 +465,32 @@ function createAmbientMusic(contextRef, gainRef, oscillatorsRef, enabled) {
     oscillatorsRef.current.push(osc, vibratoOsc);
   });
 
-  // Add filtered pink-ish noise for texture
-  const bufferSize = ctx.sampleRate * 4; // 4 seconds
-  const noiseBuffer = ctx.createBuffer(
-    1,
-    bufferSize,
-    ctx.sampleRate
-  );
+  // Add noise for texture
+  const bufferSize = ctx.sampleRate * 2;
+  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const noiseData = noiseBuffer.getChannelData(0);
 
+  // Generate brownian noise (smoother than white noise)
+  let lastSample = 0;
   for (let i = 0; i < bufferSize; i++) {
-    noiseData[i] = Math.random() * 2 - 1;
+    const white = Math.random() * 2 - 1;
+    noiseData[i] = (lastSample + 0.02 * white) / 1.02;
+    lastSample = noiseData[i];
   }
 
   const noiseSource = ctx.createBufferSource();
   noiseSource.buffer = noiseBuffer;
   noiseSource.loop = true;
 
-  // Filter the noise
+  // Low-pass filter
   const filter = ctx.createBiquadFilter();
   filter.type = "lowpass";
-  filter.frequency.value = 120;
-  filter.Q.value = 1;
+  filter.frequency.value = 100;
+  filter.Q.value = 0.5;
 
   const noiseGain = ctx.createGain();
-  noiseGain.gain.value = 0;
   noiseGain.gain.setValueAtTime(0, ctx.currentTime);
-  noiseGain.gain.exponentialRampToValueAtTime(
-    0.015,
-    ctx.currentTime + 4
-  );
+  noiseGain.gain.exponentialRampToValueAtTime(0.025, ctx.currentTime + 4);
 
   noiseSource.connect(filter);
   filter.connect(noiseGain);
@@ -474,6 +498,8 @@ function createAmbientMusic(contextRef, gainRef, oscillatorsRef, enabled) {
 
   noiseSource.start();
   oscillatorsRef.current.push(noiseSource);
+
+  console.log("Ambient music initialized with", oscillatorsRef.current.length, "sources");
 }
 
 export default function Home() {

@@ -208,6 +208,38 @@ function PageBody({ project, page }) {
     );
   }
 
+  if (page.kind === "highlights") {
+    return (
+      <article className="page-surface highlights-surface">
+        <h3>{page.title}</h3>
+        <div className="highlights-grid">
+          {(page.items || []).map((item) => (
+            <div key={item} className="highlight-item">
+              <span className="highlight-icon">✦</span>
+              <p>{item}</p>
+            </div>
+          ))}
+        </div>
+      </article>
+    );
+  }
+
+  if (page.kind === "metrics") {
+    return (
+      <article className="page-surface metrics-surface">
+        <h3>{page.title}</h3>
+        <div className="metrics-grid">
+          {(page.metrics || []).map((m) => (
+            <div key={m.label} className="metric-item">
+              <div className="metric-value">{m.value}</div>
+              <div className="metric-label">{m.label}</div>
+            </div>
+          ))}
+        </div>
+      </article>
+    );
+  }
+
   if (page.kind === "github") {
     return (
       <article className="page-surface github-surface">
