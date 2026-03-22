@@ -6,7 +6,7 @@
 ![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
 
-A immersive, library-themed portfolio for Mrudula Sankar. This is a full-stack application that transforms a technical resume and GitHub repositories into a digital archive of "working volumes" that users can pull from a shelf and read.
+A immersive, library-themed portfolio for Pedamallu Sai Mrudula. This is a full-stack application that transforms a technical resume and GitHub repositories into a digital archive of "working volumes" that users can pull from a shelf and read.
 
 ## Features
 
@@ -61,4 +61,4 @@ A immersive, library-themed portfolio for Mrudula Sankar. This is a full-stack a
 - `src/components/BookViewer.jsx`: The interactive book layout system.
 
 ---
-Mrudula Sankar
+Pedamallu Sai Mrudula

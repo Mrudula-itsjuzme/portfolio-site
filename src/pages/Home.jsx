@@ -210,15 +210,16 @@ function mapRepoToProject(repo, index) {
 
     demoUrl:
       repo?.homepage ||
-      "https://mrudula-itsjuzme.vercel.app",
+      "https://mrudula-itsjuzme.github.io/portfolio-site/",
 
     pages: [
       {
         kind: "cover",
         title,
         subtitle: generateCoverSubtitle(repo),
-        author: "Mrudula",
-        year: new Date().getFullYear().toString()
+        author: "Pedamallu Sai Mrudula",
+        year: new Date().getFullYear().toString(),
+        image: repo?.repoAssets?.diagramUrl || null
       },
 
       {
@@ -238,9 +239,18 @@ function mapRepoToProject(repo, index) {
           "Core Logic",
           "Output"
         ],
+        image: repo?.repoAssets?.diagramUrl || null,
         text:
           "The system is structured as a modular processing pipeline enabling scalable and testable components."
       },
+
+      ...(repo?.repoAssets?.galleryUrls?.length ? [
+        {
+          kind: "gallery",
+          title: "Visual Archive",
+          images: repo.repoAssets.galleryUrls.map(url => ({ src: url, alt: "Project Screenshot" }))
+        }
+      ] : []),
 
       {
         kind: "workflow",
@@ -694,7 +704,7 @@ export default function Home() {
           </p>
 
           <h1>
-            Mrudula Sankar
+            Pedamallu Sai Mrudula
           </h1>
 
           <p className="subtitle">
@@ -788,7 +798,7 @@ export default function Home() {
         <div className="footer-links">
           <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer">GitHub</a>
           <span className="footer-dot">·</span>
-          <a href="https://www.linkedin.com/in/mrudula-sankar" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/pedamallusaimrudula/" target="_blank" rel="noreferrer">LinkedIn</a>
           <span className="footer-dot">·</span>
           <a href="mailto:mrudulasankar2007@gmail.com">Email</a>
           <span className="footer-dot">·</span>

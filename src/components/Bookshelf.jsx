@@ -691,16 +691,14 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
         style={{ transformOrigin: "center center" }}
       >
         <div
+          ref={corridorRef}
           style={{ overflowX:"auto", overflowY:"visible" }}
           onWheel={handleWheelScroll}
         >
           <div
-            ref={corridorRef}
             style={{
               minWidth: 640,
               padding:"0 24px",
-              overflowX: "auto",
-              overflowY: "hidden",
               scrollbarWidth: "thin",
             }}
           >

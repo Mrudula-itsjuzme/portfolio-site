@@ -1,9 +1,171 @@
 [
   {
+    "id": 871714485,
+    "name": "mood-writing-assistant",
+    "fullName": "Mrudula-itsjuzme/mood-writing-assistant",
+    "description": "Emotion-aware writing assistant that adapts suggestions based on sentiment detection for expressive journaling and creative support workflows.",
+    "language": "JavaScript",
+    "url": "https://github.com/Mrudula-itsjuzme/mood-writing-assistant",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "master",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 3
+    }
+  },
+  {
+    "id": 1163833512,
+    "name": "mind",
+    "fullName": "Mrudula-itsjuzme/mind",
+    "description": "TypeScript-based mental-health interaction platform with mood analytics dashboards, AI chatbot support, and therapist discovery workflows.",
+    "language": "TypeScript",
+    "url": "https://github.com/Mrudula-itsjuzme/mind",
+    "homepage": "https://mind-lac-alpha.vercel.app",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1180812377,
+    "name": "osi-model-simulation-python",
+    "fullName": "Mrudula-itsjuzme/osi-model-simulation-python",
+    "description": "Layer-wise Python simulation of OSI network architecture demonstrating packet encapsulation, addressing flow, and protocol interaction behavior.",
+    "language": "Python",
+    "url": "https://github.com/Mrudula-itsjuzme/osi-model-simulation-python",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 888634378,
+    "name": "aircraft-data-training",
+    "fullName": "Mrudula-itsjuzme/aircraft-data-training",
+    "description": "YOLOv8-based aircraft detection pipeline supporting dataset preparation, training experimentation, and evaluation for aerospace vision workflows.",
+    "language": "Python",
+    "url": "https://github.com/Mrudula-itsjuzme/aircraft-data-training",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 1
+    }
+  },
+  {
+    "id": 983235564,
+    "name": "noise-regulation",
+    "fullName": "Mrudula-itsjuzme/noise-regulation",
+    "description": "ESP32-integrated real-time acoustic monitoring and adaptive noise-control system with live visualization and threshold-based environment management.",
+    "language": "Python",
+    "url": "https://github.com/Mrudula-itsjuzme/noise-regulation",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1180813642,
+    "name": "file-management-system-c-syscalls",
+    "fullName": "Mrudula-itsjuzme/file-management-system-c-syscalls",
+    "description": "Unix-style file management system implemented using low-level C system calls to demonstrate OS-level file handling and process-aware storage abstractions.",
+    "language": "C",
+    "url": "https://github.com/Mrudula-itsjuzme/file-management-system-c-syscalls",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1047841996,
+    "name": "microservices",
+    "fullName": "Mrudula-itsjuzme/microservices",
+    "description": "Prototype distributed microservices architecture exploring modular service orchestration, containerized deployment workflows, and scalable backend interaction patterns.",
+    "language": "Code",
+    "url": "https://github.com/Mrudula-itsjuzme/microservices",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1180780168,
+    "name": "Language-Tutor-Bot",
+    "fullName": "Mrudula-itsjuzme/Language-Tutor-Bot",
+    "description": "Conversational AI language-learning assistant supporting grammar correction, vocabulary training, and interactive dialogue evaluation pipelines.",
+    "language": "Code",
+    "url": "https://github.com/Mrudula-itsjuzme/Language-Tutor-Bot",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1180780113,
+    "name": "mind-parasite",
+    "fullName": "Mrudula-itsjuzme/mind-parasite",
+    "description": "Experimental persistent-memory AI assistant exploring cognitive modeling, tone mimicry, and decision-reflection using vector databases and RAG pipelines.",
+    "language": "Code",
+    "url": "https://github.com/Mrudula-itsjuzme/mind-parasite",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
     "id": 1180904584,
     "name": "ai_greenhouse",
     "fullName": "Mrudula-itsjuzme/ai_greenhouse",
-    "description": "AI greenhouse assistant and Rasa chatbot project.",
+    "description": "AI-assisted smart greenhouse monitoring system integrating Arduino sensors, environmental analytics, and conversational plant-care automation.",
     "language": "Python",
     "url": "https://github.com/Mrudula-itsjuzme/ai_greenhouse",
     "homepage": "",
@@ -21,12 +183,12 @@
     }
   },
   {
-    "id": 1180826717,
-    "name": "EEG-noise-reduction-using-SVD",
-    "fullName": "Mrudula-itsjuzme/EEG-noise-reduction-using-SVD",
-    "description": "EEG denoising and reconstruction experiments using SVD-based signal processing.",
+    "id": 1180790968,
+    "name": "EEG-signal-reconstruction-using-Admm",
+    "fullName": "Mrudula-itsjuzme/EEG-signal-reconstruction-using-Admm",
+    "description": "Optimization-based EEG signal reconstruction using SVD/ADMM techniques for artifact removal and biomedical signal enhancement.",
     "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/EEG-noise-reduction-using-SVD",
+    "url": "https://github.com/Mrudula-itsjuzme/EEG-signal-reconstruction-using-Admm",
     "homepage": "",
     "topics": [],
     "stars": 0,
@@ -39,12 +201,12 @@
     }
   },
   {
-    "id": 1180813642,
-    "name": "file-management-system-c-syscalls",
-    "fullName": "Mrudula-itsjuzme/file-management-system-c-syscalls",
-    "description": "C-based file management system implemented with Unix system calls.",
-    "language": "C",
-    "url": "https://github.com/Mrudula-itsjuzme/file-management-system-c-syscalls",
+    "id": 1180828158,
+    "name": "cancer-driver-gene-classification-ml",
+    "fullName": "Mrudula-itsjuzme/cancer-driver-gene-classification-ml",
+    "description": "Bioinformatics ML pipeline for cancer driver gene prediction using genomic feature engineering, model benchmarking, and interpretable classification workflows.",
+    "language": "Python",
+    "url": "https://github.com/Mrudula-itsjuzme/cancer-driver-gene-classification-ml",
     "homepage": "",
     "topics": [],
     "stars": 0,
@@ -54,36 +216,13 @@
       "diagramUrl": null,
       "galleryUrls": [],
       "imageCount": 0
-    }
-  },
-  {
-    "id": 1126225439,
-    "name": "Motion-capture",
-    "fullName": "Mrudula-itsjuzme/Motion-capture",
-    "description": "",
-    "language": "HTML",
-    "url": "https://github.com/Mrudula-itsjuzme/Motion-capture",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-demo.gif",
-      "galleryUrls": [
-        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-demo.gif",
-        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-overview.png",
-        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/pipeline-diagram.png",
-        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/results-plot-1.png"
-      ],
-      "imageCount": 11
     }
   },
   {
     "id": 1163291496,
     "name": "cyberattack-on-smart-grids",
     "fullName": "Mrudula-itsjuzme/cyberattack-on-smart-grids",
-    "description": "",
+    "description": "Machine learning intrusion-detection pipeline for IEC-60870-5-104 smart-grid traffic with feature engineering, ensemble benchmarking, and adversarial robustness analysis.",
     "language": "Python",
     "url": "https://github.com/Mrudula-itsjuzme/cyberattack-on-smart-grids",
     "homepage": "",
@@ -103,10 +242,33 @@
     }
   },
   {
+    "id": 1126225439,
+    "name": "Motion-capture",
+    "fullName": "Mrudula-itsjuzme/Motion-capture",
+    "description": "Real-time multi-camera markerless 3D motion capture system using MediaPipe with confidence-weighted triangulation and live kinematic analytics on commodity hardware.",
+    "language": "HTML",
+    "url": "https://github.com/Mrudula-itsjuzme/Motion-capture",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-demo.gif",
+      "galleryUrls": [
+        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-demo.gif",
+        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-overview.png",
+        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/pipeline-diagram.png",
+        "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/results-plot-1.png"
+      ],
+      "imageCount": 11
+    }
+  },
+  {
     "id": 1180812302,
     "name": "tic-tac-toe-double-dqn",
     "fullName": "Mrudula-itsjuzme/tic-tac-toe-double-dqn",
-    "description": "Double DQN agent experiments for Tic-Tac-Toe.",
+    "description": "Reinforcement learning implementation of a Double Deep Q-Network agent trained to play Tic-Tac-Toe. Demonstrates experience replay, target networks, and stability improvements over vanilla DQN.",
     "language": "Python",
     "url": "https://github.com/Mrudula-itsjuzme/tic-tac-toe-double-dqn",
     "homepage": "",
@@ -121,64 +283,10 @@
     }
   },
   {
-    "id": 1180812252,
-    "name": "recipes-chatbot-image",
-    "fullName": "Mrudula-itsjuzme/recipes-chatbot-image",
-    "description": "Recipe assistant chatbot with image-aware input workflow.",
-    "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/recipes-chatbot-image",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1180812377,
-    "name": "osi-model-simulation-python",
-    "fullName": "Mrudula-itsjuzme/osi-model-simulation-python",
-    "description": "Python simulation of OSI model layers and packet flow.",
-    "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/osi-model-simulation-python",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1129634138,
-    "name": "speak134",
-    "fullName": "Mrudula-itsjuzme/speak134",
-    "description": "",
-    "language": "TypeScript",
-    "url": "https://github.com/Mrudula-itsjuzme/speak134",
-    "homepage": "https://misspoke1.vercel.app",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 11
-    }
-  },
-  {
     "id": 1125626548,
     "name": "speak",
     "fullName": "Mrudula-itsjuzme/speak",
-    "description": "",
+    "description": "Speech interaction interface built with TypeScript supporting conversational input workflows and voice-driven user interaction experiments.",
     "language": "TypeScript",
     "url": "https://github.com/Mrudula-itsjuzme/speak",
     "homepage": "",
@@ -193,64 +301,10 @@
     }
   },
   {
-    "id": 1047841996,
-    "name": "microservices",
-    "fullName": "Mrudula-itsjuzme/microservices",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/microservices",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 983240931,
-    "name": "basicproj",
-    "fullName": "Mrudula-itsjuzme/basicproj",
-    "description": "",
-    "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/basicproj",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1141836320,
-    "name": "D9_MFC4_EEGSignalReconstructionUsingSVD",
-    "fullName": "Mrudula-itsjuzme/D9_MFC4_EEGSignalReconstructionUsingSVD",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/D9_MFC4_EEGSignalReconstructionUsingSVD",
-    "homepage": "",
-    "topics": [],
-    "stars": 1,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
     "id": 888456104,
     "name": "solarpanel-fault-detection",
     "fullName": "Mrudula-itsjuzme/solarpanel-fault-detection",
-    "description": "",
+    "description": "Machine learning system for detecting solar panel faults using sensor or performance data. Includes preprocessing, anomaly detection logic, and predictive maintenance insights for renewable energy systems.",
     "language": "Python",
     "url": "https://github.com/Mrudula-itsjuzme/solarpanel-fault-detection",
     "homepage": "",
@@ -265,30 +319,12 @@
     }
   },
   {
-    "id": 983235564,
-    "name": "noise-regulation",
-    "fullName": "Mrudula-itsjuzme/noise-regulation",
-    "description": "",
+    "id": 1180812252,
+    "name": "recipes-chatbot-image",
+    "fullName": "Mrudula-itsjuzme/recipes-chatbot-image",
+    "description": "Multimodal recipe assistant chatbot supporting both text and image-based inputs for ingredient recognition and cooking guidance.",
     "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/noise-regulation",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1180780113,
-    "name": "mind-parasite",
-    "fullName": "Mrudula-itsjuzme/mind-parasite",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/mind-parasite",
+    "url": "https://github.com/Mrudula-itsjuzme/recipes-chatbot-image",
     "homepage": "",
     "topics": [],
     "stars": 0,
@@ -304,7 +340,7 @@
     "id": 1061336686,
     "name": "genai-explore",
     "fullName": "Mrudula-itsjuzme/genai-explore",
-    "description": "A teen-focused digital sanctuary combining a diary, AI chatbot friend, mood-based playlists, art wall, and shared spaces. Users can express thoughts, track emotions, create art, and reflect. AI analyzes inputs to offer insights, recommend activities, and enhance emotional well-being in a safe, interactive app.",
+    "description": "GenAI-powered emotional wellbeing platform combining journaling, chatbot interaction, mood tracking, playlist recommendations, and collaborative creative spaces.",
     "language": "JavaScript",
     "url": "https://github.com/Mrudula-itsjuzme/genai-explore",
     "homepage": "",
@@ -319,136 +355,10 @@
     }
   },
   {
-    "id": 1180780168,
-    "name": "Language-Tutor-Bot",
-    "fullName": "Mrudula-itsjuzme/Language-Tutor-Bot",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/Language-Tutor-Bot",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 888634378,
-    "name": "aircraft-data-training",
-    "fullName": "Mrudula-itsjuzme/aircraft-data-training",
-    "description": "",
-    "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/aircraft-data-training",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 1
-    }
-  },
-  {
-    "id": 1180780066,
-    "name": "Aircraft",
-    "fullName": "Mrudula-itsjuzme/Aircraft",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/Aircraft",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1180828158,
-    "name": "cancer-driver-gene-classification-ml",
-    "fullName": "Mrudula-itsjuzme/cancer-driver-gene-classification-ml",
-    "description": "Bio ML semester project source code",
-    "language": "Python",
-    "url": "https://github.com/Mrudula-itsjuzme/cancer-driver-gene-classification-ml",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 1180790968,
-    "name": "EEG-signal-reconstruction-using-Admm",
-    "fullName": "Mrudula-itsjuzme/EEG-signal-reconstruction-using-Admm",
-    "description": "",
-    "language": "Code",
-    "url": "https://github.com/Mrudula-itsjuzme/EEG-signal-reconstruction-using-Admm",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
-    "id": 871714485,
-    "name": "mood-writing-assistant",
-    "fullName": "Mrudula-itsjuzme/mood-writing-assistant",
-    "description": "",
-    "language": "JavaScript",
-    "url": "https://github.com/Mrudula-itsjuzme/mood-writing-assistant",
-    "homepage": "",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "master",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 3
-    }
-  },
-  {
-    "id": 1163833512,
-    "name": "mind",
-    "fullName": "Mrudula-itsjuzme/mind",
-    "description": "",
-    "language": "TypeScript",
-    "url": "https://github.com/Mrudula-itsjuzme/mind",
-    "homepage": "https://mind-lac-alpha.vercel.app",
-    "topics": [],
-    "stars": 0,
-    "forks": 0,
-    "defaultBranch": "main",
-    "repoAssets": {
-      "diagramUrl": null,
-      "galleryUrls": [],
-      "imageCount": 0
-    }
-  },
-  {
     "id": 980064568,
     "name": "Rasa-bot",
     "fullName": "Mrudula-itsjuzme/Rasa-bot",
-    "description": "",
+    "description": "Custom conversational chatbot framework built using Rasa with intent classification, entity extraction, and dialogue policy design.",
     "language": "Python",
     "url": "https://github.com/Mrudula-itsjuzme/Rasa-bot",
     "homepage": "",
@@ -460,6 +370,42 @@
       "diagramUrl": null,
       "galleryUrls": [],
       "imageCount": 0
+    }
+  },
+  {
+    "id": 874643175,
+    "name": "our-code",
+    "fullName": "Mrudula-itsjuzme/our-code",
+    "description": "Collaborative development workspace containing shared Python implementations across multiple experimental modules.",
+    "language": "Python",
+    "url": "https://github.com/Mrudula-itsjuzme/our-code",
+    "homepage": "",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 0
+    }
+  },
+  {
+    "id": 1129634138,
+    "name": "speak134",
+    "fullName": "Mrudula-itsjuzme/speak134",
+    "description": "Experimental iteration of the Speak interface exploring alternate speech interaction flows and UI refinements.",
+    "language": "TypeScript",
+    "url": "https://github.com/Mrudula-itsjuzme/speak134",
+    "homepage": "https://misspoke1.vercel.app",
+    "topics": [],
+    "stars": 0,
+    "forks": 0,
+    "defaultBranch": "main",
+    "repoAssets": {
+      "diagramUrl": null,
+      "galleryUrls": [],
+      "imageCount": 11
     }
   }
 ]

@@ -12,7 +12,7 @@ export const projects = [
         kind: "cover",
         title: "Fraud Detection System",
         subtitle: "Machine Learning Project",
-        author: "Mrudula",
+        author: "Pedamallu Sai Mrudula",
         year: "2026"
       },
       {
@@ -91,7 +91,7 @@ export const projects = [
     githubUrl: "https://github.com/Mrudula-itsjuzme",
     demoUrl: "https://mrudula-itsjuzme.vercel.app",
     pages: [
-      { kind: "cover", title: "Smart Grid IDS", subtitle: "Privacy-Aware Detection", author: "Mrudula", year: "2026" },
+      { kind: "cover", title: "Smart Grid IDS", subtitle: "Privacy-Aware Detection", author: "Pedamallu Sai Mrudula", year: "2026" },
       {
         kind: "overview",
         title: "Overview",
@@ -152,7 +152,7 @@ export const projects = [
     githubUrl: "https://github.com/Mrudula-itsjuzme",
     demoUrl: "https://mrudula-itsjuzme.vercel.app",
     pages: [
-      { kind: "cover", title: "Feature Analysis Lab", subtitle: "Interpretable ML", author: "Mrudula", year: "2026" },
+      { kind: "cover", title: "Feature Analysis Lab", subtitle: "Interpretable ML", author: "Pedamallu Sai Mrudula", year: "2026" },
       {
         kind: "overview",
         title: "Overview",
@@ -212,7 +212,7 @@ export const projects = [
     githubUrl: "https://github.com/Mrudula-itsjuzme",
     demoUrl: "https://mrudula-itsjuzme.vercel.app",
     pages: [
-      { kind: "cover", title: "Network Traffic Atlas", subtitle: "Flow Intelligence", author: "Mrudula", year: "2026" },
+      { kind: "cover", title: "Network Traffic Atlas", subtitle: "Flow Intelligence", author: "Pedamallu Sai Mrudula", year: "2026" },
       {
         kind: "overview",
         title: "Overview",
@@ -272,7 +272,7 @@ export const projects = [
     githubUrl: "https://github.com/Mrudula-itsjuzme",
     demoUrl: "https://mrudula-itsjuzme.vercel.app",
     pages: [
-      { kind: "cover", title: "Encryption Protocols", subtitle: "Secure Channel Design", author: "Mrudula", year: "2026" },
+      { kind: "cover", title: "Encryption Protocols", subtitle: "Secure Channel Design", author: "Pedamallu Sai Mrudula", year: "2026" },
       {
         kind: "overview",
         title: "Overview",
@@ -332,7 +332,7 @@ export const projects = [
     githubUrl: "https://github.com/Mrudula-itsjuzme",
     demoUrl: "https://mrudula-itsjuzme.vercel.app",
     pages: [
-      { kind: "cover", title: "Time Series Forecasting", subtitle: "Sequence Modeling", author: "Mrudula", year: "2026" },
+      { kind: "cover", title: "Time Series Forecasting", subtitle: "Sequence Modeling", author: "Pedamallu Sai Mrudula", year: "2026" },
       {
         kind: "overview",
         title: "Overview",
