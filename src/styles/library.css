@@ -241,6 +241,15 @@ body::after {
   font-family: "Cormorant Garamond", serif;
 }
 
+.footer-updated {
+  margin: 0;
+  font-size: 0.62rem;
+  color: rgba(216, 189, 139, 0.35);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: "Cinzel", serif;
+}
+
 .library-notice {
   position: relative;
   z-index: 4;
