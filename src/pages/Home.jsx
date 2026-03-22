@@ -794,7 +794,6 @@ export default function Home() {
           <span className="footer-dot">·</span>
           <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer">Resume</a>
         </div>
-        <p className="footer-copy">Designed &amp; Built by Mrudula Sankar &copy; {new Date().getFullYear()}</p>
         <p className="footer-updated">Last Archive Sync: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
       </footer>
 
