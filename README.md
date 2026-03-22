@@ -1,37 +1,64 @@
-# Portfolio Website (React + Node)
+# 📚 Digital Library | Portfolio
 
-This portfolio is now a full-stack app:
-- Frontend: React + Vite
-- Backend: Node.js + Express
-- Resume parsing: `pdf-parse`
-- GitHub repo intelligence: live parsing of your repositories
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
 
-The backend reads `assets/resume.pdf`, extracts profile details, and the React UI renders those details automatically.
+A immersive, library-themed portfolio for **Mrudula Sankar**. This is a full-stack application that transforms a technical resume and GitHub repositories into a digital archive of "working volumes" that users can pull from a shelf and read.
 
-## Run locally
-1. Open terminal in this folder.
-2. Install dependencies:
-   - `npm install`
-3. Start both frontend and backend:
-   - `npm run dev`
-4. Open:
-   - `http://localhost:5173`
+## ✨ Features
 
-## Important files
-- `server/index.js` - API server and resume endpoint
-- `server/resumeParser.js` - resume text extraction and detail parsing
-- `src/App.jsx` - main UI that consumes `/api/profile`
-- `src/styles.css` - custom UI design and responsive styles
-- `assets/resume.pdf` - your source resume file
+- **Interactive Bookshelf**: A 3D-inspired bookshelf where each project is a unique book.
+- **Realistic Page Flip**: High-fidelity book viewer with physical page-turning animations.
+- **Ambient Soundscape**: Generative ambient music and physical sound effects (paper flips, book pulls).
+- **Auto-Syncing Intelligence**:
+  - Automatically parses `assets/resume.pdf` to populate profile details.
+  - Live-fetches and categorizes GitHub repositories using the GitHub API.
+  - Smart categorization into AI/ML, Cybersecurity, and Engineering domains.
+- **Rich Project Detail**: Automatic generation of technical architecture diagrams and implementation notes for every repository.
 
-## API endpoints
-- `GET /api/profile` - parsed details from resume
-- `GET /api/projects` - parsed repository insights from your GitHub profile
-- `GET /resume.pdf` - serves your resume file
-- `GET /api/health` - health check
+## 🛠️ Tech Stack
 
-## Notes
-- If you update `assets/resume.pdf`, refresh the page; new details are parsed automatically.
-- If GitHub or LinkedIn links are missing in the resume text, the UI falls back to safe defaults.
-- Repositories are cached briefly on the backend for performance.
-- Set `GITHUB_TOKEN` in your environment to avoid public API rate limits.
+- **Frontend**: React (Vite), Framer Motion, React-PageFlip, Three.js (Fiber/Drei).
+- **Backend**: Node.js, Express.
+- **Data Mining**: `pdf-parse` for resume extraction, Custom GitHub Scraper for repo metadata.
+- **Deployment**: GitHub Pages (static build with pre-baked JSON).
+
+## 🚀 Getting Started
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Mrudula-itsjuzme/portfolio-site.git
+   cd portfolio-site
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment** (Optional):
+   Create a `.env` file for local GitHub API limits:
+   ```env
+   GITHUB_TOKEN=your_token_here
+   ```
+
+4. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
+   - Client: `http://localhost:5173`
+   - Server: `http://localhost:5000`
+
+## 📖 Important Files
+
+- `assets/resume.pdf`: The source of truth for profile data.
+- `scripts/fetch-repos.js`: CI script that bakes GitHub data into `public/repos.json`.
+- `src/pages/Home.jsx`: Main library stage and ambient music logic.
+- `src/components/Bookshelf.jsx`: The shelf rendering engine.
+- `src/components/BookViewer.jsx`: The interactive book layout system.
+
+---
+Designed & Built with ❤️ by Mrudula Sankar
