@@ -101,43 +101,65 @@ function scoreAsset(filePath) {
   return score;
 }
 
-function detectTechnologies(tree, topics) {
+function detectTechnologies(tree, topics, name, description) {
   const tech = new Set(topics.map(t => t.toLowerCase()));
   const paths = (Array.isArray(tree) ? tree : []).map(node => node.path.toLowerCase());
+  const context = `${name} ${description}`.toLowerCase();
 
-  // Language & Framework Detection
-  if (paths.some(p => p.includes("package.json"))) tech.add("node.js");
-  if (paths.some(p => p.includes("requirements.txt") || p.includes("environment.yml"))) tech.add("python");
-  if (paths.some(p => p.endsWith(".jsx") || p.endsWith(".tsx"))) tech.add("react");
-  if (paths.some(p => p.includes("next.config"))) tech.add("next.js");
-  if (paths.some(p => p.includes("app.py") || p.includes("flask"))) tech.add("flask");
-  if (paths.some(p => p.includes("main.py") && (p.includes("fastapi") || p.includes("uvicorn")))) tech.add("fastapi");
+  // Frameworks & Languages
+  if (paths.some(p => p.includes("package.json")) || context.includes("node.js") || context.includes("express")) tech.add("node.js");
+  if (paths.some(p => p.includes("requirements.txt") || p.includes("environment.yml")) || context.includes("python")) tech.add("python");
+  if (paths.some(p => p.endsWith(".jsx") || p.endsWith(".tsx")) || context.includes("react")) tech.add("react");
+  if (context.includes("typescript") || paths.some(p => p.endsWith(".ts") || p.endsWith(".tsx"))) tech.add("typescript");
+  if (context.includes("next.js") || paths.some(p => p.includes("next.config"))) tech.add("next.js");
   
-  // AI/ML Detection
-  if (paths.some(p => p.includes("tensorflow") || p.includes(".pb") || p.includes(".h5"))) tech.add("tensorflow");
-  if (paths.some(p => p.includes("torch") || p.includes(".pt") || p.includes(".pth"))) tech.add("pytorch");
-  if (paths.some(p => p.includes("sklearn") || p.includes("scikit"))) tech.add("scikit-learn");
-  if (paths.some(p => p.includes("mediapipe"))) tech.add("mediapipe");
-  if (paths.some(p => p.includes("opencv") || p.includes("cv2"))) tech.add("opencv");
+  // AI/ML - Specialized
+  if (context.includes("yolo") || context.includes("v8")) tech.add("yolov8");
+  if (context.includes("dqn") || context.includes("deep q")) tech.add("double dqn");
+  if (context.includes("reinforcement") || context.includes("rl")) tech.add("reinforcement learning");
+  if (context.includes("neural") || context.includes("deep learning")) tech.add("neural networks");
+  if (context.includes("transformer") || context.includes("attention")) tech.add("transformers");
+  if (context.includes("genai") || context.includes("llm") || context.includes("rag")) tech.add("genai/llm");
+  if (context.includes("anomaly") || context.includes("intrusion") || context.includes("ids") || context.includes("60870")) tech.add("smart grid security");
+  if (context.includes("classification") || context.includes("classifier")) tech.add("classification");
+  
+  // Signal Processing & Math
+  if (context.includes("eeg") || context.includes("signal")) tech.add("signal processing");
+  if (context.includes("admm") || context.includes("svd")) tech.add("svd/admm");
+  if (context.includes("bioinformatics") || context.includes("gene")) tech.add("bioinformatics");
+  
+  // Hardware & Embedded
+  if (context.includes("esp32") || context.includes("esp-wroom")) tech.add("esp32");
+  if (context.includes("arduino") || paths.some(p => p.endsWith(".ino"))) tech.add("arduino");
+  if (context.includes("iot") || context.includes("smart home") || context.includes("greenhouse")) tech.add("iot");
 
-  // Web & Styles
-  if (paths.some(p => p.includes("tailwind"))) tech.add("tailwind css");
-  if (paths.some(p => p.includes("bootstrap"))) tech.add("bootstrap");
-  if (paths.some(p => p.endsWith(".scss") || p.endsWith(".sass"))) tech.add("sass");
+  // Traditional AI/ML Libraries
+  if (paths.some(p => p.includes("tensorflow") || p.includes(".pb")) || context.includes("tensorflow")) tech.add("tensorflow");
+  if (paths.some(p => p.includes("torch")) || context.includes("pytorch")) tech.add("pytorch");
+  if (paths.some(p => p.includes("sklearn")) || context.includes("scikit")) tech.add("scikit-learn");
+  if (context.includes("mediapipe") || paths.some(p => p.includes("mediapipe"))) tech.add("mediapipe");
+  if (context.includes("opencv") || context.includes("cv2")) tech.add("opencv");
 
   // Infrastructure
-  if (paths.some(p => p.includes("dockerfile") || p.includes("docker-compose"))) tech.add("docker");
-  if (paths.some(p => p.includes(".vercel"))) tech.add("vercel");
-  if (paths.some(p => p.includes("firebase"))) tech.add("firebase");
+  if (paths.some(p => p.includes("dockerfile")) || context.includes("docker")) tech.add("docker");
+  if (context.includes("microservices")) tech.add("microservices");
+  if (context.includes("api") || context.includes("rest") || context.includes("graphql")) tech.add("api design");
 
-  // Formatting cleanup
+  // Formatting cleanup - filter out very short junk and limit count
   return Array.from(tech)
-    .map(t => t.charAt(0).toUpperCase() + t.slice(1))
     .filter(t => t.length > 2)
+    .map(t => {
+      // Manual overrides for acronyms
+      if (["iot", "eeg", "rl", "cnn", "dqn", "ids", "ml"].includes(t)) return t.toUpperCase();
+      if (t === "yolov8") return "YOLOv8";
+      if (t === "node.js") return "Node.js";
+      if (t === "next.js") return "Next.js";
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    })
     .slice(0, 8);
 }
 
-function selectRepoAssets(tree, owner, repo, branch, topics) {
+function selectRepoAssets(tree, owner, repo, branch, topics, description) {
   const imageNodes = (Array.isArray(tree) ? tree : []).filter(
     (node) => node?.type === "blob" && isImagePath(node.path)
   );
@@ -170,7 +192,7 @@ function selectRepoAssets(tree, owner, repo, branch, topics) {
     diagramUrl: diagram?.url || (scored[0] ? scored[0].url : null),
     galleryUrls: gallery,
     imageCount: scored.length,
-    techStack: detectTechnologies(tree, topics)
+    techStack: detectTechnologies(tree, topics, repo, description)
   };
 }
 
@@ -178,6 +200,7 @@ async function fetchRepoAssets(repo) {
   const fullName = String(repo?.full_name || "");
   const branch = repo?.default_branch || "main";
   const topics = Array.isArray(repo?.topics) ? repo.topics : [];
+  const description = repo?.description || "";
   const [owner, name] = fullName.split("/");
 
   if (!owner || !name) {
@@ -186,7 +209,7 @@ async function fetchRepoAssets(repo) {
 
   try {
     const tree = await githubGet(`https://api.github.com/repos/${owner}/${name}/git/trees/${encodeURIComponent(branch)}?recursive=1`);
-    return selectRepoAssets(tree?.tree || [], owner, name, branch, topics);
+    return selectRepoAssets(tree?.tree || [], owner, name, branch, topics, description);
   } catch (error) {
     console.warn(`Asset scan skipped for ${fullName}: ${error.message}`);
     return { diagramUrl: null, galleryUrls: [], imageCount: 0, techStack: Array.isArray(repo?.topics) ? repo.topics : [] };
