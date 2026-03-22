@@ -261,7 +261,9 @@ function mapRepoToProject(repo, index) {
       {
         kind: "stack",
         title: "Tech Stack",
-        technologies: [repo?.language || "Mixed", ...topTopics]
+        technologies: (repo?.repoAssets?.techStack?.length) 
+          ? repo.repoAssets.techStack 
+          : [repo?.language || "Mixed", ...topTopics]
       },
 
       {

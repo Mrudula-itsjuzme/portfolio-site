@@ -101,7 +101,43 @@ function scoreAsset(filePath) {
   return score;
 }
 
-function selectRepoAssets(tree, owner, repo, branch) {
+function detectTechnologies(tree, topics) {
+  const tech = new Set(topics.map(t => t.toLowerCase()));
+  const paths = (Array.isArray(tree) ? tree : []).map(node => node.path.toLowerCase());
+
+  // Language & Framework Detection
+  if (paths.some(p => p.includes("package.json"))) tech.add("node.js");
+  if (paths.some(p => p.includes("requirements.txt") || p.includes("environment.yml"))) tech.add("python");
+  if (paths.some(p => p.endsWith(".jsx") || p.endsWith(".tsx"))) tech.add("react");
+  if (paths.some(p => p.includes("next.config"))) tech.add("next.js");
+  if (paths.some(p => p.includes("app.py") || p.includes("flask"))) tech.add("flask");
+  if (paths.some(p => p.includes("main.py") && (p.includes("fastapi") || p.includes("uvicorn")))) tech.add("fastapi");
+  
+  // AI/ML Detection
+  if (paths.some(p => p.includes("tensorflow") || p.includes(".pb") || p.includes(".h5"))) tech.add("tensorflow");
+  if (paths.some(p => p.includes("torch") || p.includes(".pt") || p.includes(".pth"))) tech.add("pytorch");
+  if (paths.some(p => p.includes("sklearn") || p.includes("scikit"))) tech.add("scikit-learn");
+  if (paths.some(p => p.includes("mediapipe"))) tech.add("mediapipe");
+  if (paths.some(p => p.includes("opencv") || p.includes("cv2"))) tech.add("opencv");
+
+  // Web & Styles
+  if (paths.some(p => p.includes("tailwind"))) tech.add("tailwind css");
+  if (paths.some(p => p.includes("bootstrap"))) tech.add("bootstrap");
+  if (paths.some(p => p.endsWith(".scss") || p.endsWith(".sass"))) tech.add("sass");
+
+  // Infrastructure
+  if (paths.some(p => p.includes("dockerfile") || p.includes("docker-compose"))) tech.add("docker");
+  if (paths.some(p => p.includes(".vercel"))) tech.add("vercel");
+  if (paths.some(p => p.includes("firebase"))) tech.add("firebase");
+
+  // Formatting cleanup
+  return Array.from(tech)
+    .map(t => t.charAt(0).toUpperCase() + t.slice(1))
+    .filter(t => t.length > 2)
+    .slice(0, 8);
+}
+
+function selectRepoAssets(tree, owner, repo, branch, topics) {
   const imageNodes = (Array.isArray(tree) ? tree : []).filter(
     (node) => node?.type === "blob" && isImagePath(node.path)
   );
@@ -118,7 +154,6 @@ function selectRepoAssets(tree, owner, repo, branch) {
 
   const previews = scored.filter((item) => isUsefulGalleryPath(item.path));
   
-  // Also consider images in the root if they are specifically large or look like screenshots
   const candidates = previews.length >= 2 ? previews : scored;
 
   const gallery = [];
@@ -135,24 +170,26 @@ function selectRepoAssets(tree, owner, repo, branch) {
     diagramUrl: diagram?.url || (scored[0] ? scored[0].url : null),
     galleryUrls: gallery,
     imageCount: scored.length,
+    techStack: detectTechnologies(tree, topics)
   };
 }
 
 async function fetchRepoAssets(repo) {
   const fullName = String(repo?.full_name || "");
   const branch = repo?.default_branch || "main";
+  const topics = Array.isArray(repo?.topics) ? repo.topics : [];
   const [owner, name] = fullName.split("/");
 
   if (!owner || !name) {
-    return { diagramUrl: null, galleryUrls: [], imageCount: 0 };
+    return { diagramUrl: null, galleryUrls: [], imageCount: 0, techStack: [] };
   }
 
   try {
     const tree = await githubGet(`https://api.github.com/repos/${owner}/${name}/git/trees/${encodeURIComponent(branch)}?recursive=1`);
-    return selectRepoAssets(tree?.tree || [], owner, name, branch);
+    return selectRepoAssets(tree?.tree || [], owner, name, branch, topics);
   } catch (error) {
     console.warn(`Asset scan skipped for ${fullName}: ${error.message}`);
-    return { diagramUrl: null, galleryUrls: [], imageCount: 0 };
+    return { diagramUrl: null, galleryUrls: [], imageCount: 0, techStack: Array.isArray(repo?.topics) ? repo.topics : [] };
   }
 }
 
@@ -171,7 +208,7 @@ async function main() {
     const shouldScanAssets = index < MAX_REPOS_TO_SCAN;
     const assets = shouldScanAssets
       ? await fetchRepoAssets(repo)
-      : { diagramUrl: null, galleryUrls: [], imageCount: 0 };
+      : { diagramUrl: null, galleryUrls: [], imageCount: 0, techStack: Array.isArray(repo?.topics) ? repo.topics : [] };
 
     repos.push({
       id: repo.id,
