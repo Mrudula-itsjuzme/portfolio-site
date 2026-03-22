@@ -624,53 +624,6 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
         overflow:"hidden",
       }}
     >
-      <div
-        aria-label="Shelf scrolling controls"
-        style={{
-          position: "relative",
-          zIndex: 5,
-          display: "flex",
-          justifyContent: "center",
-          gap: 10,
-          marginTop: 8,
-        }}
-      >
-        <button
-          type="button"
-          onClick={() => handleScroll(-1)}
-          style={{
-            border: "1px solid rgba(210,170,95,0.65)",
-            background: "rgba(32,20,12,0.82)",
-            color: "#e4c48f",
-            borderRadius: 4,
-            padding: "4px 10px",
-            fontSize: 12,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          Scroll Left
-        </button>
-        <button
-          type="button"
-          onClick={() => handleScroll(1)}
-          style={{
-            border: "1px solid rgba(210,170,95,0.65)",
-            background: "rgba(32,20,12,0.82)",
-            color: "#e4c48f",
-            borderRadius: 4,
-            padding: "4px 10px",
-            fontSize: 12,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            cursor: "pointer",
-          }}
-        >
-          Scroll Right
-        </button>
-      </div>
-
       {/* Google Font */}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" />
 

@@ -117,19 +117,22 @@ function selectRepoAssets(tree, owner, repo, branch) {
   const diagram = scored.find((item) => isDiagramPath(item.path));
 
   const previews = scored.filter((item) => isUsefulGalleryPath(item.path));
+  
+  // Also consider images in the root if they are specifically large or look like screenshots
+  const candidates = previews.length >= 2 ? previews : scored;
 
   const gallery = [];
   const seen = new Set();
 
-  for (const item of [...previews, ...scored.filter((entry) => isUsefulGalleryPath(entry.path))]) {
+  for (const item of candidates) {
     if (seen.has(item.url)) continue;
     seen.add(item.url);
     gallery.push(item.url);
-    if (gallery.length === 4) break;
+    if (gallery.length === 6) break;
   }
 
   return {
-    diagramUrl: diagram?.url || null,
+    diagramUrl: diagram?.url || (scored[0] ? scored[0].url : null),
     galleryUrls: gallery,
     imageCount: scored.length,
   };
