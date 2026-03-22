@@ -690,27 +690,41 @@ export default function Home() {
       <header className="library-topbar">
         <div>
           <p className="kicker">
-            Private Archive
+            Portfolio Archive
           </p>
 
           <h1>
-            A Corridor Of Working Volumes
+            Mrudula Sankar
           </h1>
 
           <p className="subtitle">
+            AI/ML Engineer . Cybersecurity Researcher . Full-Stack Developer
+          </p>
+          <p className="subtitle tagline">
             My work is not a grid of links. It is a shelf of books you can pull and read.
           </p>
         </div>
 
-        <button
-          className="sound-toggle"
-          onClick={handleToggleSound}
-          title="Toggle ambient music and sound effects"
-        >
-          {soundEnabled
-            ? "🔊 Ambient: On"
-            : "🔇 Ambient: Off"}
-        </button>
+        <div className="topbar-actions">
+          <a
+            className="resume-btn"
+            href={`${import.meta.env.BASE_URL}resume.pdf`}
+            target="_blank"
+            rel="noreferrer"
+            title="Download Resume"
+          >
+            Resume
+          </a>
+          <button
+            className="sound-toggle"
+            onClick={handleToggleSound}
+            title="Toggle ambient music and sound effects"
+          >
+            {soundEnabled
+              ? "\uD83D\uDD0A Ambient: On"
+              : "\uD83D\uDD07 Ambient: Off"}
+          </button>
+        </div>
       </header>
 
       {/* loader */}
@@ -769,6 +783,19 @@ export default function Home() {
         )}
 
       </AnimatePresence>
+
+      <footer className="library-footer">
+        <div className="footer-links">
+          <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer">GitHub</a>
+          <span className="footer-dot">·</span>
+          <a href="https://www.linkedin.com/in/mrudula-sankar" target="_blank" rel="noreferrer">LinkedIn</a>
+          <span className="footer-dot">·</span>
+          <a href="mailto:mrudulasankar2007@gmail.com">Email</a>
+          <span className="footer-dot">·</span>
+          <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer">Resume</a>
+        </div>
+        <p className="footer-copy">Designed &amp; Built by Mrudula Sankar &copy; {new Date().getFullYear()}</p>
+      </footer>
 
       <div className="desk-surface" aria-hidden="true" />
 
