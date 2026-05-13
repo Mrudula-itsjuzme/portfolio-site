@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import ArchiveEntrance from "../components/ArchiveEntrance";
+import ArchiveSpotlight from "../components/ArchiveSpotlight";
 import Bookshelf from "../components/Bookshelf";
 import { projects as fallbackProjects } from "../data/projects";
 
@@ -281,6 +282,8 @@ export default function Home() {
       <ArchiveEntrance />
 
       <main id="archive" className="archive-main">
+        <ArchiveSpotlight projects={projects} onOpenProject={(project) => setOpenProject(project)} />
+
         <div className="archive-section-heading">
           <p>Open shelf</p>
           <h2>Pull a volume. Inspect the receipts.</h2>
