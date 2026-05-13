@@ -6,6 +6,19 @@ The idea: turn a technical profile, resume, and GitHub repositories into a digit
 
 ---
 
+## Project links and evidence
+
+| Item | Link / Note |
+|---|---|
+| Repository | https://github.com/Mrudula-itsjuzme/portfolio-site |
+| Paper / reference | Personal portfolio / frontend engineering project |
+| Demo video | Not uploaded yet |
+| Deployment | Add GitHub Pages, Vercel, or Netlify link here once deployed |
+| Dataset note | Uses `assets/resume.pdf` and GitHub repository metadata generated into `public/repos.json` |
+| Result screenshots | Add homepage/bookshelf/book-viewer screenshots or GIFs to a `screenshots/` folder |
+
+---
+
 ## Features
 
 - interactive 3D-inspired bookshelf
