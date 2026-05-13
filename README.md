@@ -1,6 +1,6 @@
 # Digital Library Portfolio
 
-An immersive library-themed portfolio website for Pedamallu Sai Mrudula, built with React, Vite, Node.js, Express, Framer Motion, and Three.js.
+An immersive library-themed portfolio website for **Pedamallu Sai Mrudula**, built with React, Vite, Node.js, Express, Framer Motion, and Three.js.
 
 The idea: turn a technical profile, resume, and GitHub repositories into a digital archive where each project feels like a book on a shelf.
 
@@ -11,9 +11,8 @@ The idea: turn a technical profile, resume, and GitHub repositories into a digit
 | Item | Link / Note |
 |---|---|
 | Repository | https://github.com/Mrudula-itsjuzme/portfolio-site |
-| Paper / reference | Personal portfolio / frontend engineering project |
+| Live demo | Add GitHub Pages, Vercel, or Netlify link here once deployed |
 | Demo video | Not uploaded yet |
-| Deployment | Add GitHub Pages, Vercel, or Netlify link here once deployed |
 | Dataset note | Uses `assets/resume.pdf` and GitHub repository metadata generated into `public/repos.json` |
 | Result screenshots | Add homepage/bookshelf/book-viewer screenshots or GIFs to a `screenshots/` folder |
 
@@ -24,11 +23,11 @@ The idea: turn a technical profile, resume, and GitHub repositories into a digit
 - interactive 3D-inspired bookshelf
 - project cards represented as books
 - page-flip style project viewer
-- ambient sound effects and library atmosphere
 - GitHub repository fetching and categorization
-- resume-driven profile data extraction
-- generated project descriptions and architecture notes
-- static deployment path through GitHub Pages
+- static `repos.json` fallback to avoid public API rate-limit issues
+- resume link and profile archive layout
+- sound toggle with local preference storage
+- static deployment path through GitHub Pages, Vercel, or Netlify
 
 ---
 
@@ -99,20 +98,23 @@ GITHUB_TOKEN=your_token_here
 
 ---
 
-## Why this project matters
+## Design notes
 
-A portfolio should not just list projects; it should make them memorable. This project experiments with storytelling, interaction design, and automated project presentation to make a technical profile feel more alive.
+This project is designed to feel like a quiet digital archive rather than a generic portfolio grid. The portfolio uses a bookshelf metaphor so each repository becomes a browsable artifact with context, links, and story.
+
+Motion and sound are used as atmosphere, but the site should stay readable and usable without them. Future versions should continue improving accessibility, reduced-motion support, keyboard navigation, and performance on low-end devices.
 
 ---
 
 ## Future improvements
 
-- add live deployment link
+- add the final production deployment link
+- add screenshots and demo GIFs to this README
 - improve accessibility for audio and motion effects
 - add fallback UI for low-performance devices
-- add project filtering by domain
+- add project filtering by category or status
 - add automated refresh for GitHub metadata
-- add screenshots and demo GIFs
+- replace placeholder/fallback project content with verified project data only
 
 ---
 
