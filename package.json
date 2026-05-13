@@ -1,7 +1,7 @@
 {
   "name": "portfolio-site",
-  "version": "1.0.0",
-  "description": "React + Node portfolio that auto-extracts details from resume.pdf",
+  "version": "1.1.0",
+  "description": "Interactive digital-library portfolio for showcasing research, projects, and creative engineering work.",
   "main": "server/index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
@@ -11,8 +11,17 @@
     "preview": "vite preview",
     "start": "node server/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "portfolio",
+    "react",
+    "vite",
+    "framer-motion",
+    "threejs",
+    "github-api",
+    "creative-portfolio",
+    "digital-library"
+  ],
+  "author": "Pedamallu Sai Mrudula",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
