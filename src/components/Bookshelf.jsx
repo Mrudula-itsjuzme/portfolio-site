@@ -15,41 +15,28 @@ function seedRandom(seed) {
 ---------------------------- */
 
 const BOOK_PALETTES = [
-  // Deep jewel tones
-  { spine: "#2c3e6b", top: "#3a5080", label: "rgba(200,215,240,0.85)" },
-  { spine: "#6b2c2c", top: "#843636", label: "rgba(240,210,200,0.85)" },
-  { spine: "#2c5a3a", top: "#376b46", label: "rgba(200,235,210,0.85)" },
-  { spine: "#5a4a1e", top: "#6e5c26", label: "rgba(240,225,180,0.85)" },
-  { spine: "#3d2c6b", top: "#4e3882", label: "rgba(215,205,240,0.85)" },
-  { spine: "#1e4a5a", top: "#275e70", label: "rgba(195,225,238,0.85)" },
-  { spine: "#6b3a1e", top: "#844926", label: "rgba(240,215,195,0.85)" },
-  { spine: "#2a2a2a", top: "#383838", label: "rgba(200,200,200,0.85)" },
-  // Faded / aged
-  { spine: "#8a7a5a", top: "#9e8d6a", label: "rgba(240,232,210,0.85)" },
-  { spine: "#7a8a7a", top: "#8a9a8a", label: "rgba(220,232,220,0.85)" },
-  { spine: "#8a5a4a", top: "#9e6a58", label: "rgba(240,218,210,0.85)" },
-  { spine: "#5a5a8a", top: "#6a6a9e", label: "rgba(215,215,240,0.85)" },
-  // Light cloth / linen
-  { spine: "#c8b89a", top: "#d4c6a8", label: "rgba(60,44,24,0.75)" },
-  { spine: "#b8c8b0", top: "#c6d4be", label: "rgba(40,60,44,0.75)" },
-  { spine: "#c8c0a0", top: "#d6ceb0", label: "rgba(60,56,30,0.75)" },
-  { spine: "#d0b8a8", top: "#dcc6b6", label: "rgba(60,44,36,0.75)" },
+  // Deep jewel tones from image
+  { spine: "#1b2a1f", top: "#2a3d2e", label: "rgba(200,215,240,0.85)", accent: "#c8a868" }, // Green
+  { spine: "#14283b", top: "#1a344d", label: "rgba(240,210,200,0.85)", accent: "#d7be89" }, // Blue
+  { spine: "#2c1c13", top: "#3a251a", label: "rgba(240,225,180,0.85)", accent: "#e5cc98" }, // Brown
+  { spine: "#3a1d1d", top: "#4d2626", label: "rgba(240,210,200,0.85)", accent: "#c8a868" }, // Red
+  { spine: "#161d2a", top: "#1e2738", label: "rgba(200,215,240,0.85)", accent: "#c8a868" }, // Dark Slate
+  { spine: "#23201a", top: "#302b23", label: "rgba(240,225,180,0.85)", accent: "#d7be89" }, // Dark Walnut
 ];
 
 function generateBookStyle(projectIndex, shelfIndex) {
   const seed = projectIndex * 97 + shelfIndex * 53;
 
-  const height = 155 + Math.floor(seedRandom(seed) * 70);      // 155–225px
-  const width  = 22  + Math.floor(seedRandom(seed + 1) * 30);  // 22–52px
-  const tilt   = -3  + seedRandom(seed + 2) * 6;               // -3°…+3°
+  const height = 180 + Math.floor(seedRandom(seed) * 80);      // 180–260px
+  const width  = 36  + Math.floor(seedRandom(seed + 1) * 28);  // 36–64px
+  const tilt   = -2  + seedRandom(seed + 2) * 4;               // -2°…+2°
   const leftGap = Math.floor(seedRandom(seed + 3) * 6);        // 0–5px gap
-  const pageWidth = 3 + Math.floor(seedRandom(seed + 4) * 4);  // 3–6px page edge
+  const pageWidth = 4 + Math.floor(seedRandom(seed + 4) * 4);  // 4–8px page edge
   const paletteIdx = Math.floor(seedRandom(seed + 5) * BOOK_PALETTES.length);
   const palette = BOOK_PALETTES[paletteIdx];
 
-  // Occasional cloth-texture band
-  const hasBand = seedRandom(seed + 6) > 0.6;
-  const bandPos = 20 + Math.floor(seedRandom(seed + 7) * 60); // % from top
+  // Subtle decorative borders
+  const hasBand = seedRandom(seed + 6) > 0.5;
 
   return {
     height: `${height}px`,
@@ -59,8 +46,7 @@ function generateBookStyle(projectIndex, shelfIndex) {
     "--page-width": `${pageWidth}px`,
     "--spine-color": palette.spine,
     "--spine-top":   palette.top,
-    "--label-color": palette.label,
-    "--band-pos":    `${bandPos}%`,
+    "--accent-color": palette.accent,
     hasBand,
     rawHeight: height,
   };
@@ -70,260 +56,34 @@ function generateBookStyle(projectIndex, shelfIndex) {
    Decorative objects between books
 ---------------------------- */
 
+const DECOR_ITEMS = [
+  { char: "🧸", size: 48, y: 0 },
+  { char: "🪴", size: 42, y: 0 },
+  { char: "🕰️", size: 44, y: 0 },
+  { char: "🕯️", size: 36, y: -4 },
+  { char: "🖼️", size: 40, y: 0 },
+  { char: "📜", size: 32, y: -2 },
+  { char: "🦆", size: 30, y: 0 },
+  { char: "🦉", size: 36, y: 0 },
+  { char: "🪶", size: 38, y: -6 },
+  { char: "⏳", size: 40, y: 0 },
+];
+
 function ScatteredObject({ seed }) {
   const r = (offset) => seedRandom(seed * 17 + offset);
-  const kind = Math.floor(r(0) * 11); // 0-10: many different items
-
-  if (kind === 0) {
-    // Ceramic vase
-    const hue = Math.floor(r(1) * 360);
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        <div style={{
-          width: 26, height: 54,
-          background: `hsl(${hue},22%,52%)`,
-          borderRadius: "40% 40% 22% 22% / 30% 30% 16% 16%",
-          boxShadow: "inset -4px 0 8px rgba(0,0,0,0.28), 2px 3px 12px rgba(0,0,0,0.4)",
-          position:"relative", flexShrink:0,
-        }}>
-          <div style={{ position:"absolute", top:0, left:0, right:0, height:"30%", background:"rgba(255,255,255,0.07)", borderRadius:"40% 40% 0 0" }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 1) {
-    // Decorative sphere
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px" }}>
-        <div style={{
-          width: 38, height: 38, borderRadius:"50%",
-          background: "radial-gradient(circle at 35% 32%, #e8dfc8 0%, #bfb090 45%, #7a6840 100%)",
-          boxShadow: "3px 4px 14px rgba(0,0,0,0.45), inset -4px -4px 10px rgba(0,0,0,0.25)",
-          flexShrink: 0,
-        }} />
-      </div>
-    );
-  }
-
-  if (kind === 2) {
-    // Small framed picture
-    const tones = ["#8a7a9a","#9a7a5a","#6a8a7a","#8a6a4a"];
-    const bg = tones[Math.floor(r(2) * tones.length)];
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px" }}>
-        <div style={{
-          background: "linear-gradient(135deg,#6a5030,#4a3820)",
-          padding: 4, borderRadius:1,
-          boxShadow: "2px 3px 10px rgba(0,0,0,0.45)",
-        }}>
-          <div style={{ width:46, height:60, background:bg, opacity:0.85 }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 3) {
-    // Candle pair
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", gap:5, flexShrink:0, margin:"0 10px" }}>
-        {[58, 40].map((h, i) => (
-          <div key={i} style={{ position:"relative" }}>
-            {/* flame */}
-            <div style={{
-              position:"absolute", top: -14, left:"50%", transform:"translateX(-50%)",
-              width:7, height:10,
-              background:"radial-gradient(ellipse at 50% 80%, #ffe066 20%, #f4a020 70%, transparent 100%)",
-              borderRadius:"50% 50% 30% 30%",
-              boxShadow:"0 0 6px 2px rgba(255,180,30,0.35)",
-            }} />
-            {/* wick */}
-            <div style={{ position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)", width:1.5, height:4, background:"#2a1a08", borderRadius:1 }} />
-            <div style={{ width:13, height:h, background:"linear-gradient(180deg,#f4e8cc,#e2d4a8)", borderRadius:"2px 2px 1px 1px", boxShadow:"2px 2px 8px rgba(0,0,0,0.35)" }} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (kind === 4) {
-    // Sticky notes stack
-    const colors = ["#f4e066","#ffd080","#a6ffb3","#87ceeb","#ffb3d9"];
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px", position:"relative" }}>
-        {[0, 1, 2].map((i) => (
-          <div key={i} style={{
-            position:"absolute",
-            width: 24, height: 26,
-            background: colors[Math.floor(r(4 + i) * colors.length)],
-            border: "1px solid rgba(0,0,0,0.1)",
-            boxShadow: "2px 2px 6px rgba(0,0,0,0.2)",
-            transform: `translateY(${i * 3}px) rotate(${-2 + i * 2}deg)`,
-            left: i * 8,
-          }}>
-            <div style={{ position:"absolute", top:6, left:6, width:3, height:3, background:"rgba(100,100,100,0.3)", borderRadius:"50%" }} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (kind === 5) {
-    // Plant in pot
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {/* Pot */}
-        <div style={{
-          width: 28, height: 24,
-          background: "linear-gradient(180deg, #c97d4a 0%, #a85c2f 100%)",
-          borderRadius: "0 0 4px 4px",
-          boxShadow: "inset 0 1px 3px rgba(0,0,0,0.3), 2px 3px 8px rgba(0,0,0,0.3)",
-          position:"relative", flexShrink:0,
-        }}>
-          {/* Plant leaves */}
-          <div style={{
-            position:"absolute", bottom: -18, left:2, width:8, height:20,
-            background: "linear-gradient(135deg, #2d7a3e 0%, #1a4a22 100%)",
-            borderRadius: "50% 20% 50% 20%",
-            transform: "rotate(-25deg)",
-          }} />
-          <div style={{
-            position:"absolute", bottom: -16, left:10, width:8, height:22,
-            background: "linear-gradient(45deg, #3d8a4e 0%, #2a5a35 100%)",
-            borderRadius: "20% 50% 20% 50%",
-            transform: "rotate(15deg)",
-          }} />
-          <div style={{
-            position:"absolute", bottom: -20, left:18, width:7, height:24,
-            background: "linear-gradient(135deg, #2d7a3e 0%, #1a4a22 100%)",
-            borderRadius: "50% 20% 50% 20%",
-            transform: "rotate(35deg)",
-          }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 6) {
-    // Ink bottle
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {/* Bottle */}
-        <div style={{
-          width: 14, height: 36,
-          background: "linear-gradient(90deg, #1a1a3a 0%, #2a2a4a 50%, #1a1a3a 100%)",
-          borderRadius: "2px 2px 0 0",
-          boxShadow: "inset 1px 0 2px rgba(80,80,120,0.3), 2px 3px 8px rgba(0,0,0,0.5)",
-          position:"relative",
-        }}>
-          {/* Ink inside */}
-          <div style={{ position:"absolute", top:2, left:1, right:1, bottom:4, background:"rgba(26,26,58,0.8)", borderRadius:"1px 1px 0 0" }} />
-          {/* Cork cap */}
-          <div style={{
-            position:"absolute", top:-4, left:"50%", transform:"translateX(-50%)",
-            width: 8, height: 6,
-            background: "linear-gradient(180deg, #8b6f47 0%, #6a5c3a 100%)",
-            borderRadius: "2px 2px 1px 1px",
-          }} />
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 7) {
-    // Teddy bear (simple)
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 12px" }}>
-        <div style={{ position:"relative", width:32, height:40 }}>
-          {/* Body */}
-          <div style={{
-            position:"absolute", left:6, top:12, width:20, height:18,
-            background: "#a87835",
-            borderRadius: "50%",
-            boxShadow: "inset -2px -2px 4px rgba(0,0,0,0.2)",
-          }} />
-          {/* Head */}
-          <div style={{
-            position:"absolute", left:8, top:0, width:16, height:16,
-            background: "#b88845",
-            borderRadius: "50%",
-            boxShadow: "inset -2px -2px 3px rgba(0,0,0,0.15)",
-          }} />
-          {/* Ears */}
-          {[{left:2}, {right:2}].map((pos, i) => (
-            <div key={i} style={{
-              position:"absolute", ...pos, top:2, width:6, height:6,
-              background: "#a87835",
-              borderRadius: "50%",
-              boxShadow: "inset -1px -1px 2px rgba(0,0,0,0.2)",
-            }} />
-          ))}
-          {/* Eyes */}
-          {[{left:10}, {right:10}].map((pos, i) => (
-            <div key={i} style={{
-              position:"absolute", ...pos, top:6, width:2, height:2,
-              background: "#2a1a0a",
-              borderRadius: "50%",
-            }} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (kind === 8) {
-    // Quill pen
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 8px", position:"relative" }}>
-        <div style={{
-          width: 4, height: 42,
-          background: "linear-gradient(180deg, #2a1a0a 0%, #4a3a2a 100%)",
-          borderRadius: "2px 2px 0 0",
-          transform: "rotate(-30deg)",
-          transformOrigin: "bottom center",
-          boxShadow: "1px 1px 4px rgba(0,0,0,0.4)",
-        }} />
-        {/* Feather */}
-        <div style={{
-          position:"absolute", bottom:34, right:-8,
-          width: 16, height: 24,
-          background: "linear-gradient(to right, #e8e0d0 0%, #d4c8b8 100%)",
-          borderRadius: "50% 0 0 50%",
-          transform: "rotate(-45deg)",
-          opacity: 0.7,
-        }} />
-      </div>
-    );
-  }
-
-  if (kind === 9) {
-    // Stacked books
-    return (
-      <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px", position:"relative" }}>
-        {["#6b3a3a", "#3a5a6b", "#5a4a2a"].map((color, i) => (
-          <div key={i} style={{
-            position:"absolute",
-            width: 30, height: 8,
-            background: color,
-            border: "1px solid rgba(0,0,0,0.2)",
-            boxShadow: "1px 1px 4px rgba(0,0,0,0.3)",
-            transform: `translateY(${-i * 10}px) rotate(${-3 + i * 2}deg)`,
-            left: i * 2,
-          }} />
-        ))}
-      </div>
-    );
-  }
-
-  // Crystal / gem (default for kind === 10)
+  const item = DECOR_ITEMS[Math.floor(r(0) * DECOR_ITEMS.length)];
+  
   return (
-    <div style={{ display:"flex", alignItems:"flex-end", flexShrink:0, margin:"0 10px" }}>
-      <div style={{
-        width: 16, height: 24,
-        background: "linear-gradient(135deg, #6b8adb 0%, #4a6ab3 50%, #2a4a8a 100%)",
-        clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)",
-        boxShadow: "2px 3px 10px rgba(20,40,120,0.5), inset -2px -2px 4px rgba(0,0,0,0.3)",
-      }} />
+    <div style={{
+      display: "flex", alignItems: "flex-end", flexShrink: 0, margin: "0 12px",
+      fontSize: item.size,
+      transform: `translateY(${item.y}px) rotate(${-4 + r(1)*8}deg)`,
+      filter: "sepia(0.4) brightness(0.85) contrast(1.1)",
+      textShadow: "4px 8px 12px rgba(0,0,0,0.7), -1px -1px 4px rgba(255,255,255,0.1)",
+      userSelect: "none", pointerEvents: "none",
+      zIndex: 2,
+    }}>
+      {item.char}
     </div>
   );
 }
@@ -332,10 +92,10 @@ function ScatteredObject({ seed }) {
    Single book spine
 ---------------------------- */
 
-function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onHoverEnd, onClick }) {
+function RealisticBookSpine({ project, style, isActive, phase, isHovered, onHoverStart, onHoverEnd, onClick }) {
   const { hasBand, rawHeight, ...cssStyle } = style;
 
-  const zIndex = isActive ? 30 : 1;
+  const zIndex = isActive || isHovered ? 30 : 1;
 
   return (
     <motion.div
@@ -376,6 +136,38 @@ function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onH
       onClick={onClick}
       whileHover={phase === "idle" ? { y: -16, transition: { duration: 0.2 } } : {}}
     >
+      {/* Active Glow Outline */}
+      {isActive && (
+        <div style={{
+          position: "absolute",
+          inset: -4,
+          borderRadius: 4,
+          border: "2px solid rgba(200, 175, 120, 0.8)",
+          boxShadow: "0 0 20px rgba(200, 175, 120, 0.4), inset 0 0 10px rgba(200, 175, 120, 0.2)",
+          zIndex: -1,
+          pointerEvents: "none"
+        }} />
+      )}
+      
+      {/* Spotlight Glow behind hovered book */}
+      {isHovered && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "200%",
+            height: "120%",
+            background: "radial-gradient(ellipse at bottom, rgba(255, 200, 120, 0.35) 0%, transparent 60%)",
+            pointerEvents: "none",
+            zIndex: -1,
+          }}
+        />
+      )}
+
       {/* Main spine */}
       <div style={{
         width: "100%",
@@ -390,9 +182,41 @@ function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onH
         justifyContent: "center",
         transform: `rotate(var(--book-tilt))`,
         transformOrigin: "bottom center",
+        border: isHovered ? "1px solid rgba(255, 220, 150, 0.6)" : "none",
       }}>
         {/* Subtle top highlight */}
         <div style={{ position:"absolute", top:0, left:0, right:0, height:"8%", background:"rgba(255,255,255,0.09)", borderRadius:"1px 2px 0 0" }} />
+
+        {/* Bookmark Ribbon on Hover */}
+        {isHovered && (
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "20%",
+              width: "6px",
+              height: "24px",
+              background: "#b83030",
+              boxShadow: "1px 1px 3px rgba(0,0,0,0.6)",
+              borderLeft: "1px solid #d94a4a",
+              zIndex: 10,
+            }}
+          >
+            {/* Ribbon tail cutout */}
+            <div style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: 0,
+              height: 0,
+              borderLeft: "3px solid transparent",
+              borderRight: "3px solid transparent",
+              borderBottom: "4px solid var(--spine-color)",
+            }} />
+          </motion.div>
+        )}
 
         {/* Cloth band */}
         {hasBand && (
@@ -414,7 +238,7 @@ function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onH
             fontSize: parseInt(cssStyle.width) > 38 ? 11 : 10,
             fontFamily:"'Playfair Display', Georgia, serif",
             fontStyle:"italic",
-            color:`var(--label-color)`,
+            color:"rgba(240, 230, 210, 0.9)",
             letterSpacing:"0.07em",
             padding:"6px 0",
             whiteSpace:"nowrap",
@@ -538,7 +362,7 @@ function RealisticBookSpine({ project, style, isActive, phase, onHoverStart, onH
    Bookshelf Component
 ---------------------------- */
 
-export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) {
+export default function Bookshelf({ projects, onOpenProject, onHoverProject, onBookPullSound }) {
   const [hoveredId, setHoveredId]   = useState(null);
   const [activeId,  setActiveId]    = useState(null);
   const [phase,     setPhase]       = useState("idle");
@@ -610,16 +434,16 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
     <section
       aria-label="Library"
       style={{
-        background: "#1c3828",
+        background: "#12261a", // Darker forest green
         backgroundImage: [
           "radial-gradient(ellipse at 75% 0%,   rgba(190,145,70,0.13) 0%, transparent 55%)",
           "radial-gradient(ellipse at 10% 35%,   rgba(190,145,70,0.07) 0%, transparent 40%)",
           "radial-gradient(ellipse at 50% 110%,  rgba(0,0,0,0.45) 0%, transparent 60%)",
-          "repeating-linear-gradient(90deg, rgba(255,255,255,0.009) 0px,rgba(255,255,255,0.009) 1px, transparent 1px, transparent 72px)",
-          "repeating-linear-gradient(0deg,  rgba(255,255,255,0.009) 0px,rgba(255,255,255,0.009) 1px, transparent 1px, transparent 72px)",
+          "repeating-linear-gradient(90deg, rgba(0,0,0,0.2) 0px, rgba(0,0,0,0.2) 2px, transparent 2px, transparent 120px)",
+          "repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px, transparent 3px, transparent 120px)",
+          "linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.4) 100%)",
         ].join(","),
-        minHeight: "100vh",
-        padding: "0 0 40px",
+        padding: "10px 0 80px",
         fontFamily: "'Playfair Display', Georgia, serif",
         overflow:"hidden",
       }}
@@ -627,22 +451,56 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
       {/* Google Font */}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" />
 
-      {/* Wall sconces */}
-      <div aria-hidden="true" style={{ display:"flex", justifyContent:"space-between", padding:"0 48px", marginBottom:"-8px", position:"relative", zIndex:2 }}>
+      <div style={{ width: "92%", margin: "0 auto", maxWidth: "1600px", position: "relative" }}>
+        {/* Wall sconces */}
+      <div aria-hidden="true" style={{ display:"flex", justifyContent:"space-between", padding:"0 64px", marginBottom:"-20px", position:"relative", zIndex:2 }}>
         {[0, 1].map(i => (
           <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:"center", paddingTop: 18 }}>
-            <div style={{ width:28, height:16, background:"linear-gradient(180deg,#9a8462,#7a6442)", borderRadius:"50% 50% 0 0", boxShadow:"0 0 20px 8px rgba(210,165,80,0.18), inset 0 -3px 6px rgba(0,0,0,0.3)" }} />
-            <div style={{ width:3, height:20, background:"#7a6040", borderRadius:2 }} />
-            <div style={{ width:8, height:8, background:"#5a4830", borderRadius:"0 0 3px 3px" }} />
+            {/* The Bulb Glow */}
+            <div style={{ position:"absolute", width: 80, height: 80, background: "radial-gradient(circle, rgba(255, 220, 120, 0.4) 0%, rgba(255, 180, 50, 0.1) 40%, transparent 70%)", top: 10, filter: "blur(8px)" }} />
+            {/* Sconce Shade */}
+            <div style={{ width:40, height:20, background:"linear-gradient(180deg,#9a8462,#5a4422)", borderRadius:"50% 50% 0 0", boxShadow:"0 0 25px 10px rgba(255,200,80,0.25), inset 0 -3px 8px rgba(0,0,0,0.5)" }} />
+            <div style={{ width:4, height:24, background:"#4a3020", borderRadius:2 }} />
+            <div style={{ width:12, height:12, background:"#3a2810", borderRadius:"0 0 4px 4px", boxShadow: "0 4px 10px rgba(0,0,0,0.5)" }} />
           </div>
         ))}
       </div>
 
+
+
       <motion.div
         animate={{ scale: stageScale }}
         transition={{ duration: 0.26 }}
-        style={{ transformOrigin: "center center" }}
+        style={{ transformOrigin: "center center", position: "relative" }}
       >
+        <button
+          onClick={() => handleScroll(-1)}
+          className="shelf-nav-btn"
+          style={{
+            position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", zIndex: 10,
+            background: "rgba(30, 20, 15, 0.4)", backdropFilter: "blur(8px)", border: "1px solid rgba(200,175,120,0.3)",
+            color: "#e2c899", padding: "12px 16px", borderRadius: "50%", cursor: "pointer",
+            fontFamily: "Cinzel", fontSize: "1.2rem", boxShadow: "0 4px 12px rgba(0,0,0,0.3)", transition: "all 0.3s ease"
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(200,175,120,0.2)"; e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(30, 20, 15, 0.4)"; e.currentTarget.style.transform = "translateY(-50%) scale(1)"; }}
+        >
+          ←
+        </button>
+        <button
+          onClick={() => handleScroll(1)}
+          className="shelf-nav-btn"
+          style={{
+            position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", zIndex: 10,
+            background: "rgba(30, 20, 15, 0.4)", backdropFilter: "blur(8px)", border: "1px solid rgba(200,175,120,0.3)",
+            color: "#e2c899", padding: "12px 16px", borderRadius: "50%", cursor: "pointer",
+            fontFamily: "Cinzel", fontSize: "1.2rem", boxShadow: "0 4px 12px rgba(0,0,0,0.3)", transition: "all 0.3s ease"
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(200,175,120,0.2)"; e.currentTarget.style.transform = "translateY(-50%) scale(1.1)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(30, 20, 15, 0.4)"; e.currentTarget.style.transform = "translateY(-50%) scale(1)"; }}
+        >
+          →
+        </button>
         <div
           ref={corridorRef}
           style={{ overflowX:"auto", overflowY:"visible" }}
@@ -663,7 +521,7 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
                 style={{ position:"relative", marginBottom: 0 }}
               >
                 {/* Top space before books */}
-                <div style={{ height: 30 }} />
+                <div style={{ height: 40 }} />
 
                 {/* Book row */}
                 <div style={{
@@ -686,51 +544,88 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
                         style={item.style}
                         phase={phase}
                         isActive={item.project.id === activeId}
-                        onHoverStart={() => setHoveredId(item.project.id)}
-                        onHoverEnd={() => setHoveredId(id => id === item.project.id ? null : id)}
+                        isHovered={item.project.id === hoveredId}
+                        onHoverStart={() => {
+                          setHoveredId(item.project.id);
+                          onHoverProject?.(item.project);
+                        }}
+                        onHoverEnd={() => {
+                          setHoveredId(id => id === item.project.id ? null : id);
+                          // Don't unset onHoverProject to keep hero populated
+                        }}
                         onClick={() => handleOpenSequence(item.project)}
                       />
                     </div>
                   ))}
+                  
+                  {/* Archive Typography Beside Books */}
+                  {shelfIndex === 0 && (
+                    <div style={{
+                      marginLeft: 80,
+                      marginRight: 60,
+                      alignSelf: "center",
+                      display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left",
+                      position: "relative",
+                      zIndex: 1,
+                      marginTop: -20,
+                    }}>
+                      <p style={{ 
+                        margin: 0, color: "#c8a562", fontSize: "0.85rem", letterSpacing: "0.2em", fontFamily: "'Cinzel', serif", textTransform: "uppercase",
+                        display: "flex", alignItems: "center", gap: "12px", opacity: 0.8
+                      }}>
+                        <span>↠</span> PORTFOLIO ARCHIVE <span>↞</span>
+                      </p>
+                      <h2 style={{ 
+                        margin: "12px 0 16px", color: "#e2c899", fontSize: "2rem", letterSpacing: "0.1em", fontFamily: "'Cinzel', serif", fontWeight: 400, textTransform: "uppercase",
+                        whiteSpace: "nowrap"
+                      }}>
+                        PULL A VOLUME. INSPECT THE RECEIPTS.
+                      </h2>
+                      <p style={{ margin: 0, color: "#a88e5a", fontSize: "1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", whiteSpace: "nowrap" }}>
+                        A curated library of ideas, code, research, and experiments.
+                      </p>
+                      <p style={{ margin: "6px 0 0", color: "#a88e5a", fontSize: "1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", whiteSpace: "nowrap" }}>
+                        Each volume opens a story. Each story leaves a trace.
+                      </p>
+                    </div>
+                  )}
                 </div>
 
-                {/* Walnut plank surface */}
-                <div style={{
-                  height: 24,
-                  background: [
-                    "linear-gradient(180deg,",
-                    " #b87828 0%, #9a6420 12%,",
-                    " #8a5618 28%, #7a4c16 45%,",
-                    " #8a5618 62%, #9a6420 78%,",
-                    " #7a4c16 100%)",
-                  ].join(""),
-                  position:"relative", zIndex:2,
-                  boxShadow:"0 8px 24px rgba(0,0,0,0.60), inset 0 1px 0 rgba(255,255,255,0.09), inset 0 -1px 0 rgba(0,0,0,0.35)",
-                  overflow:"hidden",
-                }}>
-                  {/* Wood grain lines */}
+                {/* Intricate Mahogany Shelf Ledge */}
+                <div style={{ position: "relative", zIndex: 2 }}>
+                  {/* Top trim / back stop */}
+                  <div style={{ height: 14, background: "linear-gradient(180deg, #1c1008 0%, #2f1b0e 100%)", boxShadow: "inset 0 4px 8px rgba(0,0,0,0.6)" }} />
+                  
+                  {/* Main surface top (where books sit) */}
                   <div style={{
-                    position:"absolute", inset:0,
-                    backgroundImage:[
-                      "repeating-linear-gradient(90deg, transparent 0px, transparent 14px, rgba(0,0,0,0.055) 14px, rgba(0,0,0,0.055) 15px)",
-                      "repeating-linear-gradient(90deg, transparent 0px, transparent 30px, rgba(255,255,255,0.025) 30px, rgba(255,255,255,0.025) 31px)",
-                    ].join(","),
-                  }} />
-                  {/* Top highlight stripe */}
-                  <div style={{ position:"absolute", top:0, left:0, right:0, height:3, background:"rgba(255,255,255,0.10)" }} />
-                </div>
+                    height: 28,
+                    background: "linear-gradient(180deg, #4d2b15 0%, #3e210f 100%)",
+                    borderTop: "1px solid rgba(255,255,255,0.05)",
+                    borderBottom: "2px solid #1f0f05",
+                    position: "relative",
+                  }}>
+                    {/* Wood grain pattern */}
+                    <div style={{
+                      position: "absolute", inset: 0, opacity: 0.8,
+                      backgroundImage: "repeating-linear-gradient(90deg, transparent 0px, transparent 24px, rgba(0,0,0,0.1) 24px, rgba(0,0,0,0.1) 26px, transparent 26px, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 42px)"
+                    }} />
+                    {/* Glossy top edge highlight */}
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "rgba(255,255,255,0.08)" }} />
+                  </div>
 
-                {/* Plank underside (thickness) */}
-                <div style={{
-                  height: 9,
-                  background:"linear-gradient(180deg,#4a2c0c 0%,#3a2008 100%)",
-                  boxShadow:"0 4px 12px rgba(0,0,0,0.5)",
-                  zIndex:2, position:"relative",
-                }} />
+                  {/* Convex molding layer 1 */}
+                  <div style={{ height: 8, background: "linear-gradient(180deg, #5b3419 0%, #2f1b0e 100%)", borderBottom: "1px solid #140a04", boxShadow: "inset 0 2px 2px rgba(255,255,255,0.05)" }} />
+                  
+                  {/* Concave cove molding */}
+                  <div style={{ height: 12, background: "linear-gradient(180deg, #1c1008 0%, #3e210f 100%)", borderBottom: "1px solid #140a04" }} />
+                  
+                  {/* Bottom structural trim */}
+                  <div style={{ height: 16, background: "linear-gradient(180deg, #2f1b0e 0%, #110803 100%)", boxShadow: "0 12px 24px rgba(0,0,0,0.85)" }} />
+                </div>
 
                 {/* Cast shadow below shelf */}
                 <div style={{
-                  height: 22,
+                  height: 30,
                   background:"linear-gradient(180deg,rgba(0,0,0,0.38) 0%,transparent 100%)",
                   position:"relative", zIndex:0,
                 }} />
@@ -741,22 +636,9 @@ export default function Bookshelf({ projects, onOpenProject, onBookPullSound }) 
           </div>
         </div>
       </motion.div>
+      </div>
 
-      {/* Hover hint */}
-      <p style={{
-        textAlign:"center",
-        color:"rgba(255,255,255,0.22)",
-        fontSize:12,
-        fontFamily:"Georgia, serif",
-        fontStyle:"italic",
-        letterSpacing:"0.12em",
-        marginTop:12,
-        userSelect:"none",
-      }}>
-        {hoveredId
-            ? "click to open this project"
-            : "your projects, shelved - use wheel or scroll buttons"}
-      </p>
+
     </section>
   );
 }

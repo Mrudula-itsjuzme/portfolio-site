@@ -53,10 +53,10 @@ function repoImageUrls(project) {
     gallery: galleryUrls.length
       ? galleryUrls
       : [
-          `https://opengraph.githubassets.com/1/${encodedOwner}/${encodedRepo}`,
-          `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}/languages.svg`,
-          picsumC,
-        ]
+        `https://opengraph.githubassets.com/1/${encodedOwner}/${encodedRepo}`,
+        `https://gh-card.dev/repos/${encodedOwner}/${encodedRepo}/languages.svg`,
+        picsumC,
+      ]
   };
 }
 
@@ -359,10 +359,10 @@ function buildPages(project) {
     images: galleryItems.length
       ? galleryItems
       : [
-          { src: images.cover, alt: `${project?.spineTitle} project snapshot` },
-          ...(images.architecture ? [{ src: images.architecture, alt: `${project?.spineTitle} architecture diagram` }] : []),
-          { src: images.dashboard, alt: `${project?.spineTitle} language or metrics view` }
-        ]
+        { src: images.cover, alt: `${project?.spineTitle} project snapshot` },
+        ...(images.architecture ? [{ src: images.architecture, alt: `${project?.spineTitle} architecture diagram` }] : []),
+        { src: images.dashboard, alt: `${project?.spineTitle} language or metrics view` }
+      ]
   });
 
   pages.push({
@@ -437,91 +437,200 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
 
   return (
     <motion.div
-      className="viewer-backdrop"
+      className="viewer-backdrop archive-viewer-backdrop"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
     >
       <motion.section
-        className="viewer-desk"
+        className="viewer-desk archive-desk"
         initial={{ scale: 0.86, y: 60, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 0.88, y: 30, opacity: 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="close-viewer" onClick={onClose}>
-          Close
+        <div className="archive-desk-glow" />
+        <div className="archive-desk-grain" />
+
+        <button className="close-viewer archive-close" onClick={onClose}>
+          Close ×
         </button>
 
-        <header className="viewer-header">
+        <header className="viewer-header archive-viewer-header">
+          <div className="archive-title-rule" />
           <h2>{project.spineTitle}</h2>
-          <p>{project.category}</p>
+          <p>
+            {project.category} <span>•</span> Archive Entry
+          </p>
         </header>
 
-        <motion.div
-          className="flipbook-wrap"
-          initial={{ rotateX: 0, rotateY: 0, opacity: 0, scale: 0.8 }}
-          animate={bookOpen ?
-            { rotateX: 0, rotateY: 0, opacity: 1, scale: 1 }
-            : { rotateX: -25, rotateY: 8, opacity: 1, scale: 0.95 }
-          }
-          transition={{
-            duration: bookOpen ? 0.5 : 0.35,
-            ease: [0.34, 1.56, 0.64, 1],
-            type: "spring",
-            stiffness: 200,
-            damping: 18
-          }}
-          style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
-        >
-          {/* Closed book cover that physically flips open */}
-          <motion.div
-            className="cover-flip-overlay"
-            initial={{ rotateY: 0 }}
-            animate={{ rotateY: bookOpen ? -100 : 0 }}
-            transition={{ duration: 0.75, ease: [0.4, 0, 0.15, 1] }}
-            style={{
-              transformOrigin: "1.5% 50%",
-              pointerEvents: bookOpen ? "none" : "auto",
-              background: `linear-gradient(150deg, ${coverHex(project)} 0%, ${coverDarkHex(project)} 100%)`,
-            }}
-          >
-            <p className="cover-flip-kicker">Portfolio Archive</p>
-            <h2 className="cover-flip-title">{project.spineTitle}</h2>
-            <p className="cover-flip-sub">{project.category || project.language || "Engineering"}</p>
-            <p className="cover-flip-year">{project.publishedYear || new Date().getFullYear()}</p>
-          </motion.div>
-          <HTMLFlipBook
-            ref={flipRef}
-            width={500}
-            height={640}
-            size="stretch"
-            showCover
-            maxShadowOpacity={0.4}
-            drawShadow
-            flippingTime={800}
-            mobileScrollSupport
-            className="flipbook"
-            onFlip={(e) => {
-              setPage(e.data);
-              onPageFlipSound?.();
-            }}
-          >
-            {pages.map((p, i) => (
-              <Page
-                key={`${project.id}-${p.id}-${i}`}
-                page={p}
-                index={i}
-                total={pages.length}
-                project={project}
-              />
-            ))}
-          </HTMLFlipBook>
-        </motion.div>
+        <div className="archive-stage">
+          <aside className="archive-prop archive-prop-left">
+            <div className="mini-teddy teddy-left">
+              <div className="teddy-ear teddy-ear-left" />
+              <div className="teddy-ear teddy-ear-right" />
+              <div className="teddy-head">
+                <span className="teddy-eye eye-left" />
+                <span className="teddy-eye eye-right" />
+                <span className="teddy-nose" />
+              </div>
+              <div className="teddy-body">
+                <span className="teddy-bow" />
+              </div>
+            </div>
 
-        <footer className="viewer-controls">
+            <div className="archive-stack archive-stack-left">
+              <span>Distributed Systems</span>
+              <span>Clean Architecture</span>
+            </div>
+
+            <div className="tiny-globe">
+              <div className="globe-orbit orbit-a" />
+              <div className="globe-orbit orbit-b" />
+            </div>
+          </aside>
+
+          <main className="archive-book-zone">
+            <motion.div
+              className="flipbook-wrap archive-flipbook-wrap"
+              initial={{ rotateX: 0, rotateY: 0, opacity: 0, scale: 0.8 }}
+              animate={
+                bookOpen
+                  ? {
+                      rotateX: [0, -1.5, 0.8, 0],
+                      rotateY: [0, 0.8, -0.5, 0],
+                      rotateZ: [0, 0.4, -0.3, 0],
+                      opacity: 1,
+                      scale: 1,
+                    }
+                  : { rotateX: -25, rotateY: 8, opacity: 1, scale: 0.95 }
+              }
+              transition={
+                bookOpen
+                  ? {
+                      opacity:   { duration: 0.5 },
+                      scale:     { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                      rotateX:   { duration: 6, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
+                      rotateY:   { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
+                      rotateZ:   { duration: 7, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
+                    }
+                  : { duration: 0.35, ease: [0.34, 1.56, 0.64, 1], type: "spring", stiffness: 200, damping: 18 }
+              }
+              style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+            >
+              <div className="archive-book-shadow" />
+
+              {bookOpen && (
+                <>
+                  <div
+                    onClick={flipPrev}
+                    className="page-hotspot page-hotspot-left"
+                    title="Previous Page"
+                  />
+                  <div
+                    onClick={flipNext}
+                    className="page-hotspot page-hotspot-right"
+                    title="Next Page"
+                  />
+                </>
+              )}
+
+              <motion.div
+                className="cover-flip-overlay archive-cover-flip"
+                initial={{ rotateY: 0 }}
+                animate={{ rotateY: bookOpen ? -100 : 0 }}
+                transition={{ duration: 0.75, ease: [0.4, 0, 0.15, 1] }}
+                style={{
+                  transformOrigin: "1.5% 50%",
+                  pointerEvents: bookOpen ? "none" : "auto",
+                  background: `linear-gradient(150deg, ${coverHex(project)} 0%, ${coverDarkHex(project)} 100%)`,
+                }}
+              >
+                <p className="cover-flip-kicker">Portfolio Archive</p>
+                <h2 className="cover-flip-title">{project.spineTitle}</h2>
+                <p className="cover-flip-sub">
+                  {project.category || project.language || "Engineering"}
+                </p>
+                <p className="cover-flip-year">
+                  {project.publishedYear || new Date().getFullYear()}
+                </p>
+              </motion.div>
+
+              <HTMLFlipBook
+                ref={flipRef}
+                width={500}
+                height={640}
+                size="stretch"
+                showCover={false}
+                maxShadowOpacity={0.55}
+                drawShadow
+                flippingTime={1100}
+                usePortrait={false}
+                startPage={0}
+                useMouseEvents
+                swipeDistance={30}
+                mobileScrollSupport
+                className="flipbook archive-flipbook"
+                style={{ perspective: "2000px" }}
+                onFlip={(e) => {
+                  setPage(e.data);
+                  onPageFlipSound?.();
+                }}
+              >
+                {pages.map((p, i) => (
+                  <Page
+                    key={`${project.id}-${p.id}-${i}`}
+                    page={p}
+                    index={i}
+                    total={pages.length}
+                    project={project}
+                  />
+                ))}
+              </HTMLFlipBook>
+            </motion.div>
+
+            <div className="archive-brass-label">
+              ARC · {project.category || "Engineering"}
+            </div>
+          </main>
+
+          <aside className="archive-prop archive-prop-right">
+            <div className="desk-lamp">
+              <div className="lamp-shade" />
+              <div className="lamp-neck" />
+              <div className="lamp-base" />
+            </div>
+
+            <div className="mini-teddy teddy-right">
+              <div className="teddy-ear teddy-ear-left" />
+              <div className="teddy-ear teddy-ear-right" />
+              <div className="teddy-head">
+                <span className="teddy-eye eye-left" />
+                <span className="teddy-eye eye-right" />
+                <span className="teddy-nose" />
+                <span className="teddy-glasses" />
+              </div>
+              <div className="teddy-body">
+                <span className="teddy-bow" />
+              </div>
+            </div>
+
+            <div className="archive-note-card">
+              <span>Scale with intent.</span>
+              <span>Design for change.</span>
+              <span>Ship with clarity.</span>
+            </div>
+
+            <div className="archive-stack archive-stack-right">
+              <span>Code is poetry</span>
+              <span>Executed.</span>
+            </div>
+          </aside>
+        </div>
+
+        <footer className="viewer-controls archive-viewer-controls">
           <button onClick={flipPrev} disabled={page === 0}>
             ← Prev
           </button>
@@ -534,6 +643,15 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
             Next →
           </button>
         </footer>
+
+        <div className="archive-filed-under">
+          Filed under&nbsp;
+          <span>{project.category || "Code"}</span>
+          <span>•</span>
+          <span>{project.language || "Systems"}</span>
+          <span>•</span>
+          <span>{project.archiveCode || "Portfolio"}</span>
+        </div>
       </motion.section>
     </motion.div>
   );

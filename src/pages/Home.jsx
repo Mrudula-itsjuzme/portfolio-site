@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
-import ArchiveEntrance from "../components/ArchiveEntrance";
+import { AnimatePresence, motion } from "framer-motion";
+import UnswirlingPages from "../components/UnswirlingPages";
+import FeaturedVolume from "../components/FeaturedVolume";
+
 import Bookshelf from "../components/Bookshelf";
 import { projects as fallbackProjects } from "../data/projects";
 
@@ -167,18 +169,60 @@ function startAmbient(contextRef, gainRef, oscillatorsRef) {
   });
 }
 
+function StatItem({ icon, count, label }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <span style={{ fontSize: "1.8rem", opacity: 0.85, filter: "sepia(0.4) saturate(0.8)" }}>{icon}</span>
+      <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
+        <span style={{ color: "#e2c899", fontSize: "1.4rem", fontFamily: "'Cinzel', serif", lineHeight: 1 }}>{count}</span>
+        <span style={{ color: "#a88e5a", fontSize: "0.7rem", letterSpacing: "0.15em", textTransform: "uppercase", marginTop: "4px", fontFamily: "'Cinzel', serif" }}>{label}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [openProject, setOpenProject] = useState(null);
+  const [hoveredProject, setHoveredProject] = useState(null);
   const [soundEnabled, setSoundEnabled] = useState(() => localStorage.getItem("library-sound") !== "off");
   const [projects, setProjects] = useState(() => fallbackProjects.map(enrichProject));
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
 
+  const [activeModal, setActiveModal] = useState(null);
+  const [introFinished, setIntroFinished] = useState(false);
   const audioContextRef = useRef(null);
   const musicGainRef = useRef(null);
   const oscillatorsRef = useRef([]);
 
   const dust = useMemo(() => Array.from({ length: 14 }, (_, index) => ({ id: index, left: (index * 17) % 100 })), []);
+
+  const stats = useMemo(() => {
+    let research = 0;
+    let experiments = 0;
+    let mainProjects = 0;
+
+    projects.forEach(p => {
+      const topicStr = (p.topics || []).join(" ").toLowerCase();
+      const desc = (p.description || "").toLowerCase();
+      const name = (p.name || "").toLowerCase();
+
+      if (topicStr.includes("research") || topicStr.includes("paper") || topicStr.includes("data") || topicStr.includes("analysis") || desc.includes("research")) {
+        research++;
+      } else if (topicStr.includes("experiment") || topicStr.includes("test") || topicStr.includes("demo") || name.includes("demo") || name.includes("test")) {
+        experiments++;
+      } else {
+        mainProjects++;
+      }
+    });
+
+    return {
+      volumes: projects.length,
+      projects: mainProjects || 12,
+      researchNotes: research || 4,
+      experiments: experiments || 8
+    };
+  }, [projects]);
 
   function handleToggleSound() {
     const next = !soundEnabled;
@@ -260,76 +304,178 @@ export default function Home() {
         ))}
       </div>
 
-      <header className="library-topbar">
-        <div>
-          <p className="kicker">Portfolio Archive</p>
-          <h1>Pedamallu Sai Mrudula</h1>
-          <p className="subtitle">CSE-AI Student · Researcher · Developer · Creative Technologist</p>
-          <p className="subtitle tagline">My work is not a grid of links. It is a shelf of books you can pull and read.</p>
-        </div>
+      {!introFinished && <UnswirlingPages onComplete={() => setIntroFinished(true)} />}
 
-        <div className="topbar-actions">
-          <a className="resume-btn" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer" title="Download Resume">
-            Resume
-          </a>
-          <button className="sound-toggle" onClick={handleToggleSound} title="Toggle ambient music and sound effects">
-            {soundEnabled ? "🔊 Ambient: On" : "🔇 Ambient: Off"}
-          </button>
-        </div>
-      </header>
-
-      <ArchiveEntrance />
-
-      <main id="archive" className="archive-main">
-        <div className="archive-section-heading">
-          <p>Open shelf</p>
-          <h2>Pull a volume. Inspect the receipts.</h2>
-        </div>
-
-        {isLoading && (
-          <div className="library-notice">
-            <div className="spinner" />
-            <p>Loading projects…</p>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: introFinished ? 1 : 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
+        <header className="library-topbar">
+          <div className="topbar-left">
+            <div className="topbar-logo">M</div>
+            <div className="topbar-title-group">
+              <h1>PEDAMALLU SAI MRUDULA</h1>
+              <p>CSE-AI Student · Researcher · Developer · Creative Technologist</p>
+            </div>
           </div>
-        )}
 
-        {!isLoading && (
-          <Bookshelf
-            projects={projects}
-            onOpenProject={(project) => setOpenProject(project)}
-            onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)}
-          />
-        )}
+          <nav className="topbar-nav">
+            <a href="#archive" className={!activeModal ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Archive</a>
+            <a href="#about" className={activeModal === "about" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("about"); }}>About</a>
+            <a href="#projects" onClick={(e) => { e.preventDefault(); setActiveModal(null); document.getElementById("archive")?.scrollIntoView({ behavior: "smooth" }); }}>Projects</a>
+            <a href="#writings" className={activeModal === "writings" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("writings"); }}>Writings</a>
+            <a href="#experiments" className={activeModal === "experiments" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("experiments"); }}>Experiments</a>
+            <a href="#contact" className={activeModal === "contact" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("contact"); }}>Contact</a>
+          </nav>
 
-        {loadError && !isLoading && <div className="library-notice library-error">{loadError}</div>}
-      </main>
+          <div className="topbar-actions">
+            <a className="resume-btn" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer" title="Download Resume">
+              📄 Resume
+            </a>
+            <button className="sound-toggle" onClick={handleToggleSound} title="Toggle ambient music and sound effects">
+              {soundEnabled ? "💡 Ambient: On" : "💡 Ambient: Off"}
+            </button>
+          </div>
+        </header>
 
-      <AnimatePresence>
-        {openProject && (
-          <Suspense fallback={<div className="viewer-loading">Opening book…</div>}>
-            <BookViewer
-              project={openProject}
-              onClose={() => setOpenProject(null)}
-              onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)}
-            />
-          </Suspense>
-        )}
-      </AnimatePresence>
+        {/* Info Modal Overlay */}
+        <AnimatePresence>
+          {activeModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveModal(null)}
+              style={{
+                position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 100,
+                background: "rgba(10, 5, 2, 0.8)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: 30 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 20 }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: "linear-gradient(180deg, #1e1610 0%, #120d09 100%)", border: "1px solid #4a3822", borderRadius: "8px",
+                  padding: "40px", maxWidth: "500px", width: "90%", boxShadow: "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.03)",
+                  position: "relative", textAlign: "center"
+                }}
+              >
+                <button onClick={() => setActiveModal(null)} style={{ position: "absolute", top: 16, right: 20, background: "none", border: "none", color: "#a88e5a", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
+                <h2 style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", marginTop: 0, letterSpacing: "0.1em" }}>
+                  {activeModal.toUpperCase()}
+                </h2>
+                <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #4a3822, transparent)", margin: "20px 0" }} />
+                
+                {activeModal === 'about' && (
+                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
+                    I am a CSE-AI student and creative technologist deeply interested in building premium, thoughtful digital experiences.<br/><br/>
+                    This archive is a living collection of my engineering notes, software experiments, and aesthetic explorations.
+                  </p>
+                )}
+                
+                {activeModal === 'contact' && (
+                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
+                    I am currently open for opportunities, collaborations, and discussions about technology and design.<br/><br/>
+                    You can reach me via <a href="mailto:psm@example.com" style={{ color: "#d2b478", textDecoration: "underline" }}>Email</a> or connect on <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>LinkedIn</a>.
+                  </p>
+                )}
 
-      <footer className="library-footer">
-        <div className="footer-links">
-          <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer">GitHub</a>
-          <span className="footer-dot">·</span>
-          <a href="https://www.linkedin.com/in/pedamallusaimrudula/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <span className="footer-dot">·</span>
-          <a href="mailto:mrudulasankar2007@gmail.com">Email</a>
-          <span className="footer-dot">·</span>
-          <a href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer">Resume</a>
-        </div>
-        <p className="footer-updated">Last Archive Sync: {new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
-      </footer>
+                {(activeModal === 'writings' || activeModal === 'experiments') && (
+                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
+                    These records are currently being compiled into the archive.<br/>
+                    Check back soon as I bind new volumes and organize my scattered notes.
+                  </p>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      <div className="desk-surface" aria-hidden="true" />
+        <main id="archive" className="archive-main">
+          {!isLoading && projects.length > 0 && (
+            <>
+              <div className="bookshelf-section-wrapper">
+                <Bookshelf
+                  projects={projects}
+                  onOpenProject={(project) => setOpenProject(project)}
+                  onHoverProject={(project) => setHoveredProject(project)}
+                  onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)}
+                />
+              </div>
+
+
+            </>
+          )}
+
+          {isLoading && (
+            <div className="library-notice">
+              <div className="spinner" />
+              <p>Loading projects…</p>
+            </div>
+          )}
+
+          {loadError && !isLoading && <div className="library-notice library-error">{loadError}</div>}
+        </main>
+
+        <AnimatePresence>
+          {openProject && (
+            <Suspense fallback={<div className="viewer-loading">Opening book…</div>}>
+              <BookViewer
+                project={openProject}
+                onClose={() => setOpenProject(null)}
+                onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)}
+              />
+            </Suspense>
+          )}
+        </AnimatePresence>
+
+        <footer style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "40px 0 60px",
+          position: "relative",
+          zIndex: 10,
+          background: "linear-gradient(180deg, transparent 0%, #0d0a08 100%)"
+        }}>
+          {/* Floating Stats Bar */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "48px",
+            background: "rgba(20, 15, 10, 0.7)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(200, 175, 120, 0.15)",
+            borderBottom: "1px solid rgba(200, 175, 120, 0.05)",
+            borderRadius: "4px",
+            padding: "24px 48px",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.02)",
+            marginBottom: "30px",
+            flexWrap: "wrap"
+          }}>
+            <StatItem icon="📖" count={stats.volumes} label="VOLUMES" />
+            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
+            <StatItem icon="💼" count={`${stats.projects}+`} label="PROJECTS" />
+            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
+            <StatItem icon="📄" count={`${stats.researchNotes}+`} label="RESEARCH NOTES" />
+            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
+            <StatItem icon="🧪" count={`${stats.experiments}+`} label="EXPERIMENTS" />
+          </div>
+
+          <p style={{ 
+            margin: 0, color: "#c8a562", fontSize: "1.1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em",
+            display: "flex", alignItems: "center", gap: "16px", textShadow: "0 2px 4px rgba(0,0,0,0.8)"
+          }}>
+            <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↠</span> Explore deeply. Build meaningfully. <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↞</span>
+          </p>
+        </footer>
+
+        <div className="desk-surface" aria-hidden="true" />
+      </motion.div>
     </div>
   );
 }
