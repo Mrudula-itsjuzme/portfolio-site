@@ -1,123 +1,112 @@
 # Digital Library Portfolio
 
-An immersive library-themed portfolio website for **Pedamallu Sai Mrudula**, built with React, Vite, Node.js, Express, Framer Motion, and Three.js.
+An immersive library-themed portfolio for **Pedamallu Sai Mrudula**, built to present research, engineering projects, and creative technical work as a browsable digital archive.
 
-The idea: turn a technical profile, resume, and GitHub repositories into a digital archive where each project feels like a book on a shelf.
+Instead of placing projects in a standard grid, the interface turns repositories into books on a shelf. Each project becomes an artifact that can be opened, explored, and understood in context.
 
----
+## Concept
 
-## Project links and evidence
+The portfolio combines resume data, GitHub repository metadata, motion, sound, and 3D-inspired interaction into one narrative experience.
 
-| Item | Link / Note |
-|---|---|
-| Repository | https://github.com/Mrudula-itsjuzme/portfolio-site |
-| Live demo | Add GitHub Pages, Vercel, or Netlify link here once deployed |
-| Demo video | Not uploaded yet |
-| Dataset note | Uses `assets/resume.pdf` and GitHub repository metadata generated into `public/repos.json` |
-| Result screenshots | Add homepage/bookshelf/book-viewer screenshots or GIFs to a `screenshots/` folder |
-
----
+The central idea is simple: a technical portfolio should not feel like a filing cabinet. It should feel like entering a world built from the work itself.
 
 ## Features
 
 - interactive 3D-inspired bookshelf
-- project cards represented as books
-- page-flip style project viewer
+- repositories presented as project books
+- page-flip project viewer
 - GitHub repository fetching and categorization
-- static `repos.json` fallback to avoid public API rate-limit issues
-- resume link and profile archive layout
-- sound toggle with local preference storage
-- static deployment path through GitHub Pages, Vercel, or Netlify
-
----
+- static `repos.json` fallback for reliable public rendering
+- resume and profile archive
+- atmospheric sound with saved user preference
+- motion-led transitions using Framer Motion
+- static production build support
 
 ## System overview
 
 ```text
-Resume PDF + GitHub Repos
-          ↓
-Data Extraction Scripts
-          ↓
-Prebuilt JSON / API Layer
-          ↓
-React Portfolio UI
-          ↓
-Bookshelf + Book Viewer Experience
+Resume PDF + GitHub repositories
+              ↓
+      Data extraction scripts
+              ↓
+      Prepared JSON / API layer
+              ↓
+         React portfolio UI
+              ↓
+ Bookshelf + project-book viewer
 ```
-
----
 
 ## Tech stack
 
 | Layer | Tools |
 |---|---|
 | Frontend | React, Vite, Framer Motion |
-| 3D / Visuals | Three.js, React Three Fiber, Drei |
-| Book UI | React PageFlip |
+| 3D and visuals | Three.js, React Three Fiber, Drei |
+| Book interaction | React PageFlip |
 | Backend | Node.js, Express |
 | Data extraction | pdf-parse, GitHub API scripts |
-| Deployment | GitHub Pages / static build |
+| Export utilities | html2canvas, jsPDF |
 
----
-
-## Getting started
+## Run locally
 
 ```bash
 git clone https://github.com/Mrudula-itsjuzme/portfolio-site.git
 cd portfolio-site
-
 npm install
 npm run dev
 ```
 
-Development URLs:
+Development services:
 
 ```text
 Client: http://localhost:5173
 Server: http://localhost:5000
 ```
 
-Optional `.env` file:
+An optional GitHub token can be added for repository-data fetching:
 
 ```env
 GITHUB_TOKEN=your_token_here
 ```
 
----
+Create a production build with:
+
+```bash
+npm run build
+```
 
 ## Important files
 
 | File | Purpose |
 |---|---|
-| `assets/resume.pdf` | source profile/resume data |
-| `scripts/fetch-repos.js` | fetches and prepares GitHub repository data |
-| `public/repos.json` | prebuilt repository metadata |
-| `src/pages/Home.jsx` | main library stage and sound logic |
-| `src/components/Bookshelf.jsx` | bookshelf rendering engine |
+| `assets/resume.pdf` | source profile and resume data |
+| `scripts/fetch-repos.js` | fetches and prepares repository metadata |
+| `public/repos.json` | static repository-data fallback |
+| `src/pages/Home.jsx` | main library stage and sound behaviour |
+| `src/components/Bookshelf.jsx` | bookshelf rendering system |
 | `src/components/BookViewer.jsx` | interactive project-book viewer |
 
----
+## Design approach
 
-## Design notes
+The site is designed as a quiet digital archive rather than a conventional portfolio dashboard.
 
-This project is designed to feel like a quiet digital archive rather than a generic portfolio grid. The portfolio uses a bookshelf metaphor so each repository becomes a browsable artifact with context, links, and story.
+Motion and sound are used to create atmosphere, but the content remains the centre of the experience. The bookshelf metaphor gives each project a physical sense of place while still preserving direct links, descriptions, technologies, and repository evidence.
 
-Motion and sound are used as atmosphere, but the site should stay readable and usable without them. Future versions should continue improving accessibility, reduced-motion support, keyboard navigation, and performance on low-end devices.
+The architecture also keeps a static metadata fallback so the portfolio does not depend entirely on unauthenticated GitHub API requests at runtime.
 
----
+## Current status
 
-## Future improvements
+The core library experience, repository ingestion, book viewer, and static-data workflow are implemented. Current refinement areas include accessibility, reduced-motion behaviour, keyboard navigation, low-performance fallbacks, and continued verification of project metadata.
 
-- add the final production deployment link
-- add screenshots and demo GIFs to this README
-- improve accessibility for audio and motion effects
-- add fallback UI for low-performance devices
-- add project filtering by category or status
-- add automated refresh for GitHub metadata
-- replace placeholder/fallback project content with verified project data only
+## Roadmap
 
----
+- improve keyboard navigation and focus states
+- strengthen reduced-motion and audio controls
+- add a lightweight mode for low-performance devices
+- add filtering by project category and status
+- automate repository-metadata refreshes
+- continue replacing fallback content with verified project data
 
 ## Author
 
-Built by [Pedamallu Sai Mrudula](https://github.com/Mrudula-itsjuzme) as a personal portfolio and creative frontend engineering project.
+Built by [Pedamallu Sai Mrudula](https://github.com/Mrudula-itsjuzme) as a personal portfolio and creative frontend-engineering project.
