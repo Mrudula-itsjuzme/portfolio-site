@@ -1,81 +1,110 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-function seeded(seed) {
-  const value = Math.sin(seed * 928.31) * 43758.5453;
-  return value - Math.floor(value);
+const PAGE_PATHS = [
+  { x: ["-64vw", "-18vw", "12vw", "58vw"], y: ["30vh", "12vh", "-5vh", "-24vh"], r: [-18, -7, 8, 18], delay: 0.02, scale: [0.78, 0.92, 1.02, 0.84] },
+  { x: ["62vw", "24vw", "-6vw", "-54vw"], y: ["-30vh", "-14vh", "8vh", "28vh"], r: [15, 7, -6, -17], delay: 0.16, scale: [0.72, 0.9, 1, 0.8] },
+  { x: ["-58vw", "-28vw", "4vw", "52vw"], y: ["-18vh", "-4vh", "16vh", "34vh"], r: [22, 12, -4, -14], delay: 0.3, scale: [0.66, 0.86, 0.96, 0.76] },
+  { x: ["54vw", "18vw", "-12vw", "-60vw"], y: ["26vh", "9vh", "-12vh", "-34vh"], r: [-20, -10, 5, 16], delay: 0.42, scale: [0.7, 0.9, 1.04, 0.82] },
+  { x: ["-46vw", "-12vw", "18vw", "60vw"], y: ["42vh", "18vh", "-10vh", "-36vh"], r: [-10, -2, 11, 19], delay: 0.56, scale: [0.64, 0.82, 0.94, 0.72] },
+  { x: ["48vw", "16vw", "-16vw", "-58vw"], y: ["-42vh", "-19vh", "7vh", "38vh"], r: [11, 4, -8, -18], delay: 0.68, scale: [0.68, 0.86, 1, 0.78] },
+  { x: ["-52vw", "-20vw", "8vw", "56vw"], y: ["4vh", "-9vh", "3vh", "14vh"], r: [16, 6, -3, -12], delay: 0.82, scale: [0.58, 0.78, 0.9, 0.66] },
+  { x: ["52vw", "20vw", "-10vw", "-56vw"], y: ["12vh", "-6vh", "2vh", "-16vh"], r: [-14, -5, 5, 13], delay: 0.94, scale: [0.6, 0.8, 0.92, 0.68] },
+  { x: ["-40vw", "-8vw", "14vw", "46vw"], y: ["-36vh", "-15vh", "4vh", "24vh"], r: [8, 2, -5, -11], delay: 1.08, scale: [0.54, 0.74, 0.86, 0.62] },
+];
+
+function PaperSheet({ path, index }) {
+  const width = 86 + (index % 3) * 12;
+  const height = width * 1.42;
+  const paper = `hsl(${40 + (index % 4) * 1.5} 34% ${94 - (index % 2)}%)`;
+  const edge = `hsl(38 19% ${80 - (index % 3) * 2}%)`;
+  const ink = `rgba(78, 58, 34, ${0.11 + (index % 3) * 0.025})`;
+
+  return (
+    <motion.div
+      initial={{ x: path.x[0], y: path.y[0], rotateZ: path.r[0], rotateY: index % 2 ? -12 : 12, opacity: 0, scale: path.scale[0], filter: "blur(2px)" }}
+      animate={{
+        x: path.x,
+        y: path.y,
+        rotateZ: path.r,
+        rotateY: [index % 2 ? -12 : 12, 0, index % 2 ? 7 : -7, 0],
+        opacity: [0, 0.96, 0.92, 0],
+        scale: path.scale,
+        filter: ["blur(2px)", "blur(0px)", "blur(0px)", "blur(2px)"],
+      }}
+      transition={{ duration: 2.25, delay: path.delay, times: [0, 0.24, 0.74, 1], ease: [0.22, 0.61, 0.36, 1] }}
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        width,
+        height,
+        marginLeft: -width / 2,
+        marginTop: -height / 2,
+        transformStyle: "preserve-3d",
+      }}
+    >
+      <motion.div
+        animate={{ skewY: [0, 1.2, -0.8, 0], scaleX: [1, 0.992, 1.006, 1] }}
+        transition={{ duration: 2.25, delay: path.delay, times: [0, 0.32, 0.7, 1], ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          borderRadius: 2,
+          background: `linear-gradient(96deg, ${edge} 0%, ${paper} 5%, ${paper} 94%, ${edge} 100%)`,
+          border: "1px solid rgba(89,67,40,0.15)",
+          boxShadow: "0 12px 26px rgba(0,0,0,0.34), inset 5px 0 10px rgba(255,255,255,0.14), inset -4px 0 8px rgba(80,58,30,0.07)",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.66,
+            background: "repeating-linear-gradient(to bottom, transparent 0 13px, rgba(104,78,45,0.065) 13px 14px)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "12%",
+            left: "13%",
+            width: "52%",
+            height: 1.5,
+            background: ink,
+            boxShadow: `0 17px 0 ${ink}, 0 34px 0 ${ink}, 0 51px 0 ${ink}`,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: 14,
+            height: 14,
+            clipPath: "polygon(0 0, 100% 0, 100% 100%)",
+            background: "linear-gradient(135deg, rgba(255,255,255,0.74), rgba(192,164,111,0.22))",
+            borderLeft: "1px solid rgba(95,70,38,0.1)",
+            borderBottom: "1px solid rgba(95,70,38,0.1)",
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
 }
 
 export default function UnswirlingPages({ onComplete }) {
   const [isAnimating, setIsAnimating] = useState(true);
   const prefersReducedMotion = useReducedMotion();
-
-  const pages = useMemo(
-    () =>
-      Array.from({ length: 16 }, (_, index) => {
-        const angle = (index / 16) * Math.PI * 2 + seeded(index + 2) * 0.55;
-        const radius = 330 + seeded(index + 5) * 240;
-        const startX = Math.cos(angle) * radius;
-        const startY = Math.sin(angle) * radius * 0.62;
-        const tangentX = -Math.sin(angle);
-        const tangentY = Math.cos(angle);
-        const orbitStrength = 120 + seeded(index + 8) * 130;
-        const midpointX = startX * 0.52 + tangentX * orbitStrength;
-        const midpointY = startY * 0.52 + tangentY * orbitStrength * 0.62;
-        const nearX = (seeded(index + 11) - 0.5) * 120;
-        const nearY = (seeded(index + 14) - 0.5) * 90;
-        const endX = (seeded(index + 17) - 0.5) * 26;
-        const endY = (seeded(index + 20) - 0.5) * 20;
-        const width = 82 + seeded(index + 23) * 28;
-        const height = width * 1.42;
-        const delay = index * 0.055 + seeded(index + 26) * 0.12;
-        const duration = 2.35 + seeded(index + 29) * 0.48;
-        const rotation = -22 + seeded(index + 32) * 44;
-        const yaw = -18 + seeded(index + 35) * 36;
-
-        return {
-          id: index,
-          width,
-          height,
-          delay,
-          duration,
-          paper: `hsl(${40 + seeded(index + 38) * 6} 34% ${93 + seeded(index + 41) * 3}%)`,
-          edge: `hsl(38 20% ${78 + seeded(index + 44) * 7}%)`,
-          ink: `rgba(78, 58, 34, ${0.11 + seeded(index + 47) * 0.07})`,
-          initial: {
-            x: startX,
-            y: startY,
-            z: -80 + seeded(index + 50) * 160,
-            rotateX: -10 + seeded(index + 53) * 20,
-            rotateY: yaw,
-            rotateZ: rotation,
-            scale: 0.78 + seeded(index + 56) * 0.15,
-            opacity: 0,
-            filter: "blur(1.5px)",
-          },
-          animate: {
-            x: [startX, midpointX, nearX, endX],
-            y: [startY, midpointY, nearY, endY],
-            z: [-60, 10, 35, 0],
-            rotateX: [-8, 4, -2, 0],
-            rotateY: [yaw, yaw * 0.45, yaw * 0.12, 0],
-            rotateZ: [rotation, rotation + 24, rotation + 10, 0],
-            scale: [0.8, 0.94, 0.82, 0.62],
-            opacity: [0, 0.92, 0.82, 0],
-            filter: ["blur(1.5px)", "blur(0px)", "blur(0px)", "blur(0px)"],
-          },
-        };
-      }),
-    []
-  );
+  const paths = useMemo(() => PAGE_PATHS, []);
 
   useEffect(() => {
-    const total = prefersReducedMotion ? 400 : 3300;
+    const total = prefersReducedMotion ? 350 : 3350;
     const timer = window.setTimeout(() => {
       setIsAnimating(false);
-      window.setTimeout(onComplete, prefersReducedMotion ? 80 : 420);
+      window.setTimeout(onComplete, prefersReducedMotion ? 70 : 420);
     }, total);
-
     return () => window.clearTimeout(timer);
   }, [onComplete, prefersReducedMotion]);
 
@@ -91,11 +120,9 @@ export default function UnswirlingPages({ onComplete }) {
             position: "fixed",
             inset: 0,
             zIndex: 100,
-            display: "grid",
-            placeItems: "center",
-            perspective: "1050px",
-            background: "radial-gradient(circle at 50% 48%, rgba(76, 54, 30, 0.18), transparent 30%), #080605",
             overflow: "hidden",
+            perspective: "1100px",
+            background: "radial-gradient(circle at 50% 50%, rgba(78,55,30,0.2), transparent 34%), #080605",
           }}
         >
           <div
@@ -103,120 +130,29 @@ export default function UnswirlingPages({ onComplete }) {
             style={{
               position: "absolute",
               inset: 0,
-              opacity: 0.14,
-              backgroundImage: "radial-gradient(circle, rgba(214, 188, 137, 0.3) 0.7px, transparent 0.8px)",
+              opacity: 0.12,
+              backgroundImage: "radial-gradient(circle, rgba(214,188,137,0.28) 0.7px, transparent 0.8px)",
               backgroundSize: "36px 36px",
             }}
           />
 
+          {!prefersReducedMotion && paths.map((path, index) => <PaperSheet key={index} path={path} index={index} />)}
+
           <motion.div
-            initial={{ opacity: 0.06, scale: 0.94 }}
-            animate={{ opacity: [0.06, 0.2, 0], scale: [0.94, 1, 1.045] }}
-            transition={{ duration: 3, times: [0, 0.58, 1], ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: prefersReducedMotion ? 0 : [0, 0, 0.38, 0], scale: [0.7, 0.7, 1, 1.14] }}
+            transition={{ duration: 3.05, times: [0, 0.56, 0.82, 1], ease: "easeInOut" }}
             style={{
               position: "absolute",
-              width: "28vw",
-              minWidth: 300,
-              aspectRatio: "1",
+              left: "50%",
+              top: "50%",
+              width: 220,
+              height: 220,
+              marginLeft: -110,
+              marginTop: -110,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(227, 198, 142, 0.17), transparent 70%)",
-              filter: "blur(20px)",
-            }}
-          />
-
-          {!prefersReducedMotion && (
-            <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
-              {pages.map((page) => (
-                <motion.div
-                  key={page.id}
-                  initial={page.initial}
-                  animate={page.animate}
-                  transition={{
-                    duration: page.duration,
-                    delay: page.delay,
-                    times: [0, 0.38, 0.78, 1],
-                    ease: [0.22, 0.61, 0.36, 1],
-                  }}
-                  style={{
-                    position: "absolute",
-                    left: "50%",
-                    top: "50%",
-                    width: page.width,
-                    height: page.height,
-                    marginLeft: -page.width / 2,
-                    marginTop: -page.height / 2,
-                    transformStyle: "preserve-3d",
-                  }}
-                >
-                  <motion.div
-                    animate={{ skewY: [0, 1.2, -0.7, 0], scaleX: [1, 0.992, 1.006, 1] }}
-                    transition={{
-                      duration: page.duration,
-                      delay: page.delay,
-                      times: [0, 0.4, 0.76, 1],
-                      ease: "easeInOut",
-                    }}
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: 2,
-                      overflow: "hidden",
-                      transformOrigin: "50% 50%",
-                      background: `linear-gradient(96deg, ${page.edge} 0%, ${page.paper} 5%, ${page.paper} 94%, ${page.edge} 100%)`,
-                      border: "1px solid rgba(89, 67, 40, 0.16)",
-                      boxShadow: "0 11px 24px rgba(0,0,0,0.3), inset 5px 0 10px rgba(255,255,255,0.14), inset -4px 0 8px rgba(80,58,30,0.07)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        background: "repeating-linear-gradient(to bottom, transparent 0 13px, rgba(104,78,45,0.065) 13px 14px)",
-                        opacity: 0.66,
-                      }}
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "12%",
-                        left: "13%",
-                        width: "52%",
-                        height: 1.5,
-                        background: page.ink,
-                        boxShadow: `0 17px 0 ${page.ink}, 0 34px 0 ${page.ink}, 0 51px 0 ${page.ink}`,
-                      }}
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        right: 0,
-                        width: 14,
-                        height: 14,
-                        clipPath: "polygon(0 0, 100% 0, 100% 100%)",
-                        background: "linear-gradient(135deg, rgba(255,255,255,0.72), rgba(192,164,111,0.22))",
-                        borderLeft: "1px solid rgba(95,70,38,0.1)",
-                        borderBottom: "1px solid rgba(95,70,38,0.1)",
-                      }}
-                    />
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: prefersReducedMotion ? 0 : [0, 0, 0.7, 0], scale: [0.92, 0.92, 1, 1.015] }}
-            transition={{ duration: 2.9, times: [0, 0.64, 0.84, 1], ease: "easeInOut" }}
-            style={{
-              position: "relative",
-              width: 112,
-              height: 160,
-              borderRadius: 3,
-              background: "linear-gradient(90deg, #d8c39c, #f4ead7 8%, #fff9eb 92%, #ceb98f)",
-              border: "1px solid rgba(91,65,31,0.18)",
-              boxShadow: "0 18px 36px rgba(0,0,0,0.46)",
+              background: "radial-gradient(circle, rgba(236,210,158,0.2), transparent 70%)",
+              filter: "blur(14px)",
             }}
           />
         </motion.div>
