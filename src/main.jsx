@@ -4,6 +4,7 @@ import App from "./App";
 import "./styles/library.css";
 import "./styles/entrance.css";
 import "./styles/archive-viewer.css";
+import "./styles/archive-viewer-fixes.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
