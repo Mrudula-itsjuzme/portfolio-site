@@ -1,8 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import UnswirlingPages from "../components/UnswirlingPages";
-import FeaturedVolume from "../components/FeaturedVolume";
-
 import Bookshelf from "../components/Bookshelf";
 import { projects as fallbackProjects } from "../data/projects";
 
@@ -10,6 +8,7 @@ const BookViewer = lazy(() => import("../components/BookViewer"));
 
 const leatherCycle = ["leather-oxblood", "leather-forest", "leather-navy", "leather-charcoal", "leather-brown"];
 const accentCycle = ["#c9a96a", "#b89054", "#a88046", "#d3b279", "#b58e5f"];
+const CATEGORY_ORDER = ["Research & Publications", "AI Systems", "Product Experiments", "Interface Studies"];
 
 function prettyName(raw) {
   return String(raw || "Project")
@@ -38,6 +37,7 @@ function initialsFromTitle(title) {
 }
 
 function generateBookTitle(repo) {
+  if (repo?.spineTitle) return repo.spineTitle;
   const base = prettyName(repo?.name);
   const topics = Array.isArray(repo?.topics) ? repo.topics.join(" ").toLowerCase() : "";
   const language = String(repo?.language || "").toLowerCase();
@@ -46,8 +46,7 @@ function generateBookTitle(repo) {
   if (/(model|train|dataset|neural|ai|ml|classification|prediction)/.test(topics)) return `Treatise on ${base}`;
   if (/(data|analytics|etl|pipeline|forecast|analysis)/.test(`${topics} ${base.toLowerCase()}`)) return `Atlas of ${base}`;
   if (/(react|frontend|ui|web|javascript|typescript|next)/.test(`${topics} ${language}`)) return `${base} Codex`;
-  if (/(api|server|backend|express|flask|django|fastapi)/.test(`${topics} ${base.toLowerCase()}`)) return `${base} Service Ledger`;
-  return base.split(" ").length <= 2 ? `Chronicle of ${base}` : base;
+  return base;
 }
 
 function extractRepoName(url) {
@@ -67,7 +66,7 @@ function enrichProject(project, index) {
     archiveCode: project?.archiveCode || buildArchiveCode(title, index),
     shelfMark: project?.shelfMark || `Bay ${Math.floor(index / 6) + 1} / ${String((index % 6) + 1).padStart(2, "0")}`,
     sigil: project?.sigil || ["✶", "✦", "❖", "✷", "✹"][index % 5],
-    publishedYear: project?.publishedYear || new Date().getFullYear().toString(),
+    publishedYear: project?.publishedYear || "2026",
     synopsis: project?.synopsis || project?.description || "A documented engineering artifact with context, implementation notes, and source links.",
     topics: Array.isArray(project?.topics) && project.topics.length ? project.topics : [project?.category || "Engineering"],
     repoName: project?.repoName || extractRepoName(project?.githubUrl)
@@ -76,41 +75,41 @@ function enrichProject(project, index) {
 
 function mapRepoToProject(repo, index) {
   const title = generateBookTitle(repo);
-  const topics = Array.isArray(repo?.topics) && repo.topics.length ? repo.topics : ["engineering", "portfolio"];
-  const description = repo?.description || "Repository with implementation details and project artifacts.";
+  const topics = Array.isArray(repo?.topics) && repo.topics.length ? repo.topics : ["engineering"];
+  const description = repo?.description || "Documented project repository.";
+  const category = repo?.category || "AI Systems";
+
+  const pages = Array.isArray(repo?.pages) && repo.pages.length
+    ? repo.pages
+    : [
+        { kind: "cover", title: repo?.displayTitle || title, subtitle: repo?.subtitle || category, author: "Pedamallu Sai Mrudula", year: repo?.publishedYear || "2026" },
+        { kind: "overview", title: "Problem & Contribution", bullets: repo?.overview?.length ? repo.overview : [description] },
+        { kind: "architecture", title: "Architecture", diagram: repo?.architecture?.diagram || ["Input", "Processing", "Core Logic", "Output"], text: repo?.architecture?.text || "See the repository documentation for the implemented system structure." },
+        { kind: "workflow", title: "Implementation", bullets: repo?.workflow?.length ? repo.workflow : ["Review the repository README", "Inspect the implementation", "Run the documented workflow"] },
+        { kind: "stack", title: "Tech Stack", bullets: repo?.stack?.length ? repo.stack : [repo?.language || "Mixed", ...topics.slice(0, 4)] },
+        { kind: "resources", title: repo?.resultsTitle || "Evidence & Status", bullets: repo?.results?.length ? repo.results : ["Implementation and documentation available in the repository", repo?.status || "Active project"] },
+        { kind: "github", title: "Source & Documentation", buttonText: "View Repository" }
+      ];
 
   return enrichProject({
     id: String(repo?.id || repo?.name || `project-${index}`),
+    name: repo?.name,
     spineTitle: title,
     title,
     language: repo?.language || "Code",
     description,
+    synopsis: repo?.synopsis || description,
     stars: repo?.stars ?? 0,
     forks: repo?.forks ?? 0,
-    category: repo?.language || "Repository",
-    leather: leatherCycle[index % leatherCycle.length],
-    accent: accentCycle[index % accentCycle.length],
+    category,
+    priority: repo?.priority ?? index,
+    leather: repo?.leather || leatherCycle[index % leatherCycle.length],
+    accent: repo?.accent || accentCycle[index % accentCycle.length],
     githubUrl: repo?.url || "https://github.com/Mrudula-itsjuzme",
-    demoUrl: repo?.homepage || "https://mrudula-itsjuzme.github.io/portfolio-site/",
+    demoUrl: repo?.homepage || repo?.url || "https://github.com/Mrudula-itsjuzme",
     topics,
     repoName: repo?.fullName || null,
-    pages: [
-      { kind: "cover", title, subtitle: repo?.language || "Engineering", author: "Pedamallu Sai Mrudula", year: new Date().getFullYear().toString() },
-      {
-        kind: "overview",
-        title: "Overview",
-        bullets: [
-          description,
-          "Mapped into this portfolio as a browsable archive entry.",
-          "Open the repository for implementation details, commits, and source files."
-        ]
-      },
-      { kind: "architecture", title: "Architecture", diagram: ["Input", "Processing", "Core Logic", "Output"], text: "The project is presented as a modular system so the implementation path is easier to inspect." },
-      { kind: "workflow", title: "Working / Implementation", bullets: ["Inspect project goal", "Review files and setup", "Run or read the implementation", "Compare outputs", "Iterate with documented changes"] },
-      { kind: "stack", title: "Tech Stack", bullets: [repo?.language || "Mixed", ...topics.slice(0, 4)] },
-      { kind: "resources", title: "Resources", bullets: ["Repository documentation", `Stars: ${repo?.stars ?? 0}`, `Forks: ${repo?.forks ?? 0}`] },
-      { kind: "github", title: "GitHub", buttonText: "View Repository" }
-    ]
+    pages
   }, index);
 }
 
@@ -118,10 +117,8 @@ function playTone(type, contextRef) {
   const Context = window.AudioContext || window.webkitAudioContext;
   if (!Context) return;
   if (!contextRef.current) contextRef.current = new Context();
-
   const ctx = contextRef.current;
   if (ctx.state === "suspended") ctx.resume();
-
   const oscillator = ctx.createOscillator();
   const gain = ctx.createGain();
   oscillator.connect(gain);
@@ -135,9 +132,7 @@ function playTone(type, contextRef) {
 
 function stopAmbient(oscillatorsRef) {
   oscillatorsRef.current.forEach((source) => {
-    try {
-      source.stop();
-    } catch {}
+    try { source.stop(); } catch {}
   });
   oscillatorsRef.current = [];
 }
@@ -146,16 +141,13 @@ function startAmbient(contextRef, gainRef, oscillatorsRef) {
   const Context = window.AudioContext || window.webkitAudioContext;
   if (!Context) return;
   if (!contextRef.current) contextRef.current = new Context();
-
   const ctx = contextRef.current;
   if (ctx.state === "suspended") ctx.resume();
   stopAmbient(oscillatorsRef);
-
   gainRef.current = ctx.createGain();
   gainRef.current.connect(ctx.destination);
   gainRef.current.gain.setValueAtTime(0.001, ctx.currentTime);
   gainRef.current.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 1.4);
-
   [130.81, 195.99, 246.94, 164.81].forEach((frequency, index) => {
     const oscillator = ctx.createOscillator();
     const noteGain = ctx.createGain();
@@ -188,7 +180,6 @@ export default function Home() {
   const [projects, setProjects] = useState(() => fallbackProjects.map(enrichProject));
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
-
   const [activeModal, setActiveModal] = useState(null);
   const [introFinished, setIntroFinished] = useState(false);
   const audioContextRef = useRef(null);
@@ -197,32 +188,24 @@ export default function Home() {
 
   const dust = useMemo(() => Array.from({ length: 14 }, (_, index) => ({ id: index, left: (index * 17) % 100 })), []);
 
-  const stats = useMemo(() => {
-    let research = 0;
-    let experiments = 0;
-    let mainProjects = 0;
-
-    projects.forEach(p => {
-      const topicStr = (p.topics || []).join(" ").toLowerCase();
-      const desc = (p.description || "").toLowerCase();
-      const name = (p.name || "").toLowerCase();
-
-      if (topicStr.includes("research") || topicStr.includes("paper") || topicStr.includes("data") || topicStr.includes("analysis") || desc.includes("research")) {
-        research++;
-      } else if (topicStr.includes("experiment") || topicStr.includes("test") || topicStr.includes("demo") || name.includes("demo") || name.includes("test")) {
-        experiments++;
-      } else {
-        mainProjects++;
-      }
-    });
-
-    return {
-      volumes: projects.length,
-      projects: mainProjects || 12,
-      researchNotes: research || 4,
-      experiments: experiments || 8
-    };
+  const groupedProjects = useMemo(() => {
+    const groups = new Map(CATEGORY_ORDER.map((category) => [category, []]));
+    projects
+      .slice()
+      .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+      .forEach((project) => {
+        const category = groups.has(project.category) ? project.category : "AI Systems";
+        groups.get(category).push(project);
+      });
+    return CATEGORY_ORDER.map((category) => ({ category, projects: groups.get(category) })).filter((group) => group.projects.length);
   }, [projects]);
+
+  const stats = useMemo(() => ({
+    volumes: projects.length,
+    researchNotes: projects.filter((project) => project.category === "Research & Publications").length,
+    systems: projects.filter((project) => project.category === "AI Systems").length,
+    experiments: projects.filter((project) => ["Product Experiments", "Interface Studies"].includes(project.category)).length
+  }), [projects]);
 
   function handleToggleSound() {
     const next = !soundEnabled;
@@ -234,58 +217,30 @@ export default function Home() {
 
   useEffect(() => {
     const controller = new AbortController();
-
     async function loadProjects() {
       try {
         setIsLoading(true);
-        const res = await fetch(`${import.meta.env.BASE_URL}repos.json`, { signal: controller.signal });
-        if (!res.ok) throw new Error(`repos.json ${res.status}`);
-        const raw = await res.json();
-        const repos = Array.isArray(raw) ? raw : [];
-        if (repos.length) setProjects(repos.map(mapRepoToProject));
+        const response = await fetch(`${import.meta.env.BASE_URL}repos.json`, { signal: controller.signal });
+        if (!response.ok) throw new Error(`repos.json ${response.status}`);
+        const raw = await response.json();
+        if (Array.isArray(raw) && raw.length) setProjects(raw.map(mapRepoToProject));
         setLoadError(null);
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          try {
-            const apiRes = await fetch("https://api.github.com/users/Mrudula-itsjuzme/repos?per_page=100&sort=updated", {
-              headers: { Accept: "application/vnd.github+json" }
-            });
-            if (!apiRes.ok) throw new Error(`GitHub API ${apiRes.status}`);
-            const raw = await apiRes.json();
-            const repos = Array.isArray(raw)
-              ? raw
-                  .filter((repo) => !repo.fork && repo.name !== "portfolio-site")
-                  .map((repo) => ({
-                    id: repo.id,
-                    name: repo.name,
-                    fullName: repo.full_name,
-                    description: repo.description || "",
-                    language: repo.language || "Code",
-                    url: repo.html_url,
-                    homepage: repo.homepage || "",
-                    topics: repo.topics || [],
-                    stars: repo.stargazers_count,
-                    forks: repo.forks_count
-                  }))
-              : [];
-            if (repos.length) setProjects(repos.map(mapRepoToProject));
-            setLoadError(null);
-          } catch {
-            setLoadError("Using fallback archive entries.");
-          }
-        }
+      } catch (error) {
+        if (error.name !== "AbortError") setLoadError("Using the built-in curated archive because the project catalogue could not be loaded.");
       } finally {
         setIsLoading(false);
       }
     }
-
     loadProjects();
     return () => controller.abort();
   }, []);
 
   useEffect(() => {
     function handleKey(event) {
-      if (event.key === "Escape") setOpenProject(null);
+      if (event.key === "Escape") {
+        setOpenProject(null);
+        setActiveModal(null);
+      }
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -299,179 +254,86 @@ export default function Home() {
   return (
     <div className="library-shell">
       <div className="dust-field" aria-hidden="true">
-        {dust.map((particle) => (
-          <span key={particle.id} style={{ left: `${particle.left}%`, animationDelay: `${(particle.id % 8) * 0.7}s` }} />
-        ))}
+        {dust.map((particle) => <span key={particle.id} style={{ left: `${particle.left}%`, animationDelay: `${(particle.id % 8) * 0.7}s` }} />)}
       </div>
 
       {!introFinished && <UnswirlingPages onComplete={() => setIntroFinished(true)} />}
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: introFinished ? 1 : 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-      >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: introFinished ? 1 : 0 }} transition={{ duration: 1.5, ease: "easeOut" }}>
         <header className="library-topbar">
           <div className="topbar-left">
             <div className="topbar-logo">M</div>
             <div className="topbar-title-group">
               <h1>PEDAMALLU SAI MRUDULA</h1>
-              <p>CSE-AI Student · Researcher · Developer · Creative Technologist</p>
+              <p>AI Engineering Student · Researcher · Builder · Creative Technologist</p>
             </div>
           </div>
 
           <nav className="topbar-nav">
-            <a href="#archive" className={!activeModal ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Archive</a>
-            <a href="#about" className={activeModal === "about" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("about"); }}>About</a>
-            <a href="#projects" onClick={(e) => { e.preventDefault(); setActiveModal(null); document.getElementById("archive")?.scrollIntoView({ behavior: "smooth" }); }}>Projects</a>
-            <a href="#writings" className={activeModal === "writings" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("writings"); }}>Writings</a>
-            <a href="#experiments" className={activeModal === "experiments" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("experiments"); }}>Experiments</a>
-            <a href="#contact" className={activeModal === "contact" ? "active" : ""} onClick={(e) => { e.preventDefault(); setActiveModal("contact"); }}>Contact</a>
+            <a href="#archive" className={!activeModal ? "active" : ""} onClick={(event) => { event.preventDefault(); setActiveModal(null); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Archive</a>
+            <a href="#about" className={activeModal === "about" ? "active" : ""} onClick={(event) => { event.preventDefault(); setActiveModal("about"); }}>About</a>
+            <a href="#projects" onClick={(event) => { event.preventDefault(); setActiveModal(null); document.getElementById("archive")?.scrollIntoView({ behavior: "smooth" }); }}>Projects</a>
+            <a href="#writings" className={activeModal === "writings" ? "active" : ""} onClick={(event) => { event.preventDefault(); setActiveModal("writings"); }}>Writings</a>
+            <a href="#experiments" className={activeModal === "experiments" ? "active" : ""} onClick={(event) => { event.preventDefault(); setActiveModal("experiments"); }}>Experiments</a>
+            <a href="#contact" className={activeModal === "contact" ? "active" : ""} onClick={(event) => { event.preventDefault(); setActiveModal("contact"); }}>Contact</a>
           </nav>
 
           <div className="topbar-actions">
-            <a className="resume-btn" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer" title="Download Resume">
-              📄 Resume
-            </a>
-            <button className="sound-toggle" onClick={handleToggleSound} title="Toggle ambient music and sound effects">
-              {soundEnabled ? "💡 Ambient: On" : "💡 Ambient: Off"}
-            </button>
+            <a className="resume-btn" href={`${import.meta.env.BASE_URL}resume.pdf`} target="_blank" rel="noreferrer" title="Open resume">📄 Resume</a>
+            <button className="sound-toggle" onClick={handleToggleSound} title="Toggle ambient sound">{soundEnabled ? "💡 Ambient: On" : "💡 Ambient: Off"}</button>
           </div>
         </header>
 
-        {/* Info Modal Overlay */}
         <AnimatePresence>
           {activeModal && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActiveModal(null)}
-              style={{
-                position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 100,
-                background: "rgba(10, 5, 2, 0.8)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center"
-              }}
-            >
-              <motion.div
-                initial={{ scale: 0.9, y: 30 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                  background: "linear-gradient(180deg, #1e1610 0%, #120d09 100%)", border: "1px solid #4a3822", borderRadius: "8px",
-                  padding: "40px", maxWidth: "500px", width: "90%", boxShadow: "0 20px 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.03)",
-                  position: "relative", textAlign: "center"
-                }}
-              >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveModal(null)} style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(10, 5, 2, 0.8)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <motion.div initial={{ scale: 0.9, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} onClick={(event) => event.stopPropagation()} style={{ background: "linear-gradient(180deg, #1e1610 0%, #120d09 100%)", border: "1px solid #4a3822", borderRadius: "8px", padding: "40px", maxWidth: "560px", width: "90%", boxShadow: "0 20px 40px rgba(0,0,0,0.8)", position: "relative", textAlign: "center" }}>
                 <button onClick={() => setActiveModal(null)} style={{ position: "absolute", top: 16, right: 20, background: "none", border: "none", color: "#a88e5a", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
-                <h2 style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", marginTop: 0, letterSpacing: "0.1em" }}>
-                  {activeModal.toUpperCase()}
-                </h2>
+                <h2 style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", marginTop: 0, letterSpacing: "0.1em" }}>{activeModal.toUpperCase()}</h2>
                 <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #4a3822, transparent)", margin: "20px 0" }} />
-                
-                {activeModal === 'about' && (
-                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
-                    I am a CSE-AI student and creative technologist deeply interested in building premium, thoughtful digital experiences.<br/><br/>
-                    This archive is a living collection of my engineering notes, software experiments, and aesthetic explorations.
-                  </p>
-                )}
-                
-                {activeModal === 'contact' && (
-                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
-                    I am currently open for opportunities, collaborations, and discussions about technology and design.<br/><br/>
-                    You can reach me via <a href="mailto:psm@example.com" style={{ color: "#d2b478", textDecoration: "underline" }}>Email</a> or connect on <a href="https://linkedin.com" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>LinkedIn</a>.
-                  </p>
-                )}
 
-                {(activeModal === 'writings' || activeModal === 'experiments') && (
-                  <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.6 }}>
-                    These records are currently being compiled into the archive.<br/>
-                    Check back soon as I bind new volumes and organize my scattered notes.
-                  </p>
-                )}
+                {activeModal === "about" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Third-year AI Engineering student at Amrita Vishwa Vidyapeetham, working across applied machine learning, computer vision, biomedical signal processing, cybersecurity analytics, and AI product development.<br/><br/>I am a first-author IEEE Access researcher and build systems that try to balance technical depth with real-world usability.</p>}
+
+                {activeModal === "contact" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Open to AI/ML internships, research collaborations, and ambitious engineering projects.<br/><br/>Reach me via <a href="mailto:mrudulasankar2007@gmail.com" style={{ color: "#d2b478", textDecoration: "underline" }}>email</a>, connect on <a href="https://www.linkedin.com/in/pedamallusaimrudula" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>LinkedIn</a>, or inspect the work on <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>GitHub</a>.</p>}
+
+                {activeModal === "writings" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>My writing spans AI, poetry, human creativity, and research communication. Published work includes an essay in The Daffodils alongside technical research papers and project documentation.</p>}
+
+                {activeModal === "experiments" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Interface trials, product prototypes, and smaller technical studies live here without pretending to be full production systems. They are experiments, documented as experiments.</p>}
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
         <main id="archive" className="archive-main">
-          {!isLoading && projects.length > 0 && (
-            <>
-              <div className="bookshelf-section-wrapper">
-                <Bookshelf
-                  projects={projects}
-                  onOpenProject={(project) => setOpenProject(project)}
-                  onHoverProject={(project) => setHoveredProject(project)}
-                  onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)}
-                />
+          {!isLoading && groupedProjects.map(({ category, projects: categoryProjects }) => (
+            <section key={category} style={{ marginBottom: "42px" }}>
+              <div style={{ maxWidth: "1180px", margin: "0 auto 12px", padding: "0 24px", display: "flex", alignItems: "center", gap: "16px" }}>
+                <span style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", fontSize: "0.82rem", letterSpacing: "0.18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{category}</span>
+                <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg, rgba(210,180,120,0.45), transparent)" }} />
+                <span style={{ color: "#806b47", fontFamily: "'Cinzel', serif", fontSize: "0.68rem" }}>{categoryProjects.length} {categoryProjects.length === 1 ? "volume" : "volumes"}</span>
               </div>
+              <div className="bookshelf-section-wrapper">
+                <Bookshelf projects={categoryProjects} onOpenProject={setOpenProject} onHoverProject={setHoveredProject} onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)} />
+              </div>
+            </section>
+          ))}
 
-
-            </>
-          )}
-
-          {isLoading && (
-            <div className="library-notice">
-              <div className="spinner" />
-              <p>Loading projects…</p>
-            </div>
-          )}
-
+          {isLoading && <div className="library-notice"><div className="spinner" /><p>Loading curated archive…</p></div>}
           {loadError && !isLoading && <div className="library-notice library-error">{loadError}</div>}
         </main>
 
         <AnimatePresence>
-          {openProject && (
-            <Suspense fallback={<div className="viewer-loading">Opening book…</div>}>
-              <BookViewer
-                project={openProject}
-                onClose={() => setOpenProject(null)}
-                onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)}
-              />
-            </Suspense>
-          )}
+          {openProject && <Suspense fallback={<div className="viewer-loading">Opening book…</div>}><BookViewer project={openProject} onClose={() => setOpenProject(null)} onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)} /></Suspense>}
         </AnimatePresence>
 
-        <footer style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: "40px 0 60px",
-          position: "relative",
-          zIndex: 10,
-          background: "linear-gradient(180deg, transparent 0%, #0d0a08 100%)"
-        }}>
-          {/* Floating Stats Bar */}
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "48px",
-            background: "rgba(20, 15, 10, 0.7)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(200, 175, 120, 0.15)",
-            borderBottom: "1px solid rgba(200, 175, 120, 0.05)",
-            borderRadius: "4px",
-            padding: "24px 48px",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.02)",
-            marginBottom: "30px",
-            flexWrap: "wrap"
-          }}>
-            <StatItem icon="📖" count={stats.volumes} label="VOLUMES" />
-            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
-            <StatItem icon="💼" count={`${stats.projects}+`} label="PROJECTS" />
-            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
-            <StatItem icon="📄" count={`${stats.researchNotes}+`} label="RESEARCH NOTES" />
-            <div style={{ width: "1px", height: "40px", background: "rgba(200, 175, 120, 0.15)" }} />
-            <StatItem icon="🧪" count={`${stats.experiments}+`} label="EXPERIMENTS" />
+        <footer style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 0 60px", position: "relative", zIndex: 10, background: "linear-gradient(180deg, transparent 0%, #0d0a08 100%)" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "38px", background: "rgba(20, 15, 10, 0.7)", backdropFilter: "blur(12px)", border: "1px solid rgba(200, 175, 120, 0.15)", borderRadius: "4px", padding: "24px 42px", boxShadow: "0 20px 40px rgba(0,0,0,0.6)", marginBottom: "30px", flexWrap: "wrap" }}>
+            <StatItem icon="📖" count={stats.volumes} label="CURATED VOLUMES" />
+            <StatItem icon="📄" count={stats.researchNotes} label="RESEARCH" />
+            <StatItem icon="⚙️" count={stats.systems} label="AI SYSTEMS" />
+            <StatItem icon="🧪" count={stats.experiments} label="EXPERIMENTS" />
           </div>
-
-          <p style={{ 
-            margin: 0, color: "#c8a562", fontSize: "1.1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em",
-            display: "flex", alignItems: "center", gap: "16px", textShadow: "0 2px 4px rgba(0,0,0,0.8)"
-          }}>
-            <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↠</span> Explore deeply. Build meaningfully. <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↞</span>
-          </p>
+          <p style={{ margin: 0, color: "#c8a562", fontSize: "1.1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "16px", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}><span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↠</span> Explore deeply. Build meaningfully. <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↞</span></p>
         </footer>
 
         <div className="desk-surface" aria-hidden="true" />
