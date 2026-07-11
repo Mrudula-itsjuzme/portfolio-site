@@ -30,10 +30,10 @@ function Parchment({ page }) {
     >
       <motion.div
         animate={{
-          skewX: [0, page.flutter, -page.flutter * 0.65, page.flutter * 0.35, 0],
-          skewY: [0, -page.flutter * 0.55, page.flutter * 0.4, 0],
-          scaleX: [1, 0.975, 1.012, 0.992, 1],
-          rotateX: [0, page.curl, -page.curl * 0.42, 0],
+          skewX: [0, page.flutter, -page.flutter * 0.55, page.flutter * 0.25, 0],
+          skewY: [0, -page.flutter * 0.4, page.flutter * 0.3, 0],
+          scaleX: [1, 0.986, 1.008, 0.996, 1],
+          rotateX: [0, page.curl, -page.curl * 0.28, 0],
         }}
         transition={{
           duration: page.duration,
@@ -48,11 +48,11 @@ function Parchment({ page }) {
           overflow: "hidden",
           transformOrigin: "50% 45%",
           clipPath: page.clipPath,
-          border: "1px solid rgba(92, 56, 24, 0.2)",
+          border: "1px solid rgba(96, 59, 25, 0.28)",
           borderRadius: 2,
-          background: `linear-gradient(102deg, ${page.edge} 0%, ${page.paper} 7%, ${page.highlight} 52%, ${page.paper} 92%, ${page.edge} 100%)`,
+          background: `linear-gradient(100deg, ${page.edge} 0%, ${page.paper} 8%, ${page.highlight} 50%, ${page.paper} 91%, ${page.edge} 100%)`,
           boxShadow:
-            "0 10px 25px rgba(0,0,0,0.38), inset 5px 0 10px rgba(255,255,255,0.18), inset -5px 0 10px rgba(75,43,17,0.1)",
+            "0 12px 28px rgba(0,0,0,0.42), inset 7px 0 12px rgba(255,255,255,0.2), inset -6px 0 12px rgba(75,43,17,0.12)",
           backfaceVisibility: "visible",
         }}
       >
@@ -60,23 +60,34 @@ function Parchment({ page }) {
           style={{
             position: "absolute",
             inset: 0,
-            opacity: 0.45,
+            opacity: 0.5,
             backgroundImage:
-              "radial-gradient(circle at 22% 18%, rgba(105,64,26,0.11) 0 0.8px, transparent 1px), radial-gradient(circle at 76% 68%, rgba(105,64,26,0.08) 0 0.7px, transparent 1px)",
-            backgroundSize: "27px 25px, 31px 29px",
+              "radial-gradient(circle at 22% 18%, rgba(105,64,26,0.12) 0 0.9px, transparent 1.1px), radial-gradient(circle at 76% 68%, rgba(105,64,26,0.09) 0 0.8px, transparent 1px)",
+            backgroundSize: "29px 27px, 35px 33px",
           }}
         />
 
         <div
           style={{
             position: "absolute",
-            top: "15%",
+            top: "14%",
             left: "13%",
-            width: "62%",
+            width: "64%",
             height: 1,
             background: page.ink,
-            boxShadow: `0 8px 0 ${page.ink}, 0 16px 0 ${page.ink}, 0 24px 0 ${page.ink}, 0 32px 0 ${page.ink}`,
-            opacity: 0.68,
+            boxShadow: `0 9px 0 ${page.ink}, 0 18px 0 ${page.ink}, 0 27px 0 ${page.ink}, 0 36px 0 ${page.ink}, 0 45px 0 ${page.ink}`,
+            opacity: 0.74,
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            left: "8%",
+            top: "11%",
+            bottom: "10%",
+            width: 1,
+            background: "rgba(135,72,45,0.16)",
           }}
         />
 
@@ -86,12 +97,12 @@ function Parchment({ page }) {
               position: "absolute",
               right: "10%",
               bottom: "11%",
-              width: 9,
-              height: 9,
+              width: 12,
+              height: 12,
               borderRadius: "50%",
-              background: "radial-gradient(circle at 35% 30%, #96342d 0 18%, #6d211c 48%, #43100e 100%)",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.35)",
-              opacity: 0.78,
+              background: "radial-gradient(circle at 35% 30%, #a53b32 0 18%, #72231d 48%, #43100e 100%)",
+              boxShadow: "0 1px 5px rgba(0,0,0,0.4)",
+              opacity: 0.84,
             }}
           />
         )}
@@ -104,9 +115,9 @@ function Parchment({ page }) {
             width: page.fold,
             height: page.fold,
             clipPath: "polygon(0 0, 100% 0, 100% 100%)",
-            background: "linear-gradient(135deg, rgba(255,248,224,0.88), rgba(164,119,59,0.26))",
-            borderLeft: "1px solid rgba(100,66,30,0.12)",
-            borderBottom: "1px solid rgba(100,66,30,0.12)",
+            background: "linear-gradient(135deg, rgba(255,248,224,0.92), rgba(164,119,59,0.3))",
+            borderLeft: "1px solid rgba(100,66,30,0.14)",
+            borderBottom: "1px solid rgba(100,66,30,0.14)",
           }}
         />
       </motion.div>
@@ -120,19 +131,19 @@ export default function UnswirlingPages({ onComplete }) {
 
   const pages = useMemo(
     () =>
-      Array.from({ length: 46 }, (_, index) => {
+      Array.from({ length: 40 }, (_, index) => {
         const angle = seeded(index + 2) * Math.PI * 2;
         const radius = 130 + seeded(index + 5) * 600;
         const initialZ = -950 - seeded(index + 8) * 850;
         const finalZ = 760 + seeded(index + 11) * 900;
         const direction = seeded(index + 14) > 0.5 ? 1 : -1;
-        const width = 34 + seeded(index + 17) * 42;
-        const height = width * (1.27 + seeded(index + 20) * 0.2);
-        const startRotateX = seeded(index + 23) * 360;
-        const startRotateY = seeded(index + 26) * 360;
+        const width = 54 + seeded(index + 17) * 50;
+        const height = width * (1.31 + seeded(index + 20) * 0.18);
+        const startRotateX = -38 + seeded(index + 23) * 76;
+        const startRotateY = -48 + seeded(index + 26) * 96;
         const startRotateZ = seeded(index + 29) * 360;
-        const hue = 38 + seeded(index + 32) * 8;
-        const light = 86 + seeded(index + 35) * 7;
+        const hue = 36 + seeded(index + 32) * 8;
+        const light = 82 + seeded(index + 35) * 8;
 
         return {
           id: index,
@@ -140,14 +151,14 @@ export default function UnswirlingPages({ onComplete }) {
           height,
           delay: seeded(index + 38) * 1.7,
           duration: 2.2 + seeded(index + 41) * 1.5,
-          curl: 3 + seeded(index + 44) * 7,
-          flutter: 1.2 + seeded(index + 47) * 2.6,
-          fold: 7 + seeded(index + 50) * 8,
-          hasSeal: seeded(index + 53) > 0.82,
-          paper: `hsl(${hue} 39% ${light}%)`,
-          highlight: `hsl(${hue + 2} 45% ${Math.min(light + 5, 96)}%)`,
-          edge: `hsl(${hue - 4} 28% ${Math.max(light - 17, 66)}%)`,
-          ink: `rgba(70, 42, 19, ${0.12 + seeded(index + 56) * 0.1})`,
+          curl: 2 + seeded(index + 44) * 4.5,
+          flutter: 0.8 + seeded(index + 47) * 1.8,
+          fold: 10 + seeded(index + 50) * 9,
+          hasSeal: seeded(index + 53) > 0.8,
+          paper: `hsl(${hue} 44% ${light}%)`,
+          highlight: `hsl(${hue + 2} 49% ${Math.min(light + 7, 96)}%)`,
+          edge: `hsl(${hue - 4} 32% ${Math.max(light - 18, 62)}%)`,
+          ink: `rgba(70, 42, 19, ${0.16 + seeded(index + 56) * 0.11})`,
           clipPath:
             seeded(index + 59) > 0.5
               ? "polygon(2% 0, 98% 1%, 100% 96%, 97% 100%, 1% 98%, 0 4%)"
@@ -159,7 +170,7 @@ export default function UnswirlingPages({ onComplete }) {
             rotateX: startRotateX,
             rotateY: startRotateY,
             rotateZ: startRotateZ,
-            scale: 0.08,
+            scale: 0.1,
             opacity: 0,
             filter: "blur(7px)",
           },
@@ -167,12 +178,12 @@ export default function UnswirlingPages({ onComplete }) {
             x: Math.cos(angle) * radius * 3,
             y: Math.sin(angle) * radius * 3,
             z: finalZ,
-            rotateX: startRotateX + 300 * direction,
-            rotateY: startRotateY - 340 * direction,
+            rotateX: startRotateX + 90 * direction,
+            rotateY: startRotateY - 110 * direction,
             rotateZ: startRotateZ + 150 * direction,
-            scale: 1.7 + seeded(index + 62) * 1.25,
-            opacity: [0, 0.94, 0.9, 0],
-            filter: ["blur(7px)", "blur(0px)", finalZ > 1200 ? "blur(2.5px)" : "blur(0px)"],
+            scale: 1.9 + seeded(index + 62) * 0.95,
+            opacity: [0, 0.96, 0.93, 0],
+            filter: ["blur(7px)", "blur(0px)", finalZ > 1250 ? "blur(1.6px)" : "blur(0px)"],
           },
         };
       }),
