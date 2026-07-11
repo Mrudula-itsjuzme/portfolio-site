@@ -161,18 +161,6 @@ function startAmbient(contextRef, gainRef, oscillatorsRef) {
   });
 }
 
-function StatItem({ icon, count, label }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-      <span style={{ fontSize: "1.8rem", opacity: 0.85, filter: "sepia(0.4) saturate(0.8)" }}>{icon}</span>
-      <div style={{ display: "flex", flexDirection: "column", textAlign: "left" }}>
-        <span style={{ color: "#e2c899", fontSize: "1.4rem", fontFamily: "'Cinzel', serif", lineHeight: 1 }}>{count}</span>
-        <span style={{ color: "#a88e5a", fontSize: "0.7rem", letterSpacing: "0.15em", textTransform: "uppercase", marginTop: "4px", fontFamily: "'Cinzel', serif" }}>{label}</span>
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
   const [openProject, setOpenProject] = useState(null);
   const [hoveredProject, setHoveredProject] = useState(null);
@@ -199,13 +187,6 @@ export default function Home() {
       });
     return CATEGORY_ORDER.map((category) => ({ category, projects: groups.get(category) })).filter((group) => group.projects.length);
   }, [projects]);
-
-  const stats = useMemo(() => ({
-    volumes: projects.length,
-    researchNotes: projects.filter((project) => project.category === "Research & Publications").length,
-    systems: projects.filter((project) => project.category === "AI Systems").length,
-    experiments: projects.filter((project) => ["Product Experiments", "Interface Studies"].includes(project.category)).length
-  }), [projects]);
 
   function handleToggleSound() {
     const next = !soundEnabled;
@@ -253,6 +234,33 @@ export default function Home() {
 
   return (
     <div className="library-shell">
+      <style>{`
+        html, body, #root, .library-shell {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        .bookshelf-section-wrapper,
+        .shelf-books {
+          max-width: 100%;
+        }
+
+        .shelf-books {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .shelf-books::-webkit-scrollbar {
+          display: none;
+          width: 0;
+          height: 0;
+        }
+
+        .archive-main > section:last-of-type {
+          margin-bottom: 0 !important;
+        }
+      `}</style>
+
       <div className="dust-field" aria-hidden="true">
         {dust.map((particle) => <span key={particle.id} style={{ left: `${particle.left}%`, animationDelay: `${(particle.id % 8) * 0.7}s` }} />)}
       </div>
@@ -325,16 +333,6 @@ export default function Home() {
         <AnimatePresence>
           {openProject && <Suspense fallback={<div className="viewer-loading">Opening book…</div>}><BookViewer project={openProject} onClose={() => setOpenProject(null)} onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)} /></Suspense>}
         </AnimatePresence>
-
-        <footer style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 0 60px", position: "relative", zIndex: 10, background: "linear-gradient(180deg, transparent 0%, #0d0a08 100%)" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "38px", background: "rgba(20, 15, 10, 0.7)", backdropFilter: "blur(12px)", border: "1px solid rgba(200, 175, 120, 0.15)", borderRadius: "4px", padding: "24px 42px", boxShadow: "0 20px 40px rgba(0,0,0,0.6)", marginBottom: "30px", flexWrap: "wrap" }}>
-            <StatItem icon="📖" count={stats.volumes} label="CURATED VOLUMES" />
-            <StatItem icon="📄" count={stats.researchNotes} label="RESEARCH" />
-            <StatItem icon="⚙️" count={stats.systems} label="AI SYSTEMS" />
-            <StatItem icon="🧪" count={stats.experiments} label="EXPERIMENTS" />
-          </div>
-          <p style={{ margin: 0, color: "#c8a562", fontSize: "1.1rem", fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: "16px", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}><span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↠</span> Explore deeply. Build meaningfully. <span style={{ fontSize: "0.8rem", opacity: 0.8 }}>↞</span></p>
-        </footer>
 
         <div className="desk-surface" aria-hidden="true" />
       </motion.div>
