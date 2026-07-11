@@ -1,0 +1,416 @@
+/* Ornate magical archive viewer */
+
+.archive-viewer-backdrop {
+  padding: 0;
+  background:
+    radial-gradient(circle at 50% 78%, rgba(170, 112, 45, 0.16), transparent 38%),
+    linear-gradient(rgba(6, 4, 3, 0.8), rgba(6, 4, 3, 0.92));
+  backdrop-filter: blur(8px) saturate(0.8);
+}
+
+.archive-desk {
+  width: min(98vw, 1500px);
+  min-height: min(96vh, 960px);
+  padding: 1rem 1.35rem 1.1rem;
+  border: 1px solid rgba(198, 143, 55, 0.7);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% -15%, rgba(226, 166, 77, 0.14), transparent 36%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 6px),
+    linear-gradient(180deg, #1b120d 0%, #0f0a07 100%);
+  box-shadow:
+    0 40px 90px rgba(0,0,0,0.78),
+    inset 0 0 0 3px rgba(113,72,28,0.24),
+    inset 0 0 70px rgba(0,0,0,0.74);
+}
+
+.archive-desk::before,
+.archive-desk::after {
+  content: "✦";
+  position: absolute;
+  top: 12px;
+  color: rgba(207, 157, 76, 0.9);
+  font-size: 1.2rem;
+  text-shadow: 0 0 14px rgba(232, 177, 83, 0.45);
+  z-index: 4;
+}
+
+.archive-desk::before { left: 18px; }
+.archive-desk::after { right: 18px; }
+
+.archive-viewer-header {
+  position: relative;
+  padding: 1.2rem 12rem 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.archive-viewer-header::before {
+  content: "ARC · PORTFOLIO ARCHIVE";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.55rem;
+  font-family: "Cinzel", serif;
+  color: #d2a45d;
+  letter-spacing: 0.18em;
+  font-size: 0.67rem;
+}
+
+.archive-viewer-header::after {
+  content: "✧  ✦  ✧";
+  display: block;
+  margin-top: 0.42rem;
+  color: rgba(209,157,74,0.72);
+  font-size: 0.7rem;
+  letter-spacing: 0.6em;
+}
+
+.archive-viewer-header h2 {
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  color: #ead2a0;
+  letter-spacing: 0.075em;
+  text-shadow: 0 2px 0 #4a2c10, 0 0 22px rgba(220,166,76,0.16);
+}
+
+.archive-viewer-header p {
+  color: rgba(212,171,101,0.78);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+}
+
+.archive-title-rule {
+  width: min(430px, 58vw);
+  height: 1px;
+  margin: 0 auto 0.45rem;
+  background: linear-gradient(90deg, transparent, rgba(211,158,75,0.85), transparent);
+}
+
+.archive-close {
+  position: absolute;
+  top: 1.15rem;
+  right: 1.5rem;
+  z-index: 20;
+  float: none;
+  padding: 0.62rem 1rem;
+  border-color: rgba(205,153,71,0.72);
+  background: linear-gradient(180deg, rgba(48,31,17,0.96), rgba(21,14,9,0.98));
+  color: #e3be79;
+  box-shadow: inset 0 0 16px rgba(211,158,75,0.08), 0 8px 22px rgba(0,0,0,0.35);
+}
+
+.archive-close:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 0 18px rgba(211,158,75,0.15), 0 0 18px rgba(207,153,65,0.18);
+}
+
+.archive-stage {
+  display: block;
+  position: relative;
+  min-height: 0;
+}
+
+.archive-prop {
+  display: none !important;
+}
+
+.archive-book-zone {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.archive-flipbook-wrap {
+  width: min(92vw, 1320px);
+  height: min(72vh, 760px);
+  padding: 1.25rem 1.5rem;
+  overflow: visible;
+  border: 1px solid rgba(154,100,43,0.56);
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(30,17,9,0.96), rgba(70,40,18,0.68) 49%, rgba(31,17,9,0.96)),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 4px);
+  box-shadow:
+    0 28px 58px rgba(0,0,0,0.75),
+    inset 0 0 0 5px rgba(60,34,14,0.8),
+    inset 0 0 0 7px rgba(180,123,48,0.2);
+}
+
+.archive-flipbook-wrap::before {
+  top: 1.15rem;
+  bottom: 1.15rem;
+  width: 70px;
+  background: radial-gradient(ellipse at center, rgba(40,20,8,0.62), rgba(40,20,8,0.22) 42%, transparent 72%);
+}
+
+.archive-flipbook-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0.55rem;
+  border: 1px solid rgba(203,147,63,0.22);
+  border-radius: 13px;
+  pointer-events: none;
+}
+
+.archive-flipbook {
+  filter: drop-shadow(0 16px 22px rgba(0,0,0,0.38));
+}
+
+.paper-page {
+  padding: 1.2rem 1.4rem 1.15rem;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(124,72,27,0.08) 0 1px, transparent 2px),
+    radial-gradient(circle at 80% 72%, rgba(124,72,27,0.065) 0 1px, transparent 2px),
+    linear-gradient(180deg, rgba(248,230,195,0.99), rgba(223,191,142,0.98));
+  background-size: 43px 41px, 57px 53px, auto;
+  color: #342114;
+  border-color: rgba(94,55,23,0.28);
+  box-shadow:
+    inset 0 0 42px rgba(117,71,31,0.22),
+    inset 0 0 0 1px rgba(121,76,33,0.22),
+    inset 14px 0 26px rgba(85,43,15,0.08);
+}
+
+.paper-page::before {
+  width: 24px;
+  background: linear-gradient(90deg, rgba(61,27,8,0.22), rgba(78,40,15,0.06), transparent);
+}
+
+.paper-page::after {
+  height: 0;
+  background: none;
+}
+
+.paper-page.recto .page-surface,
+.paper-page.verso .page-surface {
+  padding: 1.2rem 1.1rem 1rem;
+  border: 1px solid rgba(112,68,29,0.16);
+  box-shadow: inset 0 0 0 1px rgba(255,246,218,0.22);
+  position: relative;
+}
+
+.paper-page.recto .page-surface::before,
+.paper-page.verso .page-surface::before,
+.paper-page.recto .page-surface::after,
+.paper-page.verso .page-surface::after {
+  position: absolute;
+  color: rgba(126,76,30,0.46);
+  font-family: "Cinzel", serif;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.paper-page .page-surface::before { content: "❧"; top: 0.42rem; left: 0.5rem; }
+.paper-page .page-surface::after { content: "❧"; bottom: 0.42rem; right: 0.5rem; transform: rotate(180deg); }
+
+.running-head {
+  margin: 0 0 0.1rem;
+  padding: 0 1rem 0.38rem;
+  border-bottom: none;
+  justify-content: space-between;
+  font-size: 0.55rem;
+  color: rgba(104,63,27,0.56);
+}
+
+.page-surface h2,
+.page-surface h3 {
+  color: #3a2415;
+  text-shadow: 0 1px rgba(255,244,215,0.8);
+}
+
+.cover-surface {
+  gap: 0.7rem;
+  justify-content: center;
+}
+
+.cover-kicker {
+  letter-spacing: 0.28em;
+  color: #76502d;
+  font-size: 0.66rem;
+}
+
+.cover-surface h2 {
+  font-size: clamp(1.75rem, 3vw, 2.7rem);
+  letter-spacing: 0.04em;
+}
+
+.cover-surface > p:nth-of-type(2) {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+.page-figure {
+  width: 88%;
+  margin: 1rem auto 0;
+  padding: 0.38rem;
+  border: 1px solid rgba(111,67,28,0.4);
+  background: linear-gradient(180deg, rgba(236,211,164,0.85), rgba(198,160,101,0.72));
+  box-shadow: 0 10px 24px rgba(71,36,13,0.24), inset 0 0 0 2px rgba(255,240,204,0.28);
+}
+
+.page-figure img {
+  max-height: 205px;
+  object-fit: cover;
+  filter: sepia(0.12) saturate(0.92) contrast(0.98);
+}
+
+.cover-meta {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #654322;
+}
+
+.archive-meta {
+  border-top: 1px solid rgba(116,71,29,0.24);
+  padding-top: 0.55rem;
+}
+
+.titleplate-surface {
+  gap: 0.7rem;
+  justify-content: center;
+}
+
+.titleplate-surface::before {
+  content: "✦" !important;
+  left: 50% !important;
+  top: 11% !important;
+  transform: translateX(-50%);
+  font-size: 1.2rem !important;
+  color: rgba(141,86,31,0.54) !important;
+}
+
+.titleplate-surface h3 {
+  font-size: clamp(1.5rem, 2.4vw, 2.15rem);
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(111,66,27,0.28);
+}
+
+.seal-row {
+  width: 88%;
+  margin: 0.6rem auto;
+  gap: 0;
+  border-top: 1px solid rgba(109,67,29,0.26);
+}
+
+.seal-row span {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.54rem 0.25rem;
+  border-bottom: 1px dotted rgba(104,65,29,0.32);
+}
+
+.seal-row span:nth-child(1)::before { content: "ARCHIVE CODE"; }
+.seal-row span:nth-child(2)::before { content: "SHELF / BAY"; }
+.seal-row span:nth-child(3)::before { content: "COLLECTION"; }
+
+.titleplate-surface > p:last-child {
+  width: 88%;
+  margin: 0.9rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(105,64,28,0.24);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.folio {
+  margin-top: 0.45rem;
+  color: rgba(85,51,24,0.7);
+}
+
+.archive-brass-label {
+  margin-top: 0.75rem;
+  padding: 0.45rem 1.2rem;
+  border: 1px solid rgba(201,145,59,0.42);
+  background: rgba(32,20,12,0.72);
+  color: #d8aa60;
+  font-family: "Cinzel", serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  border-radius: 2px;
+}
+
+.archive-viewer-controls {
+  width: fit-content;
+  margin: 0.85rem auto 0;
+  gap: 1.2rem;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.archive-viewer-controls button,
+.archive-viewer-controls span {
+  min-width: 120px;
+  min-height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(201,145,58,0.58);
+  background: linear-gradient(180deg, #2d1d11, #120c08);
+  color: #e0b66f;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 2px rgba(116,70,27,0.32), 0 8px 20px rgba(0,0,0,0.34);
+}
+
+.archive-viewer-controls span {
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.18em;
+}
+
+.archive-filed-under {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(201,145,58,0.18);
+  text-align: left;
+  color: rgba(211,168,95,0.58);
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 0.88rem;
+}
+
+.archive-filed-under::before {
+  content: "“ Scale with intent. Design for change. Ship with clarity. ”";
+  margin-right: 1rem;
+  color: #b88642;
+}
+
+@media (max-width: 900px) {
+  .archive-desk {
+    width: 100vw;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 0.75rem;
+  }
+
+  .archive-viewer-header {
+    padding: 3.2rem 1rem 0.7rem;
+  }
+
+  .archive-viewer-header::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .archive-flipbook-wrap {
+    width: 96vw;
+    height: 67vh;
+    padding: 0.65rem;
+  }
+
+  .archive-viewer-controls button,
+  .archive-viewer-controls span {
+    min-width: 88px;
+  }
+
+  .archive-filed-under::before {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+}
