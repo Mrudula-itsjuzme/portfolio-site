@@ -5,6 +5,8 @@ import "./styles/library.css";
 import "./styles/entrance.css";
 import "./styles/archive-viewer.css";
 import "./styles/archive-viewer-fixes.css";
+import "./styles/premium-motion.css";
+import "./premium-motion";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
