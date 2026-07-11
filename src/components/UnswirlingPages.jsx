@@ -1,224 +1,249 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+function seeded(seed) {
+  const value = Math.sin(seed * 999.91) * 43758.5453;
+  return value - Math.floor(value);
+}
 
 export default function UnswirlingPages({ onComplete }) {
   const [isAnimating, setIsAnimating] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
 
-  // ── Generate page data — same logic as the original working version ──────
-  const pages = Array.from({ length: 50 }).map((_, i) => {
-    const delay    = Math.random() * 2.0;
-    const duration = 2.0 + Math.random() * 2.0;
-    const angle    = Math.random() * 360;
-    const radius   = 100 + Math.random() * 600;
+  const pages = useMemo(() => {
+    return Array.from({ length: 30 }, (_, index) => {
+      const side = index % 2 === 0 ? -1 : 1;
+      const spread = 180 + seeded(index + 2) * 620;
+      const vertical = -320 + seeded(index + 5) * 640;
+      const depth = -520 + seeded(index + 8) * 900;
+      const width = 112 + seeded(index + 11) * 54;
+      const height = width * (1.34 + seeded(index + 14) * 0.18);
+      const delay = seeded(index + 17) * 0.65;
+      const duration = 2.7 + seeded(index + 20) * 0.75;
+      const curl = 5 + seeded(index + 23) * 9;
+      const warm = 93 + seeded(index + 26) * 4;
 
-    const initialZ       = -1000 - Math.random() * 800;
-    const initialRotateX = Math.random() * 360;
-    const initialRotateY = Math.random() * 360;
-    const initialRotateZ = Math.random() * 360;
-
-    const finalX = Math.cos(angle * (Math.PI / 180)) * radius * 3;
-    const finalY = Math.sin(angle * (Math.PI / 180)) * radius * 3;
-    const finalZ = 800 + Math.random() * 800;
-
-    // ── Paper appearance ──────────────────────────────────────────────────
-    const isDark     = Math.random() > 0.85;
-    const hue        = 28 + Math.random() * 16;
-    const lig        = isDark ? 10 + Math.random() * 8 : 87 + Math.random() * 9;
-    const sat        = isDark ? 6 : 14 + Math.random() * 12;
-    const baseColor  = `hsl(${hue},${sat}%,${lig}%)`;
-    const lightColor = `hsl(${hue},${Math.max(sat-3,0)}%,${Math.min(lig+10,97)}%)`;
-    const darkColor  = `hsl(${hue},${sat+4}%,${Math.max(lig-15,2)}%)`;
-    const lineColor  = isDark
-      ? `rgba(255,255,255,${0.07 + Math.random() * 0.07})`
-      : `rgba(80,52,22,${0.13 + Math.random() * 0.13})`;
-
-    // How much the page curls (cylindrical bend intensity)
-    const bendDeg = 14 + Math.random() * 22;
-
-    return {
-      id: i,
-      delay,
-      duration,
-      isDark,
-      baseColor,
-      lightColor,
-      darkColor,
-      lineColor,
-      bendDeg,
-      initial: {
-        x: 0,
-        y: 0,
-        z: initialZ,
-        rotateX: initialRotateX,
-        rotateY: initialRotateY,
-        rotateZ: initialRotateZ,
-        scale: 0.1,
-        opacity: 0,
-        filter: "blur(8px)",
-      },
-      animate: {
-        x: finalX,
-        y: finalY,
-        z: finalZ,
-        rotateX: initialRotateX + 360 * (Math.random() > 0.5 ? 1 : -1),
-        rotateY: initialRotateY + 360 * (Math.random() > 0.5 ? 1 : -1),
-        rotateZ: initialRotateZ + 180,
-        // Wind skew — makes the page wobble like it's catching air
-        skewX: [0, 10, -5, 8, -5, 0],
-        skewY: [0, -8, 5, -10, 5, 0],
-        scale: 2.5 + Math.random() * 1.5,
-        opacity: [0, 0.9, 0.9, 0],
-        filter: ["blur(8px)", "blur(0px)", finalZ > 1000 ? "blur(4px)" : "blur(0px)"],
-      },
-    };
-  });
+      return {
+        id: index,
+        width,
+        height,
+        delay,
+        duration,
+        curl,
+        paper: `hsl(42 36% ${warm}%)`,
+        edge: `hsl(37 24% ${Math.max(warm - 12, 72)}%)`,
+        ink: `rgba(80, 59, 34, ${0.1 + seeded(index + 29) * 0.08})`,
+        initial: {
+          x: side * spread,
+          y: vertical,
+          z: depth,
+          rotateX: -38 + seeded(index + 32) * 76,
+          rotateY: side * (36 + seeded(index + 35) * 78),
+          rotateZ: -34 + seeded(index + 38) * 68,
+          scale: 0.72 + seeded(index + 41) * 0.42,
+          opacity: 0,
+          filter: "blur(3px)",
+        },
+        animate: {
+          x: [side * spread, side * spread * 0.62, side * 110, 0],
+          y: [vertical, vertical * 0.72, vertical * 0.2, 0],
+          z: [depth, depth * 0.5, 120, 0],
+          rotateX: [
+            -38 + seeded(index + 32) * 76,
+            18 * side,
+            -8 * side,
+            0,
+          ],
+          rotateY: [
+            side * (36 + seeded(index + 35) * 78),
+            side * 42,
+            side * 14,
+            0,
+          ],
+          rotateZ: [
+            -34 + seeded(index + 38) * 68,
+            16 * side,
+            -5 * side,
+            0,
+          ],
+          scale: [0.78, 1.02, 0.9, 0.72],
+          opacity: [0, 1, 1, index < 8 ? 0.95 : 0],
+          filter: ["blur(3px)", "blur(0px)", "blur(0px)", "blur(0px)"],
+        },
+      };
+    });
+  }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const total = prefersReducedMotion ? 500 : 3900;
+    const timer = window.setTimeout(() => {
       setIsAnimating(false);
-      setTimeout(onComplete, 800);
-    }, 4500);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+      window.setTimeout(onComplete, prefersReducedMotion ? 100 : 550);
+    }, total);
+
+    return () => window.clearTimeout(timer);
+  }, [onComplete, prefersReducedMotion]);
 
   return (
     <AnimatePresence>
       {isAnimating && (
         <motion.div
-          key="unswirling-container"
+          key="paper-intro"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: prefersReducedMotion ? 0.1 : 0.55, ease: "easeInOut" }}
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 100,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            perspective: "1200px",
-            background: "#080605",
+            display: "grid",
+            placeItems: "center",
+            perspective: "1500px",
+            background:
+              "radial-gradient(circle at 50% 46%, rgba(74, 53, 28, 0.2), transparent 28%), #080605",
             overflow: "hidden",
           }}
         >
-          {/* Ambient dust */}
-          <div style={{
-            position: "absolute", inset: 0, opacity: 0.4,
-            backgroundImage: "radial-gradient(circle, rgba(200,175,120,0.15) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }} />
-
-          {/* Camera push-in */}
-          <motion.div
-            initial={{ z: -500 }}
-            animate={{ z: 800 }}
-            transition={{ duration: 2.0, delay: 3.0, ease: "easeIn" }}
+          <div
+            aria-hidden="true"
             style={{
-              position: "relative",
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transformStyle: "preserve-3d",
+              position: "absolute",
+              inset: 0,
+              opacity: 0.2,
+              backgroundImage:
+                "radial-gradient(circle, rgba(214, 188, 137, 0.32) 0.7px, transparent 0.8px)",
+              backgroundSize: "34px 34px",
             }}
-          >
-            {/* Pages */}
-            <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
-              {pages.map((p) => (
+          />
+
+          <motion.div
+            initial={{ scale: 0.94, opacity: 0.2 }}
+            animate={{ scale: [0.94, 1, 1.035], opacity: [0.2, 0.44, 0] }}
+            transition={{ duration: 3.4, times: [0, 0.48, 1], ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              width: "34vw",
+              minWidth: 360,
+              aspectRatio: "1",
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(225, 196, 139, 0.18), transparent 68%)",
+              filter: "blur(18px)",
+            }}
+          />
+
+          {!prefersReducedMotion && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {pages.map((page) => (
                 <motion.div
-                  key={p.id}
-                  initial={p.initial}
-                  animate={p.animate}
+                  key={page.id}
+                  initial={page.initial}
+                  animate={page.animate}
                   transition={{
-                    duration: p.duration,
-                    delay: p.delay,
-                    ease: "easeInOut",
-                    times: [0, 0.2, 0.8, 1],
+                    duration: page.duration,
+                    delay: page.delay,
+                    times: [0, 0.34, 0.74, 1],
+                    ease: [0.22, 0.61, 0.36, 1],
                   }}
                   style={{
                     position: "absolute",
                     left: "50%",
                     top: "50%",
-                    width: "150px",
-                    height: "220px",
-                    marginLeft: "-75px",
-                    marginTop: "-110px",
+                    width: page.width,
+                    height: page.height,
+                    marginLeft: -page.width / 2,
+                    marginTop: -page.height / 2,
                     transformStyle: "preserve-3d",
-                    // No background here — strips handle it
                   }}
                 >
-                  {/*
-                    ── CYLINDRICAL BEND: 5 horizontal strips ──────────────────
-                    Each strip has a different rotateX, forming a physical curve
-                    like real paper bending in the wind. Strip 0=top bends back,
-                    strip 2=middle is flat, strip 4=bottom bends forward.
-                    This is ONLY a visual change — animation is identical to before.
-                  */}
-                  {[0, 1, 2, 3, 4].map((si) => {
-                    const frac      = si / 4;                     // 0→1
-                    const stripH    = 220 / 5;
-                    // Sinusoidal bend: edges curve, middle stays flat
-                    const bendAngle = p.bendDeg * Math.sin(frac * Math.PI) * (frac < 0.5 ? -1 : 1);
-                    const light     = Math.sin(frac * Math.PI);   // 0 at edges, 1 center
-
-                    return (
-                      <div key={si} style={{
-                        position:        "absolute",
-                        left:            0,
-                        top:             si * stripH,
-                        width:           "150px",
-                        height:          stripH + 0.5,
-                        background:      frac < 0.5
-                          ? `linear-gradient(to bottom, ${p.darkColor}, ${p.baseColor})`
-                          : `linear-gradient(to bottom, ${p.baseColor}, ${p.darkColor})`,
-                        filter:          `brightness(${0.8 + light * 0.3})`,
-                        transformOrigin: "50% 0%",
-                        transform:       `perspective(600px) rotateX(${bendAngle}deg)`,
-                        overflow:        "hidden",
-                        boxShadow:       si === 0
-                          ? `0 -4px 12px rgba(0,0,0,0.3)`
-                          : si === 4
-                          ? `0 6px 18px rgba(0,0,0,0.4)`
-                          : "none",
-                      }}>
-                        {/* Lateral shimmer — makes the cylinder look round */}
-                        <div style={{
-                          position:   "absolute",
-                          inset:      0,
-                          background: `linear-gradient(to right,
-                            rgba(0,0,0,${0.08 - light * 0.04}),
-                            rgba(255,255,255,${light * 0.08}),
-                            rgba(0,0,0,${0.06 - light * 0.03}))`,
-                          pointerEvents: "none",
-                        }} />
-                        {/* Manuscript line */}
-                        <div style={{
-                          position:   "absolute",
-                          top:        "38%",
-                          left:       "10%",
-                          width:      `${50 + si * 9}%`,
-                          height:     "0.8px",
-                          background: p.lineColor,
-                          opacity:    0.4 + light * 0.35,
-                        }} />
-                      </div>
-                    );
-                  })}
-
-                  {/* Right-edge glint */}
-                  <div style={{
-                    position:   "absolute",
-                    top: 0, right: 0,
-                    width:      "18%",
-                    height:     "100%",
-                    background: `linear-gradient(to left, ${p.lightColor}44, transparent)`,
-                    pointerEvents: "none",
-                  }} />
+                  <motion.div
+                    animate={{ rotateX: [page.curl, -page.curl * 0.45, page.curl * 0.22, 0] }}
+                    transition={{
+                      duration: page.duration * 0.95,
+                      delay: page.delay,
+                      times: [0, 0.38, 0.76, 1],
+                      ease: "easeInOut",
+                    }}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: 2,
+                      overflow: "hidden",
+                      transformOrigin: "50% 0%",
+                      background: `linear-gradient(100deg, ${page.edge} 0%, ${page.paper} 8%, ${page.paper} 88%, ${page.edge} 100%)`,
+                      border: "1px solid rgba(90, 68, 39, 0.18)",
+                      boxShadow:
+                        "0 14px 32px rgba(0,0,0,0.42), inset 10px 0 18px rgba(255,255,255,0.18), inset -8px 0 14px rgba(77,55,29,0.1)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "repeating-linear-gradient(to bottom, transparent 0 14px, rgba(100,75,42,0.08) 14px 15px)",
+                        opacity: 0.72,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "12%",
+                        left: "12%",
+                        width: "58%",
+                        height: 2,
+                        background: page.ink,
+                        boxShadow: `0 18px 0 ${page.ink}, 0 36px 0 ${page.ink}, 0 54px 0 ${page.ink}`,
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "7%",
+                        right: "7%",
+                        width: 18,
+                        height: 18,
+                        borderTop: "1px solid rgba(93,67,34,0.16)",
+                        borderRight: "1px solid rgba(93,67,34,0.16)",
+                        background: "linear-gradient(135deg, rgba(255,255,255,0.8), rgba(194,167,116,0.28))",
+                        clipPath: "polygon(0 0, 100% 0, 100% 100%)",
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: 5,
+                        background: "linear-gradient(to right, rgba(92,67,34,0.22), transparent)",
+                      }}
+                    />
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: prefersReducedMotion ? 0 : [0, 0, 0.9, 0], scale: [0.92, 0.92, 1, 1.03] }}
+            transition={{ duration: 3.5, times: [0, 0.58, 0.78, 1], ease: "easeInOut" }}
+            style={{
+              position: "relative",
+              width: 150,
+              height: 210,
+              borderRadius: 3,
+              background: "linear-gradient(90deg, #d9c39b, #f3ead7 10%, #fff9eb 88%, #ceb98f)",
+              border: "1px solid rgba(91,65,31,0.2)",
+              boxShadow: "0 22px 48px rgba(0,0,0,0.58)",
+            }}
+          />
         </motion.div>
       )}
     </AnimatePresence>
