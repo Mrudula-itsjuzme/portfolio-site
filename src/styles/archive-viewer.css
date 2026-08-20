@@ -156,7 +156,7 @@
 }
 
 .archive-flipbook {
-  filter: drop-shadow(0 16px 22px rgba(0,0,0,0.38));
+  /* Removed filter: drop-shadow(...) as it causes extreme blurriness on 3D transformed child pages */
 }
 
 .paper-page {
