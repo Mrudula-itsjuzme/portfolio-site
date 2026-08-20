@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import UnswirlingPages from "../components/UnswirlingPages";
+import CinematicDoors from "../components/CinematicDoors";
+import WritingsScroll from "../components/WritingsScroll";
+import FeaturedVolume from "../components/FeaturedVolume";
 import Bookshelf from "../components/Bookshelf";
 import { projects as fallbackProjects } from "../data/projects";
 
@@ -265,9 +267,14 @@ export default function Home() {
         {dust.map((particle) => <span key={particle.id} style={{ left: `${particle.left}%`, animationDelay: `${(particle.id % 8) * 0.7}s` }} />)}
       </div>
 
-      {!introFinished && <UnswirlingPages onComplete={() => setIntroFinished(true)} />}
+      {!introFinished && <CinematicDoors onComplete={() => setIntroFinished(true)} />}
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: introFinished ? 1 : 0 }} transition={{ duration: 1.5, ease: "easeOut" }}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: introFinished ? 1 : 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        style={{ filter: (openProject || activeModal === 'writings') ? "blur(12px) brightness(0.6)" : "none", transition: "filter 0.8s ease" }}
+      >
         <header className="library-topbar">
           <div className="topbar-left">
             <div className="topbar-logo">M</div>
@@ -293,20 +300,62 @@ export default function Home() {
         </header>
 
         <AnimatePresence>
-          {activeModal && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setActiveModal(null)} style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(10, 5, 2, 0.8)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <motion.div initial={{ scale: 0.9, y: 30 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} onClick={(event) => event.stopPropagation()} style={{ background: "linear-gradient(180deg, #1e1610 0%, #120d09 100%)", border: "1px solid #4a3822", borderRadius: "8px", padding: "40px", maxWidth: "560px", width: "90%", boxShadow: "0 20px 40px rgba(0,0,0,0.8)", position: "relative", textAlign: "center" }}>
-                <button onClick={() => setActiveModal(null)} style={{ position: "absolute", top: 16, right: 20, background: "none", border: "none", color: "#a88e5a", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
-                <h2 style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", marginTop: 0, letterSpacing: "0.1em" }}>{activeModal.toUpperCase()}</h2>
-                <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #4a3822, transparent)", margin: "20px 0" }} />
+          {activeModal === 'writings' && (
+            <WritingsScroll onClose={() => setActiveModal(null)} />
+          )}
+          {activeModal && activeModal !== 'writings' && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveModal(null)}
+              style={{
+                position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 100,
+                background: "rgba(10, 5, 2, 0.8)", backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center"
+              }}
+            >
+              <motion.div
+                initial={{ scale: 0.95, y: 10, rotateX: 10 }}
+                animate={{ scale: 1, y: 0, rotateX: 0 }}
+                exit={{ scale: 0.95, y: 10, rotateX: 10, opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  background: activeModal === 'about' ? "linear-gradient(180deg, #e6d7bd, #cbb798)" : "linear-gradient(180deg, #1e1610 0%, #120d09 100%)",
+                  border: activeModal === 'about' ? "1px solid #a88e5a" : "1px solid #4a3822",
+                  borderRadius: "2px",
+                  padding: "40px", maxWidth: "500px", width: "90%",
+                  boxShadow: "0 30px 60px rgba(0,0,0,0.8)",
+                  position: "relative", textAlign: "center",
+                  color: activeModal === 'about' ? "#2e2318" : "#a88e5a"
+                }}
+              >
+                <button onClick={() => setActiveModal(null)} style={{ position: "absolute", top: 16, right: 20, background: "none", border: "none", color: activeModal === 'about' ? "#4c2f20" : "#a88e5a", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
+                <h2 style={{ color: activeModal === 'about' ? "#2e2318" : "#d2b478", fontFamily: "'Cinzel', serif", marginTop: 0, letterSpacing: "0.1em" }}>
+                  {activeModal.toUpperCase()}
+                </h2>
+                <div style={{ height: 1, background: activeModal === 'about' ? "rgba(46, 35, 24, 0.2)" : "linear-gradient(90deg, transparent, #4a3822, transparent)", margin: "20px 0" }} />
+                
+                {activeModal === 'about' && (
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", lineHeight: 1.6 }}>
+                    Third-year AI Engineering student at Amrita Vishwa Vidyapeetham, working across applied machine learning, computer vision, biomedical signal processing, cybersecurity analytics, and AI product development.<br/><br/>
+                    I am a first-author IEEE Access researcher and build systems that try to balance technical depth with real-world usability.
+                  </p>
+                )}
+                
+                {activeModal === 'contact' && (
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", lineHeight: 1.6 }}>
+                    Open to AI/ML internships, research collaborations, and ambitious engineering projects.<br/><br/>
+                    Reach me via <a href="mailto:mrudulasankar2007@gmail.com" style={{ color: "#d2b478", textDecoration: "underline" }}>email</a>, connect on <a href="https://www.linkedin.com/in/pedamallusaimrudula" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>LinkedIn</a>, or inspect the work on <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>GitHub</a>.
+                  </p>
+                )}
 
-                {activeModal === "about" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Third-year AI Engineering student at Amrita Vishwa Vidyapeetham, working across applied machine learning, computer vision, biomedical signal processing, cybersecurity analytics, and AI product development.<br/><br/>I am a first-author IEEE Access researcher and build systems that try to balance technical depth with real-world usability.</p>}
-
-                {activeModal === "contact" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Open to AI/ML internships, research collaborations, and ambitious engineering projects.<br/><br/>Reach me via <a href="mailto:mrudulasankar2007@gmail.com" style={{ color: "#d2b478", textDecoration: "underline" }}>email</a>, connect on <a href="https://www.linkedin.com/in/pedamallusaimrudula" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>LinkedIn</a>, or inspect the work on <a href="https://github.com/Mrudula-itsjuzme" target="_blank" rel="noreferrer" style={{ color: "#d2b478", textDecoration: "underline" }}>GitHub</a>.</p>}
-
-                {activeModal === "writings" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>My writing spans AI, poetry, human creativity, and research communication. Published work includes an essay in The Daffodils alongside technical research papers and project documentation.</p>}
-
-                {activeModal === "experiments" && <p style={{ color: "#a88e5a", fontFamily: "'Playfair Display', serif", lineHeight: 1.7 }}>Interface trials, product prototypes, and smaller technical studies live here without pretending to be full production systems. They are experiments, documented as experiments.</p>}
+                {(activeModal === 'experiments') && (
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", lineHeight: 1.6 }}>
+                    These records are currently being compiled into the archive.<br/>
+                    Check back soon as I bind new volumes and organize my scattered notes.
+                  </p>
+                )}
               </motion.div>
             </motion.div>
           )}

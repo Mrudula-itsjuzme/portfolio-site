@@ -165,24 +165,33 @@ body::after {
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .topbar-nav a:hover,
 .topbar-nav a.active {
   color: #f4e4c7;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 8px rgba(200, 175, 120, 0.4);
 }
 
-.topbar-nav a.active::after {
+.topbar-nav a::after {
   content: "";
   position: absolute;
   bottom: -6px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 1px;
   background: #c8a868;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.topbar-nav a:hover::after,
+.topbar-nav a.active::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
 .resume-btn {
@@ -482,6 +491,19 @@ body::after {
   transform-style: preserve-3d;
   flex-shrink: 0;
   background-blend-mode: soft-light, normal;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, filter 0.3s ease, box-shadow 0.4s ease;
+  will-change: transform;
+}
+
+.shelf-books:hover .book-spine:not(:hover) {
+  opacity: 0.6;
+  filter: saturate(0.8) brightness(0.8);
+}
+
+.book-spine:hover {
+  transform: translateY(-15px) translateZ(20px) rotateY(-5deg);
+  box-shadow: -15px 20px 30px rgba(0, 0, 0, 0.7);
+  z-index: 10;
 }
 
 .book-spine:focus-visible {
@@ -550,9 +572,11 @@ body::after {
 .spine-gild {
   position: absolute;
   inset: 0;
-  background: linear-gradient(125deg, transparent 0%, transparent 58%, rgba(236, 206, 144, 0.28) 69%, transparent 80%);
+  background: linear-gradient(125deg, transparent 0%, transparent 40%, rgba(236, 206, 144, 0.5) 50%, transparent 60%, transparent 100%);
+  background-size: 300% 300%;
+  background-position: 100% 100%;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease, background-position 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .spine-dust {
@@ -571,6 +595,7 @@ body::after {
 
 .book-spine:hover .spine-gild {
   opacity: 1;
+  background-position: 0% 0%;
 }
 
 .book-spine:hover .spine-dust {

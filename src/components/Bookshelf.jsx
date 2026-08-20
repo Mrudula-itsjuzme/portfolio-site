@@ -99,7 +99,7 @@ function RealisticBookSpine({ project, style, isActive, phase, isHovered, onHove
 
   return (
     <motion.div
-      className="book-spine-wrap"
+      className="book-spine book-spine-wrap"
       style={{
         ...cssStyle,
         position: "relative",
@@ -112,13 +112,13 @@ function RealisticBookSpine({ project, style, isActive, phase, isHovered, onHove
       animate={{
         y: !isActive ? 0
           : phase === "pull"  ? -30
-          : phase === "lift"  ? -66
-          : phase === "float" ? -104
+          : phase === "lift"  ? -80
+          : phase === "float" ? -120
           : 0,
         scale: !isActive ? 1
-          : phase === "pull"  ? 1.05
-          : phase === "lift"  ? 1.12
-          : phase === "float" ? 0.78
+          : phase === "pull"  ? 1.2
+          : phase === "lift"  ? 1.3
+          : phase === "float" ? 0.9
           : 1,
         opacity: isActive && phase === "float" ? 0 : 1,
         rotate:  isActive && phase === "lift"  ? -3
@@ -126,10 +126,10 @@ function RealisticBookSpine({ project, style, isActive, phase, isHovered, onHove
                : 0,
       }}
       transition={{
-        y:       { type: "spring", stiffness: 260, damping: 18 },
-        scale:   { duration: 0.25, ease: "easeOut" },
-        opacity: { duration: 0.15 },
-        rotate:  { duration: 0.22, ease: "easeOut" },
+        y:       { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] },
+        scale:   { duration: 0.8, ease: [0.2, 0.8, 0.2, 1] },
+        opacity: { duration: 0.3 },
+        rotate:  { duration: 0.6, ease: [0.2, 0.8, 0.2, 1] },
       }}
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
@@ -524,7 +524,7 @@ export default function Bookshelf({ projects, onOpenProject, onHoverProject, onB
                 <div style={{ height: 40 }} />
 
                 {/* Book row */}
-                <div style={{
+                <div className="shelf-books" style={{
                   display:"flex",
                   alignItems:"flex-end",
                   flexWrap:"nowrap",
