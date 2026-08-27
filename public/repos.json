@@ -21,7 +21,8 @@
     ],
     "architecture": {
       "diagram": ["Video / cameras", "Pose extraction", "Calibration & sync", "3D reconstruction", "Kinematics & reports"],
-      "text": "Offline and real-time paths share validation, stabilization, export, and diagnostic layers so experiments can be compared instead of becoming isolated scripts."
+      "text": "Offline and real-time paths share validation, stabilization, export, and diagnostic layers so experiments can be compared instead of becoming isolated scripts.",
+      "image": "diagrams/motion.png"
     },
     "workflow": ["Ingest video or camera streams", "Synchronize and validate inputs", "Extract and stabilize landmarks", "Triangulate when calibration is available", "Export metrics, kinematics, visualizations, and benchmark reports"],
     "stack": ["Python", "OpenCV", "MediaPipe", "MMPose / RTMPose", "FastAPI", "React"],
@@ -66,7 +67,7 @@
     "homepage": "",
     "topics": ["research", "deep-learning", "solar-pv", "fault-detection", "energy"],
     "overview": ["Detect photovoltaic system faults with deep learning", "Evaluate binary and twelve-class fault settings", "Present the implementation as research evidence rather than a generic image-classification demo"],
-    "architecture": {"diagram": ["PV signals / samples", "Preprocessing", "Pyramid feature extraction", "GRU modelling", "Fault classification"], "text": "The study combines hierarchical feature extraction with sequential modelling to distinguish operating and fault conditions."},
+    "architecture": {"diagram": ["PV signals / samples", "Preprocessing", "Pyramid feature extraction", "GRU modelling", "Fault classification"], "text": "The study combines hierarchical feature extraction with sequential modelling to distinguish operating and fault conditions.", "image": "diagrams/solar.png"},
     "workflow": ["Prepare labelled fault data", "Train the proposed architecture", "Evaluate binary and multi-class performance", "Compare predictions and failure modes", "Document publication results"],
     "stack": ["Python", "Deep learning", "GRU", "Signal modelling", "Energy analytics"],
     "resultsTitle": "Published Results",
@@ -88,7 +89,7 @@
     "homepage": "",
     "topics": ["research", "eeg", "signal-processing", "graph-signal-processing", "admm"],
     "overview": ["Reconstruct missing EEG segments while preserving temporal and inter-channel structure", "Use local graph relationships rather than treating channels independently", "Compare reconstruction behavior across missingness levels"],
-    "architecture": {"diagram": ["EEG input", "Missing-data mask", "Local graph construction", "ADMM updates", "Reconstructed signal"], "text": "The implementation separates graph construction, optimization updates, and evaluation so assumptions remain inspectable."},
+    "architecture": {"diagram": ["EEG input", "Missing-data mask", "Local graph construction", "ADMM updates", "Reconstructed signal"], "text": "The implementation separates graph construction, optimization updates, and evaluation so assumptions remain inspectable.", "image": "diagrams/eeg.png"},
     "workflow": ["Load EEG data", "Create controlled missingness", "Build local graphs", "Run ADMM reconstruction", "Evaluate RMSE, SNR, and qualitative signal recovery"],
     "stack": ["Python", "NumPy", "SciPy", "MNE", "Optimization"],
     "resultsTitle": "Current Evidence",
@@ -257,7 +258,7 @@
     "homepage": "https://mrudula-itsjuzme.github.io/portfolio-site/",
     "topics": ["portfolio", "react", "framer-motion", "creative-coding", "digital-library"],
     "overview": ["Replace the standard project-card portfolio with a memorable archive metaphor", "Curate work into research, systems, product experiments, and interface studies", "Keep project claims linked to public evidence and documented limitations"],
-    "architecture": {"diagram": ["Curated catalogue", "Project mapper", "React archive", "Bookshelf", "Book viewer"], "text": "A static curated catalogue feeds a React interface with lazy-loaded project books, animation, sound, and fallback content."},
+    "architecture": {"diagram": ["Curated catalogue", "Project mapper", "React archive", "Bookshelf", "Book viewer"], "text": "A static curated catalogue feeds a React interface with lazy-loaded project books, animation, sound, and fallback content.", "image": "diagrams/portfolio.png"},
     "workflow": ["Curate public projects", "Map evidence into project volumes", "Group work by category", "Open detailed book views", "Link back to source repositories"],
     "stack": ["React", "Vite", "Framer Motion", "React PageFlip", "Node.js", "GitHub Pages"],
     "results": ["Curated twelve-project archive", "Category-based hierarchy", "Static deployment with project-data fallback", "Accessible motion and navigation remain active improvement areas"]
