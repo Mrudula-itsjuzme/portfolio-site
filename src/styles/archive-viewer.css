@@ -134,8 +134,8 @@
 }
 
 .archive-flipbook-wrap {
-  width: min(92vw, 1320px);
-  height: min(65vh, 760px);
+  width: min(74vw, 900px);
+  height: min(82vh, 820px);
   padding: 1.25rem 1.5rem;
   overflow: visible;
   border: 1px solid rgba(154,100,43,0.56);

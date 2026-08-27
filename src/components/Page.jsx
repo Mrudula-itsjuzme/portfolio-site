@@ -3,6 +3,74 @@ import ArchitectureDiagram from "./ArchitectureDiagram";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+// Common paths where architecture diagrams live in GitHub repos
+const ARCH_PATHS = [
+  "docs/architecture.png",
+  "docs/arch.png",
+  "assets/architecture.png",
+  "assets/arch.png",
+  "images/architecture.png",
+  "img/architecture.png",
+  "docs/architecture.jpg",
+  "assets/architecture.jpg",
+  "docs/system_architecture.png",
+  "docs/diagram.png",
+  "architecture.png",
+  "arch.png",
+];
+
+function GithubArchImage({ repoName, fallbackSteps }) {
+  const [imgUrl, setImgUrl] = useState(null);
+  const [tried, setTried] = useState(false);
+
+  useEffect(() => {
+    if (!repoName) { setTried(true); return; }
+    let cancelled = false;
+    (async () => {
+      for (const branch of ["main", "master"]) {
+        for (const path of ARCH_PATHS) {
+          const url = `https://raw.githubusercontent.com/${repoName}/${branch}/${path}`;
+          try {
+            const res = await fetch(url, { method: "HEAD" });
+            if (res.ok) {
+              if (!cancelled) setImgUrl(url);
+              if (!cancelled) setTried(true);
+              return;
+            }
+          } catch (_) {}
+        }
+      }
+      if (!cancelled) setTried(true);
+    })();
+    return () => { cancelled = true; };
+  }, [repoName]);
+
+  if (!tried) {
+    return (
+      <p style={{ fontStyle: "italic", opacity: 0.55, fontSize: "0.8rem", textAlign: "center" }}>
+        Loading diagram…
+      </p>
+    );
+  }
+
+  if (imgUrl) {
+    return (
+      <figure className="page-figure compact" style={{ marginTop: "0.5rem" }}>
+        <img
+          src={imgUrl}
+          alt="Architecture diagram"
+          loading="lazy"
+          style={{ maxHeight: 240, width: "100%", objectFit: "contain" }}
+          onError={() => setImgUrl(null)}
+        />
+      </figure>
+    );
+  }
+
+  // Nothing found on GitHub — fall back to generated SVG
+  return <ArchitectureDiagram steps={fallbackSteps} />;
+}
+
 function ReadmeRenderer({ project, page }) {
   const [markdown, setMarkdown] = useState("");
   const [loading, setLoading] = useState(true);
@@ -39,10 +107,20 @@ function ReadmeRenderer({ project, page }) {
   }, [project.repoName]);
 
   return (
-    <article className="page-surface markdown-surface" style={{ flex: 1, overflowY: "auto" }}>
-      <h3>{page.title}</h3>
+    <article className="page-surface markdown-surface" style={{ flex: 1, overflowY: "auto", padding: "0.8rem 1rem" }}>
       {loading ? (
-        <p style={{ textAlign: "center", fontStyle: "italic", opacity: 0.7 }}>Loading documentation...</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem", paddingTop: "1.5rem", opacity: 0.5 }}>
+          {[80, 95, 70, 88, 60, 92, 75, 85].map((w, i) => (
+            <div key={i} style={{
+              height: 10,
+              width: `${w}%`,
+              background: "rgba(92,56,24,0.2)",
+              borderRadius: 2,
+              animation: `pulse 1.4s ease-in-out ${i * 0.1}s infinite alternate`
+            }} />
+          ))}
+          <style>{`@keyframes pulse { from { opacity: 0.3 } to { opacity: 0.8 } }`}</style>
+        </div>
       ) : (
         <div className="markdown-content">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -127,7 +205,7 @@ function PageBody({ project, page }) {
             <img src={page.image} alt={`${page.title} visual`} loading="lazy" />
           </figure>
         ) : (
-          <ArchitectureDiagram steps={page.diagram || []} />
+          <GithubArchImage repoName={project.repoName} fallbackSteps={page.diagram || []} />
         )}
         <p className="arch-caption">{page.text}</p>
       </article>

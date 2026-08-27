@@ -266,20 +266,13 @@ function buildPages(project) {
     caption: "Repository language breakdown and activity metrics."
   });
 
-  pages.push({
-    id: "architecture",
-    kind: "architecture",
-    title: architecture?.title || "System Architecture",
-    diagram: architectureDiagram,
-    text: architecture?.text || `A clean ${architectureDiagram.length}-stage pipeline: ${architectureDiagram.join(" → ")}. Each stage owns a focused responsibility with a testable boundary, enabling isolated debugging and confident refactors without cascade risk.`,
-    image: images.architecture
-  });
-
+  // Replace architecture page with live README (contains actual images + content in order)
   pages.push({
     id: "readme",
     kind: "readme",
     title: "Project Documentation"
   });
+
 
   pages.push({
     id: "architecture-deep",
