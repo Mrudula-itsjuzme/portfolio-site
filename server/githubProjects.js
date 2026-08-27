@@ -46,9 +46,14 @@ async function githubGet(url) {
 async function fetchAllRepos(username) {
   const repos = [];
   let page = 1;
+  // When a token is present use the authenticated endpoint which returns private repos too
+  const useAuth = !!process.env.GITHUB_TOKEN;
 
   while (true) {
-    const url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated&direction=desc`;
+    const url = useAuth
+      ? `https://api.github.com/user/repos?per_page=100&page=${page}&sort=updated&direction=desc&visibility=all&affiliation=owner`
+      : `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated&direction=desc`;
+
     const chunk = await githubGet(url);
 
     if (!Array.isArray(chunk) || chunk.length === 0) {
@@ -72,12 +77,16 @@ async function fetchAllRepos(username) {
 async function fetchReadmeSummary(owner, repoName) {
   try {
     const url = `https://api.github.com/repos/${owner}/${repoName}/readme`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1500); // 1.5s per-request cap
     const res = await fetch(url, {
       headers: {
         ...getHeaders(),
         Accept: "application/vnd.github.raw+json"
-      }
+      },
+      signal: controller.signal
     });
+    clearTimeout(timer);
 
     if (!res.ok) {
       return "";
@@ -92,7 +101,7 @@ async function fetchReadmeSummary(owner, repoName) {
     const paragraph = lines.find((line) => line.length > 30 && line.length < 220);
     return paragraph || "";
   } catch (_err) {
-    return "";
+    return ""; // timeout or network error — skip silently
   }
 }
 
@@ -137,14 +146,15 @@ async function buildProjects(username) {
     .filter((repo) => !repo.fork)
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
 
-  const readmeTargets = filtered.slice(0, 12);
-  const summaries = await Promise.all(
+  // Fetch READMEs in parallel — allSettled so one slow/private repo can't block the rest
+  const readmeTargets = filtered.slice(0, 20);
+  const settled = await Promise.allSettled(
     readmeTargets.map((repo) => fetchReadmeSummary(repo.owner.login, repo.name))
   );
 
   const summaryMap = {};
-  readmeTargets.forEach((repo, index) => {
-    summaryMap[repo.id] = summaries[index] || "";
+  readmeTargets.forEach((repo, i) => {
+    summaryMap[repo.id] = settled[i].status === "fulfilled" ? settled[i].value : "";
   });
 
   const projects = filtered.map((repo) => ({

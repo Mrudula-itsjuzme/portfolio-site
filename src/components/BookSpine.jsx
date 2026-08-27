@@ -252,7 +252,7 @@ export default function Home() {
     () => localStorage.getItem("library-sound") !== "off"
   );
   const [projects,   setProjects]   = useState(fallbackProjects);
-  const [isLoading,  setIsLoading]  = useState(true);
+  const [isLoading,  setIsLoading]  = useState(false); // repos.json renders immediately
   const [loadError,  setLoadError]  = useState(null);
 
   const audioContextRef = useRef(null);
@@ -263,29 +263,46 @@ export default function Home() {
     localStorage.setItem("library-sound", next ? "on" : "off");
   }
 
-  /* Load GitHub projects */
+  /* Load curated repos.json first for instant render, then upgrade from API */
   useEffect(() => {
-    const controller = new AbortController();
+    // Step 1: load the static curated JSON (no spinner, instant)
+    fetch("/repos.json")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length) {
+          // repos.json items already have spineTitle, leather, etc — pass through
+          setProjects(data.map((r, i) => ({
+            ...mapRepoToProject(r, i),
+            // preserve curated overrides from repos.json
+            spineTitle: r.spineTitle || undefined,
+            synopsis: r.synopsis || undefined,
+            language: r.language || undefined,
+            topics: r.topics || undefined,
+            category: r.category || undefined,
+            repoName: r.fullName || undefined,
+            githubUrl: r.url || undefined,
+            priority: r.priority || i,
+          })));
+        }
+      })
+      .catch(() => {/* keep fallback */});
 
-    async function loadProjects() {
+    // Step 2: silently upgrade with live API data (includes private repos if token set)
+    const controller = new AbortController();
+    async function upgradeFromApi() {
       try {
-        setIsLoading(true);
         const res = await fetch("/api/projects", { signal: controller.signal });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) return;
         const payload = await res.json();
-        const repos   = Array.isArray(payload?.projects) ? payload.projects : [];
+        const repos = Array.isArray(payload?.projects) ? payload.projects : [];
         if (repos.length) setProjects(repos.map((r, i) => mapRepoToProject(r, i)));
       } catch (err) {
         if (err.name !== "AbortError") {
-          console.error("Project load failed:", err);
           setLoadError(err.message);
         }
-      } finally {
-        setIsLoading(false);
       }
     }
-
-    loadProjects();
+    upgradeFromApi();
     return () => controller.abort();
   }, []);
 
@@ -485,12 +502,11 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ── Shelves ───────────────────────────────── */}
-      {!isLoading && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{ position: "relative", zIndex: 5 }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{ position: "relative", zIndex: 5 }}
         >
           <Bookshelf
             projects={projects}
@@ -500,11 +516,10 @@ export default function Home() {
             }
           />
         </motion.div>
-      )}
 
       {/* ── Error notice ──────────────────────────── */}
       <AnimatePresence>
-        {loadError && !isLoading && (
+        {loadError && (
           <motion.p
             key="error"
             initial={{ opacity: 0 }}
