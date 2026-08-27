@@ -1,5 +1,58 @@
-import { forwardRef } from "react";
+import { forwardRef, useState, useEffect } from "react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
+function ReadmeRenderer({ project, page }) {
+  const [markdown, setMarkdown] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!project.repoName) {
+      setMarkdown("*No repository name provided.*");
+      setLoading(false);
+      return;
+    }
+    
+    const fetchReadme = async () => {
+      try {
+        let res = await fetch(`https://raw.githubusercontent.com/${project.repoName}/main/README.md`);
+        if (!res.ok) {
+          res = await fetch(`https://raw.githubusercontent.com/${project.repoName}/master/README.md`);
+        }
+        if (res.ok) {
+          // Replace relative image paths with absolute github raw paths so images load!
+          let text = await res.text();
+          const baseUrl = `https://raw.githubusercontent.com/${project.repoName}/main/`;
+          text = text.replace(/!\[([^\]]*)\]\((?!http)(.*?)\)/g, `![$1](${baseUrl}$2)`);
+          setMarkdown(text);
+        } else {
+          setMarkdown("*README not found for this repository.*");
+        }
+      } catch (e) {
+        setMarkdown("*Failed to load README.*");
+      }
+      setLoading(false);
+    };
+    
+    fetchReadme();
+  }, [project.repoName]);
+
+  return (
+    <article className="page-surface markdown-surface" style={{ flex: 1, overflowY: "auto" }}>
+      <h3>{page.title}</h3>
+      {loading ? (
+        <p style={{ textAlign: "center", fontStyle: "italic", opacity: 0.7 }}>Loading documentation...</p>
+      ) : (
+        <div className="markdown-content">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {markdown}
+          </ReactMarkdown>
+        </div>
+      )}
+    </article>
+  );
+}
 
 function PageBody({ project, page }) {
   if (page.kind === "cover") {
@@ -74,6 +127,10 @@ function PageBody({ project, page }) {
         <p className="arch-caption">{page.text}</p>
       </article>
     );
+  }
+
+  if (page.kind === "readme") {
+    return <ReadmeRenderer project={project} page={page} />;
   }
 
   if (page.kind === "essay") {

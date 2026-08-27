@@ -86,7 +86,8 @@ function mapRepoToProject(repo, index) {
     : [
         { kind: "cover", title: repo?.displayTitle || title, subtitle: repo?.subtitle || category, author: "Pedamallu Sai Mrudula", year: repo?.publishedYear || "2026" },
         { kind: "overview", title: "Problem & Contribution", bullets: repo?.overview?.length ? repo.overview : [description] },
-        { kind: "architecture", title: "Architecture", diagram: repo?.architecture?.diagram || ["Input", "Processing", "Core Logic", "Output"], text: repo?.architecture?.text || "See the repository documentation for the implemented system structure." },
+        { kind: "architecture", title: "Architecture", diagram: repo?.architecture?.diagram || ["Input", "Processing", "Core Logic", "Output"], text: repo?.architecture?.text || "See the repository documentation for the implemented system structure.", image: repo?.architecture?.image },
+        { kind: "readme", title: "Project Documentation" },
         { kind: "workflow", title: "Implementation", bullets: repo?.workflow?.length ? repo.workflow : ["Review the repository README", "Inspect the implementation", "Run the documented workflow"] },
         { kind: "stack", title: "Tech Stack", bullets: repo?.stack?.length ? repo.stack : [repo?.language || "Mixed", ...topics.slice(0, 4)] },
         { kind: "resources", title: repo?.resultsTitle || "Evidence & Status", bullets: repo?.results?.length ? repo.results : ["Implementation and documentation available in the repository", repo?.status || "Active project"] },
