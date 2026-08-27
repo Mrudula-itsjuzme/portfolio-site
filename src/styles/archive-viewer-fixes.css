@@ -2,18 +2,85 @@
 
 .archive-viewer-backdrop {
   overflow-y: auto;
-  align-items: flex-start;
-  padding: 0.6rem 0;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
 }
 
+/* Outer modal — sized like a book, not a desk */
 .archive-desk {
-  width: min(96vw, 1100px);
+  width: min(96vw, 1060px);
   height: auto;
   min-height: auto;
-  padding: 0.75rem 1rem 0.8rem;
+  padding: 0.6rem 1rem 0.8rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
+
+/* Book body: spine strip + pages side by side */
+.archive-book-body {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    -6px 0 24px rgba(0,0,0,0.45),
+    6px 0 12px rgba(0,0,0,0.2),
+    0 12px 40px rgba(0,0,0,0.5);
+  margin-top: 0.4rem;
+}
+
+/* Leather spine strip on the left */
+.archive-book-spine {
+  width: 36px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 0.3rem;
+  position: relative;
+  border-right: 2px solid rgba(255,255,255,0.08);
+  box-shadow: inset -4px 0 10px rgba(0,0,0,0.35);
+}
+
+.archive-book-spine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03) 0 3px,
+    transparent 3px 8px
+  );
+  pointer-events: none;
+}
+
+.spine-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: "Cinzel", serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: rgba(255,230,170,0.75);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 160px;
+}
+
+.spine-year {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.5rem;
+  color: rgba(255,220,150,0.5);
+  letter-spacing: 0.1em;
+}
+
 
 .archive-viewer-header {
   padding: 0.7rem 4rem 0.4rem;
@@ -58,6 +125,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background: rgba(0,0,0,0.18);
 }
 
 .archive-flipbook-wrap {
@@ -196,9 +265,9 @@
 
 .archive-viewer-controls button,
 .archive-viewer-controls span {
-  min-width: 105px;
-  min-height: 38px;
-  padding: 0.4rem 0.8rem;
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0.35rem 0.75rem;
 }
 
 .archive-filed-under {

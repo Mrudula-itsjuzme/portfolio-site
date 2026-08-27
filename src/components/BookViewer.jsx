@@ -454,44 +454,22 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
         <div className="archive-desk-grain" />
 
         <button className="close-viewer archive-close" onClick={onClose}>
-          Close ×
+          ×
         </button>
 
-        <header className="viewer-header archive-viewer-header">
-          <div className="archive-title-rule" />
-          <h2>{project.spineTitle}</h2>
-          <p>
-            {project.category} <span>•</span> Archive Entry
-          </p>
-        </header>
+        {/* Book body: leather spine + pages */}
+        <div className="archive-book-body">
+          <div
+            className="archive-book-spine"
+            style={{
+              background: `linear-gradient(180deg, ${coverHex(project)} 0%, ${coverDarkHex(project)} 100%)`,
+            }}
+          >
+            <span className="spine-label">{project.spineTitle}</span>
+            <span className="spine-year">{project.publishedYear || new Date().getFullYear()}</span>
+          </div>
 
-        <div className="archive-stage">
-          <aside className="archive-prop archive-prop-left">
-            <div className="mini-teddy teddy-left">
-              <div className="teddy-ear teddy-ear-left" />
-              <div className="teddy-ear teddy-ear-right" />
-              <div className="teddy-head">
-                <span className="teddy-eye eye-left" />
-                <span className="teddy-eye eye-right" />
-                <span className="teddy-nose" />
-              </div>
-              <div className="teddy-body">
-                <span className="teddy-bow" />
-              </div>
-            </div>
-
-            <div className="archive-stack archive-stack-left">
-              <span>Distributed Systems</span>
-              <span>Clean Architecture</span>
-            </div>
-
-            <div className="tiny-globe">
-              <div className="globe-orbit orbit-a" />
-              <div className="globe-orbit orbit-b" />
-            </div>
-          </aside>
-
-          <main className="archive-book-zone">
+          <div className="archive-book-zone">
             <motion.div
               className="flipbook-wrap archive-flipbook-wrap"
               initial={{ rotateX: 0, rotateY: 0, opacity: 0, scale: 0.8 }}
@@ -590,65 +568,28 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
               </HTMLFlipBook>
             </motion.div>
 
-            <div className="archive-brass-label">
-              ARC · {project.category || "Engineering"}
-            </div>
-          </main>
-
-          <aside className="archive-prop archive-prop-right">
-            <div className="desk-lamp">
-              <div className="lamp-shade" />
-              <div className="lamp-neck" />
-              <div className="lamp-base" />
-            </div>
-
-            <div className="mini-teddy teddy-right">
-              <div className="teddy-ear teddy-ear-left" />
-              <div className="teddy-ear teddy-ear-right" />
-              <div className="teddy-head">
-                <span className="teddy-eye eye-left" />
-                <span className="teddy-eye eye-right" />
-                <span className="teddy-nose" />
-                <span className="teddy-glasses" />
-              </div>
-              <div className="teddy-body">
-                <span className="teddy-bow" />
-              </div>
-            </div>
-
-            <div className="archive-note-card">
-              <span>Scale with intent.</span>
-              <span>Design for change.</span>
-              <span>Ship with clarity.</span>
-            </div>
-
-            <div className="archive-stack archive-stack-right">
-              <span>Code is poetry</span>
-              <span>Executed.</span>
-            </div>
-          </aside>
+          </div>
         </div>
 
         <footer className="viewer-controls archive-viewer-controls">
-          <button onClick={flipPrev} disabled={page === 0}>
-            ← Prev
+          <button onClick={flipPrev} disabled={page === 0} title="Previous Page">
+            ←
           </button>
 
           <span>
             {Math.min(page + 1, pages.length)} / {pages.length}
           </span>
 
-          <button onClick={flipNext} disabled={page >= pages.length - 1}>
-            Next →
+          <button onClick={flipNext} disabled={page >= pages.length - 1} title="Next Page">
+            →
           </button>
         </footer>
 
         <div className="archive-filed-under">
-          Filed under&nbsp;
           <span>{project.category || "Code"}</span>
-          <span>•</span>
+          <span>·</span>
           <span>{project.language || "Systems"}</span>
-          <span>•</span>
+          <span>·</span>
           <span>{project.archiveCode || "Portfolio"}</span>
         </div>
       </motion.section>
