@@ -134,26 +134,73 @@ function ReadmeRenderer({ project, page }) {
 
 function PageBody({ project, page }) {
   if (page.kind === "cover") {
+    const topics = project?.topics || [];
     return (
       <article className="page-surface cover-surface">
-        <div className="cover-border-inner">
-          <p className="cover-kicker">❖ Portfolio Manuscript ❖</p>
-          <h2>{page.title}</h2>
-          <div className="cover-ornament">❧</div>
-          <p className="cover-subtitle">{page.subtitle}</p>
-          {page.image ? (
-            <figure className="page-figure">
-              <img src={page.image} alt={`${page.title} cover visual`} loading="lazy" />
-            </figure>
-          ) : (
-            <div className="cover-spacer" />
-          )}
-          <div className="cover-meta">
-            <span>By {page.author}</span>
+        {/* Outer border frame */}
+        <div className="cover-frame">
+
+          {/* Corner ornaments */}
+          <span className="cover-corner tl">✦</span>
+          <span className="cover-corner tr">✦</span>
+          <span className="cover-corner bl">✦</span>
+          <span className="cover-corner br">✦</span>
+
+          {/* Top rule */}
+          <div className="cover-rule" />
+
+          {/* Kicker */}
+          <p className="cover-kicker">Portfolio Archive · Vol. {page.archiveCode || "I"}</p>
+
+          {/* Main title */}
+          <div className="cover-title-block">
+            <h2 className="cover-title">{page.title}</h2>
+          </div>
+
+          {/* Divider ornament */}
+          <div className="cover-divider">
+            <span className="cover-divider-line" />
+            <span className="cover-divider-glyph">❦</span>
+            <span className="cover-divider-line" />
+          </div>
+
+          {/* Category / domain */}
+          <p className="cover-domain">{page.subtitle}</p>
+
+          {/* Image panel — takes the bulk of vertical space */}
+          <div className="cover-image-panel">
+            {page.image ? (
+              <img
+                src={page.image}
+                alt={`${page.title} cover`}
+                loading="lazy"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            ) : (
+              <div className="cover-image-placeholder">
+                <span className="cover-placeholder-glyph">⟨ {project?.language || "Code"} ⟩</span>
+                {topics.slice(0, 3).map(t => (
+                  <span key={t} className="cover-topic-tag">{t}</span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom rule */}
+          <div className="cover-rule" />
+
+          {/* Author + year footer */}
+          <div className="cover-colophon">
+            <span className="cover-author">By {page.author}</span>
+            <span className="cover-sep">·</span>
             <span className="cover-year">{page.year}</span>
           </div>
+
+          {/* Shelf mark */}
+          {page.shelfMark && (
+            <p className="cover-shelfmark">{page.shelfMark}</p>
+          )}
         </div>
-        <p className="archive-meta">{page.archiveCode} • {page.shelfMark}</p>
       </article>
     );
   }
