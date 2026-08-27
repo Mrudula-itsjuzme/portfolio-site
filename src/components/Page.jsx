@@ -58,17 +58,22 @@ function PageBody({ project, page }) {
   if (page.kind === "cover") {
     return (
       <article className="page-surface cover-surface">
-        <p className="cover-kicker">Portfolio Manuscript</p>
-        <h2>{page.title}</h2>
-        <p>{page.subtitle}</p>
-        {page.image ? (
-          <figure className="page-figure">
-            <img src={page.image} alt={`${page.title} cover visual`} loading="lazy" />
-          </figure>
-        ) : null}
-        <div className="cover-meta">
-          <span>{page.author}</span>
-          <span>{page.year}</span>
+        <div className="cover-border-inner">
+          <p className="cover-kicker">❖ Portfolio Manuscript ❖</p>
+          <h2>{page.title}</h2>
+          <div className="cover-ornament">❧</div>
+          <p className="cover-subtitle">{page.subtitle}</p>
+          {page.image ? (
+            <figure className="page-figure">
+              <img src={page.image} alt={`${page.title} cover visual`} loading="lazy" />
+            </figure>
+          ) : (
+            <div className="cover-spacer" />
+          )}
+          <div className="cover-meta">
+            <span>By {page.author}</span>
+            <span className="cover-year">{page.year}</span>
+          </div>
         </div>
         <p className="archive-meta">{page.archiveCode} • {page.shelfMark}</p>
       </article>

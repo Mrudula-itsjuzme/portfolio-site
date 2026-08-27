@@ -6,15 +6,15 @@ export default function CinematicDoors({ onComplete }) {
 
   useEffect(() => {
     // Sequence timing
-    // Approach phase: 0 - 1500ms
-    const doorTimer = setTimeout(() => setPhase("doors"), 1500);
-    // Light spill phase: 3000ms
-    const lightTimer = setTimeout(() => setPhase("light"), 3000);
+    // Approach phase: 0 - 500ms
+    const doorTimer = setTimeout(() => setPhase("doors"), 400);
+    // Light spill phase: 1000ms
+    const lightTimer = setTimeout(() => setPhase("light"), 900);
     // Complete
     const completeTimer = setTimeout(() => {
       setPhase("complete");
       onComplete();
-    }, 4500);
+    }, 1600);
 
     return () => {
       clearTimeout(doorTimer);
@@ -28,7 +28,7 @@ export default function CinematicDoors({ onComplete }) {
 
   if (reducedMotion) {
     useEffect(() => {
-      const timer = setTimeout(onComplete, 800);
+      const timer = setTimeout(onComplete, 400);
       return () => clearTimeout(timer);
     }, [onComplete]);
 
@@ -36,7 +36,7 @@ export default function CinematicDoors({ onComplete }) {
       <motion.div
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.4 }}
         style={{
           position: "fixed", inset: 0, zIndex: 100, background: "#080605"
         }}
@@ -51,7 +51,7 @@ export default function CinematicDoors({ onComplete }) {
           key="cinematic-doors"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
           style={{
             position: "fixed",
             inset: 0,
@@ -62,13 +62,14 @@ export default function CinematicDoors({ onComplete }) {
             perspective: "1200px",
             background: "#050302",
             overflow: "hidden",
+            willChange: "opacity"
           }}
         >
           {/* Approach / Camera push-in */}
           <motion.div
-            initial={{ scale: 1.1, z: 0 }}
+            initial={{ scale: 1, z: 0 }}
             animate={{ scale: phase === "approach" ? 1 : 0.95, z: phase === "approach" ? 0 : 200 }}
-            transition={{ duration: 4.5, ease: "easeOut" }}
+            transition={{ duration: 1.6, ease: "easeOut" }}
             style={{
               position: "relative",
               width: "100%",
@@ -77,31 +78,33 @@ export default function CinematicDoors({ onComplete }) {
               alignItems: "center",
               justifyContent: "center",
               transformStyle: "preserve-3d",
+              willChange: "transform"
             }}
           >
             {/* Ambient dust / walkway texture */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
-              transition={{ duration: 2 }}
+              transition={{ duration: 1 }}
               style={{
                 position: "absolute", inset: 0,
                 backgroundImage: "radial-gradient(circle at center, rgba(200,175,120,0.1) 0%, transparent 60%)",
+                willChange: "opacity"
               }}
             />
 
-            {/* Light Spill (behind doors) */}
+            {/* Light Spill (behind doors) - optimized without blur filter */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: phase === "light" ? 1 : (phase === "doors" ? 0.3 : 0), scale: phase === "light" ? 2 : 1 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              animate={{ opacity: phase === "light" ? 1 : (phase === "doors" ? 0.3 : 0), scale: phase === "light" ? 2.5 : 1 }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
               style={{
                 position: "absolute",
                 width: "40vw",
                 height: "60vh",
-                background: "radial-gradient(ellipse at center, rgba(255, 230, 180, 1) 0%, rgba(200, 150, 80, 0.6) 40%, transparent 70%)",
-                filter: "blur(40px)",
+                background: "radial-gradient(ellipse at center, rgba(255, 230, 180, 0.9) 0%, rgba(200, 150, 80, 0.4) 30%, transparent 70%)",
                 zIndex: 0,
+                willChange: "opacity, transform"
               }}
             />
 
@@ -120,7 +123,7 @@ export default function CinematicDoors({ onComplete }) {
               <motion.div
                 initial={{ rotateY: 0 }}
                 animate={{ rotateY: (phase === "doors" || phase === "light") ? 100 : 0 }}
-                transition={{ duration: 2.5, ease: [0.2, 0.8, 0.2, 1] }}
+                transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
                 style={{
                   flex: 1,
                   background: "linear-gradient(90deg, #17100d, #241811)",
@@ -128,6 +131,7 @@ export default function CinematicDoors({ onComplete }) {
                   transformOrigin: "left center",
                   boxShadow: "inset -10px 0 20px rgba(0,0,0,0.8)",
                   position: "relative",
+                  willChange: "transform"
                 }}
               >
                 <div style={{ position: "absolute", right: "20px", top: "50%", width: "12px", height: "12px", borderRadius: "50%", background: "#5a452b", boxShadow: "inset 2px 2px 5px rgba(255,255,255,0.2)" }} />
@@ -137,7 +141,7 @@ export default function CinematicDoors({ onComplete }) {
               <motion.div
                 initial={{ rotateY: 0 }}
                 animate={{ rotateY: (phase === "doors" || phase === "light") ? -100 : 0 }}
-                transition={{ duration: 2.5, ease: [0.2, 0.8, 0.2, 1] }}
+                transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
                 style={{
                   flex: 1,
                   background: "linear-gradient(270deg, #17100d, #241811)",
@@ -145,6 +149,7 @@ export default function CinematicDoors({ onComplete }) {
                   transformOrigin: "right center",
                   boxShadow: "inset 10px 0 20px rgba(0,0,0,0.8)",
                   position: "relative",
+                  willChange: "transform"
                 }}
               >
                 <div style={{ position: "absolute", left: "20px", top: "50%", width: "12px", height: "12px", borderRadius: "50%", background: "#5a452b", boxShadow: "inset -2px 2px 5px rgba(255,255,255,0.2)" }} />

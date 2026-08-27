@@ -1,348 +1,297 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 function seeded(seed) {
-  const value = Math.sin(seed * 997.31) * 43758.5453123;
-  return value - Math.floor(value);
+  const v = Math.sin(seed * 997.31) * 43758.5453123;
+  return v - Math.floor(v);
 }
 
-function Parchment({ page }) {
-  const cols = 5;
-  const rows = 4;
-
-  const cells = useMemo(
-    () =>
-      Array.from({ length: rows * cols }, (_, index) => {
-        const row = Math.floor(index / cols);
-        const col = index % cols;
-        const nx = col / (cols - 1);
-        const ny = row / (rows - 1);
-        const edgeX = Math.abs(nx - 0.5) * 2;
-        const edgeY = Math.abs(ny - 0.5) * 2;
-        const edgeFactor = Math.max(edgeX, edgeY);
-        const cornerFactor =
-          (col === 0 || col === cols - 1) &&
-          (row === 0 || row === rows - 1)
-            ? 1
-            : 0;
-        const phase = nx * 0.58 + ny * 0.37 + page.seed * 0.22;
-
-        return {
-          key: `${row}-${col}`,
-          row,
-          col,
-          nx,
-          ny,
-          edgeFactor,
-          cornerFactor,
-          phase,
-          bendX: (edgeFactor * 2.2 + cornerFactor * 1.4) * page.flex,
-          bendY: (edgeFactor * 1.6 + cornerFactor) * page.flex,
-          flutter: (0.5 + edgeFactor * 1.1 + cornerFactor * 0.9) * page.flutter,
-          airflowDelay: nx * 0.075 + ny * 0.025,
-        };
-      }),
-    [page.flex, page.flutter, page.seed]
-  );
+// A single parchment page flying through the air
+function FlyingPage({ page, phase }) {
+  const isSettling = phase === "settling";
 
   return (
     <motion.div
       initial={page.initial}
-      animate={page.animate}
-      transition={{
-        duration: page.duration,
-        delay: page.delay,
-        ease: "easeInOut",
-        times: [0, 0.2, 0.78, 1],
-      }}
+      animate={isSettling ? page.settled : page.flying}
+      transition={
+        isSettling
+          ? { duration: 0.8 + page.settleDuration, delay: page.settleDelay, ease: [0.2, 1, 0.4, 1] }
+          : { duration: page.flyDuration, delay: page.flyDelay, ease: "linear", repeat: Infinity, repeatType: "mirror" }
+      }
       style={{
         position: "absolute",
+        width: page.w,
+        height: page.h,
         left: "50%",
         top: "50%",
-        width: page.width,
-        height: page.height,
-        marginLeft: -page.width / 2,
-        marginTop: -page.height / 2,
-        transformStyle: "preserve-3d",
-        filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.25))",
+        marginLeft: -page.w / 2,
+        marginTop: -page.h / 2,
+        pointerEvents: "none",
+        willChange: "transform, opacity",
       }}
     >
-      <motion.div
-        animate={{
-          rotateX: [0, page.sheetTiltX, -page.sheetTiltX * 0.42, page.sheetTiltX * 0.18, 0],
-          rotateY: [0, page.sheetTiltY, -page.sheetTiltY * 0.5, page.sheetTiltY * 0.22, 0],
-          rotateZ: [0, page.sheetSpin, page.sheetSpin * 0.45, 0],
-        }}
-        transition={{
-          duration: page.duration,
-          delay: page.delay,
-          ease: "easeInOut",
-          times: [0, 0.24, 0.56, 0.82, 1],
-        }}
+      {/* Page surface */}
+      <div
         style={{
-          position: "relative",
           width: "100%",
           height: "100%",
-          transformStyle: "preserve-3d",
-          perspective: 900,
-          backfaceVisibility: "visible",
+          background: `linear-gradient(${page.angle}deg, ${page.edge} 0%, ${page.paper} 8%, ${page.highlight} 50%, ${page.paper} 90%, ${page.edge} 100%)`,
+          border: "1px solid rgba(92,56,24,0.18)",
+          borderRadius: 1,
+          boxShadow: "0 4px 18px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,248,228,0.08)",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            transformStyle: "preserve-3d",
-          }}
-        >
-          {cells.map((cell) => {
-            const cellW = 100 / cols;
-            const cellH = 100 / rows;
-
-            return (
-              <motion.div
-                key={cell.key}
-                animate={{
-                  rotateX: [
-                    0,
-                    -cell.bendX * (0.55 + Math.sin(cell.phase) * 0.16),
-                    cell.bendX * 0.34,
-                    -cell.bendX * 0.16,
-                    0,
-                  ],
-                  rotateY: [
-                    0,
-                    cell.bendY * (0.42 + Math.cos(cell.phase) * 0.14),
-                    -cell.bendY * 0.26,
-                    cell.bendY * 0.1,
-                    0,
-                  ],
-                  x: [
-                    0,
-                    Math.sin(cell.phase * 3.1) * cell.flutter * 0.42,
-                    -Math.cos(cell.phase * 2.3) * cell.flutter * 0.22,
-                    0,
-                  ],
-                  y: [
-                    0,
-                    -Math.cos(cell.phase * 2.4) * cell.flutter * 0.36,
-                    Math.sin(cell.phase * 3.2) * cell.flutter * 0.16,
-                    0,
-                  ],
-                  z: [
-                    0,
-                    cell.cornerFactor ? 2.1 : cell.edgeFactor * 1.25,
-                    0.6,
-                    0,
-                  ],
-                }}
-                transition={{
-                  duration: page.duration * 0.92,
-                  delay: page.delay + cell.airflowDelay,
-                  ease: "easeInOut",
-                  times: [0, 0.32, 0.68, 1],
-                }}
-                style={{
-                  position: "absolute",
-                  left: `${cell.col * cellW}%`,
-                  top: `${cell.row * cellH}%`,
-                  width: `${cellW + 0.4}%`,
-                  height: `${cellH + 0.4}%`,
-                  transformOrigin: "50% 50%",
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "visible",
-                  overflow: "hidden",
-                  background: `linear-gradient(${96 + cell.nx * 6}deg, ${page.edge} 0%, ${page.paper} 10%, ${page.highlight} 52%, ${page.paper} 88%, ${page.edge} 100%)`,
-                  boxShadow: `inset 0 0 0 0.5px rgba(92,56,24,0.12), inset 2px 0 4px rgba(255,255,255,0.11), inset -2px 0 4px rgba(75,43,17,0.07)`,
-                  filter: `saturate(0.96) brightness(${1 - cell.edgeFactor * 0.025})`,
-                }}
-              >
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    opacity: 0.32,
-                    backgroundImage:
-                      "radial-gradient(circle at 25% 20%, rgba(105,64,26,0.1) 0 0.7px, transparent 1px), radial-gradient(circle at 75% 70%, rgba(105,64,26,0.08) 0 0.7px, transparent 1px)",
-                    backgroundSize: "24px 22px, 30px 28px",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {cell.col >= 1 && cell.col <= 3 && cell.row <= 2 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "18%",
-                      left: "14%",
-                      width: "58%",
-                      height: 1,
-                      background: page.ink,
-                      boxShadow: `0 7px 0 ${page.ink}, 0 14px 0 ${page.ink}`,
-                      opacity: 0.34,
-                      pointerEvents: "none",
-                    }}
-                  />
-                )}
-              </motion.div>
-            );
-          })}
-
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              clipPath: page.clipPath,
-              border: "1px solid rgba(92,56,24,0.18)",
-              borderRadius: 2,
-              boxShadow:
-                "0 10px 26px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,248,228,0.08)",
-              pointerEvents: "none",
-            }}
-          />
-
-          <motion.div
-            animate={{
-              rotateZ: [0, -4, 2, 0],
-              x: [0, -0.8, 0.4, 0],
-              y: [0, 0.6, -0.2, 0],
-            }}
-            transition={{
-              duration: page.duration * 0.9,
-              delay: page.delay + 0.08,
-              ease: "easeInOut",
-              times: [0, 0.38, 0.72, 1],
-            }}
-            style={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              width: page.fold,
-              height: page.fold,
-              clipPath: "polygon(0 0, 100% 0, 100% 100%)",
-              background:
-                "linear-gradient(135deg, rgba(255,248,224,0.88), rgba(164,119,59,0.24))",
-              borderLeft: "1px solid rgba(100,66,30,0.1)",
-              borderBottom: "1px solid rgba(100,66,30,0.1)",
-              transformOrigin: "100% 0%",
-              pointerEvents: "none",
-            }}
-          />
-
-          {page.hasSeal && (
-            <div
-              style={{
-                position: "absolute",
-                right: "10%",
-                bottom: "11%",
-                width: 9,
-                height: 9,
-                borderRadius: "50%",
-                background:
-                  "radial-gradient(circle at 35% 30%, #96342d 0 18%, #6d211c 48%, #43100e 100%)",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.35)",
-                opacity: 0.78,
-              }}
-            />
-          )}
+        {/* Ink lines */}
+        <div style={{
+          position: "absolute",
+          top: "18%", left: "12%", right: "12%",
+          display: "flex", flexDirection: "column", gap: "12%",
+          opacity: 0.28,
+        }}>
+          {Array.from({ length: page.lines }).map((_, i) => (
+            <div key={i} style={{
+              height: 1,
+              background: "rgba(60,35,14,0.7)",
+              width: `${70 + seeded(page.seed + i) * 25}%`,
+            }} />
+          ))}
         </div>
-      </motion.div>
+
+        {/* Corner fold */}
+        <div style={{
+          position: "absolute",
+          top: 0, right: 0,
+          width: page.fold, height: page.fold,
+          background: "linear-gradient(135deg, rgba(255,248,224,0.9), rgba(160,115,55,0.2))",
+          clipPath: "polygon(0 0, 100% 0, 100% 100%)",
+        }} />
+
+        {/* Wax seal on some pages */}
+        {page.hasSeal && (
+          <div style={{
+            position: "absolute",
+            bottom: "12%", right: "10%",
+            width: 10, height: 10,
+            borderRadius: "50%",
+            background: "radial-gradient(circle at 35% 30%, #9b3228 0 18%, #6d211c 48%, #43100e 100%)",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
+          }} />
+        )}
+
+        {/* Parchment texture overlay */}
+        <div style={{
+          position: "absolute", inset: 0, opacity: 0.2,
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%235c3810' opacity='0.3'/%3E%3C/svg%3E\")",
+          backgroundSize: "6px 6px",
+        }} />
+      </div>
     </motion.div>
   );
 }
 
+function TitleCard({ phase }) {
+  const show = phase === "settling" || phase === "reveal";
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          key="title"
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, delay: 0.6, ease: [0.2, 1, 0.4, 1] }}
+          style={{
+            position: "absolute",
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.7rem",
+            pointerEvents: "none",
+          }}
+        >
+          <motion.p
+            initial={{ opacity: 0, letterSpacing: "0.6em" }}
+            animate={{ opacity: 0.7, letterSpacing: "0.28em" }}
+            transition={{ duration: 1.4, delay: 0.8 }}
+            style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: "0.62rem",
+              color: "rgba(210,180,120,0.8)",
+              textTransform: "uppercase",
+              margin: 0,
+            }}
+          >
+            ✦ &nbsp; Portfolio Archive &nbsp; ✦
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, filter: "blur(12px)" }}
+            animate={{ opacity: 1, filter: "blur(0px)" }}
+            transition={{ duration: 1.4, delay: 1.0 }}
+            style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontWeight: 700,
+              color: "#ead2a0",
+              letterSpacing: "0.08em",
+              textAlign: "center",
+              margin: 0,
+              textShadow: "0 2px 0 #2a1408, 0 0 40px rgba(220,166,76,0.4)",
+              background: "linear-gradient(135deg, #e8d090 0%, #f5e8b8 40%, #c8a850 70%, #e8d090 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            Mrudula's Archive
+          </motion.h1>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.0, delay: 1.4 }}
+            style={{
+              width: "280px",
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(210,180,100,0.7), transparent)",
+            }}
+          />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.65 }}
+            transition={{ duration: 1.0, delay: 1.6 }}
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontStyle: "italic",
+              fontSize: "1.05rem",
+              color: "rgba(228,205,148,0.7)",
+              margin: 0,
+            }}
+          >
+            Entering the library…
+          </motion.p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function UnswirlingPages({ onComplete }) {
-  const [isAnimating, setIsAnimating] = useState(true);
+  // phase: "storm" → pages fly chaotically
+  //        "settling" → pages float away, title appears
+  //        "done"
+  const [phase, setPhase] = useState("storm");
   const prefersReducedMotion = useReducedMotion();
 
-  const pages = useMemo(
-    () =>
-      Array.from({ length: 40 }, (_, index) => {
-        const angle = seeded(index + 2) * Math.PI * 2;
-        const radius = 130 + seeded(index + 5) * 600;
-        const initialZ = -950 - seeded(index + 8) * 850;
-        const finalZ = 760 + seeded(index + 11) * 900;
-        const direction = seeded(index + 14) > 0.5 ? 1 : -1;
-        const width = 48 + seeded(index + 17) * 52;
-        const height = width * (1.28 + seeded(index + 20) * 0.18);
-        const sizeFactor = width / 100;
-        const startRotateX = -42 + seeded(index + 23) * 84;
-        const startRotateY = -52 + seeded(index + 26) * 104;
-        const startRotateZ = -55 + seeded(index + 29) * 110;
-        const hue = 38 + seeded(index + 32) * 8;
-        const light = 82 + seeded(index + 35) * 8;
-
-        return {
-          id: index,
-          width,
-          height,
-          seed: seeded(index + 70),
-          flex: 0.9 + seeded(index + 73) * 0.9,
-          sheetTiltX: 4 + seeded(index + 76) * 6,
-          sheetTiltY: 5 + seeded(index + 79) * 7,
-          sheetSpin: -6 + seeded(index + 82) * 12,
-          delay: seeded(index + 38) * 1.7,
-          duration: 2.1 + sizeFactor * 0.9 + seeded(index + 41) * 0.9,
-          flutter: 0.8 + (1.3 - sizeFactor) * 1.6 + seeded(index + 47) * 1.1,
-          fold: 7 + seeded(index + 50) * 8,
-          hasSeal: seeded(index + 53) > 0.82,
-          paper: `hsl(${hue} 39% ${light}%)`,
-          highlight: `hsl(${hue + 2} 45% ${Math.min(light + 6, 95)}%)`,
-          edge: `hsl(${hue - 4} 30% ${Math.max(light - 18, 62)}%)`,
-          ink: `rgba(70, 42, 19, ${0.16 + seeded(index + 56) * 0.11})`,
-          clipPath:
-            seeded(index + 59) > 0.5
-              ? "polygon(2% 0, 98% 1%, 100% 96%, 97% 100%, 1% 98%, 0 4%)"
-              : "polygon(1% 2%, 96% 0, 100% 4%, 98% 99%, 3% 100%, 0 96%)",
-          initial: {
-            x: 0,
-            y: 0,
-            z: initialZ,
-            rotateX: startRotateX,
-            rotateY: startRotateY,
-            rotateZ: startRotateZ,
-            scale: 0.1,
-            opacity: 0,
-            filter: "blur(7px)",
-          },
-          animate: {
-            x: Math.cos(angle) * radius * 3,
-            y: Math.sin(angle) * radius * 3,
-            z: finalZ,
-            rotateX: startRotateX + 180 * direction,
-            rotateY: startRotateY - 200 * direction,
-            rotateZ: startRotateZ + 40 * direction,
-            scale: 1.75 + seeded(index + 62) * 0.85,
-            opacity: [0, 0.95, 0.9, 0],
-            filter: [
-              "blur(7px)",
-              "blur(0px)",
-              finalZ > 1200 ? "blur(2px)" : "blur(0px)",
-            ],
-          },
-        };
-      }),
-    []
-  );
-
   useEffect(() => {
-    const total = prefersReducedMotion ? 280 : 4500;
-    const timer = window.setTimeout(() => {
-      setIsAnimating(false);
-      window.setTimeout(onComplete, prefersReducedMotion ? 60 : 700);
-    }, total);
+    if (prefersReducedMotion) {
+      const t = setTimeout(onComplete, 400);
+      return () => clearTimeout(t);
+    }
 
-    return () => window.clearTimeout(timer);
+    const t1 = setTimeout(() => setPhase("settling"), 2200);
+    const t2 = setTimeout(() => {
+      setPhase("done");
+      onComplete();
+    }, 4200);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [onComplete, prefersReducedMotion]);
+
+  // Generate pages — they each start outside the viewport and fly through
+  const pages = useMemo(() => {
+    return Array.from({ length: 28 }, (_, i) => {
+      const angle = seeded(i) * Math.PI * 2;
+      const spawnRadius = 900 + seeded(i + 1) * 500;
+      const startX = Math.cos(angle) * spawnRadius;
+      const startY = Math.sin(angle) * spawnRadius;
+
+      // Flying path: each page carves an arc across the screen
+      const midAngle = angle + (seeded(i + 2) - 0.5) * 1.5;
+      const midRadius = 180 + seeded(i + 3) * 340;
+      const midX = Math.cos(midAngle) * midRadius;
+      const midY = Math.sin(midAngle) * midRadius;
+
+      const endAngle = angle + Math.PI + (seeded(i + 4) - 0.5) * 1.2;
+      const endRadius = 700 + seeded(i + 5) * 600;
+      const endX = Math.cos(endAngle) * endRadius;
+      const endY = Math.sin(endAngle) * endRadius;
+
+      const w = 52 + seeded(i + 6) * 60;
+      const h = w * (1.3 + seeded(i + 7) * 0.2);
+      const hue = 36 + seeded(i + 8) * 10;
+      const light = 80 + seeded(i + 9) * 10;
+
+      return {
+        id: i,
+        w, h,
+        seed: seeded(i + 50),
+        lines: 3 + Math.floor(seeded(i + 10) * 4),
+        angle: 90 + seeded(i + 11) * 30,
+        fold: 8 + seeded(i + 12) * 7,
+        hasSeal: seeded(i + 13) > 0.8,
+        paper: `hsl(${hue} 40% ${light}%)`,
+        highlight: `hsl(${hue + 2} 46% ${Math.min(light + 6, 96)}%)`,
+        edge: `hsl(${hue - 4} 30% ${Math.max(light - 20, 60)}%)`,
+        flyDelay: seeded(i + 14) * 0.6,
+        flyDuration: 1.4 + seeded(i + 15) * 1.2,
+        settleDuration: seeded(i + 16) * 0.6,
+        settleDelay: seeded(i + 17) * 0.5,
+        initial: {
+          x: startX,
+          y: startY,
+          rotateX: -40 + seeded(i + 18) * 80,
+          rotateY: -50 + seeded(i + 19) * 100,
+          rotateZ: -180 + seeded(i + 20) * 360,
+          opacity: 0,
+          scale: 0.3,
+        },
+        flying: {
+          x: [startX, midX, endX],
+          y: [startY, midY, endY],
+          rotateX: [-40 + seeded(i + 18) * 80, seeded(i + 21) * 60 - 30, seeded(i + 22) * 80 - 40],
+          rotateY: [-50 + seeded(i + 19) * 100, seeded(i + 23) * 80 - 40, seeded(i + 24) * 100 - 50],
+          rotateZ: [-180 + seeded(i + 20) * 360, seeded(i + 25) * 360 - 180, seeded(i + 26) * 360 - 180],
+          opacity: [0, 0.85, 0.85],
+          scale: [0.3, 0.7 + seeded(i + 27) * 0.6, 0.5],
+        },
+        settled: {
+          x: endX * 1.5,
+          y: endY * 1.5,
+          rotateX: seeded(i + 28) * 30 - 15,
+          rotateY: seeded(i + 29) * 40 - 20,
+          rotateZ: seeded(i + 30) * 720,
+          opacity: 0,
+          scale: 0.2,
+        },
+      };
+    });
+  }, []);
+
+  if (prefersReducedMotion) {
+    return (
+      <motion.div
+        initial={{ opacity: 1 }}
+        animate={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        style={{ position: "fixed", inset: 0, zIndex: 100, background: "#080605" }}
+      />
+    );
+  }
 
   return (
     <AnimatePresence>
-      {isAnimating && (
+      {phase !== "done" && (
         <motion.div
-          key="unswirling-container"
+          key="paper-storm"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: prefersReducedMotion ? 0.08 : 0.7, ease: "easeInOut" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           style={{
             position: "fixed",
             inset: 0,
@@ -350,47 +299,48 @@ export default function UnswirlingPages({ onComplete }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            perspective: "1200px",
-            background:
-              "radial-gradient(circle at 50% 48%, rgba(129,85,39,0.18), transparent 26%), #080605",
+            perspective: "1400px",
+            background: "radial-gradient(circle at 50% 48%, rgba(100,65,30,0.25), transparent 32%), #080605",
             overflow: "hidden",
-            pointerEvents: "none",
           }}
         >
-          <div
-            aria-hidden="true"
+          {/* Subtle dot texture */}
+          <div style={{
+            position: "absolute", inset: 0, opacity: 0.18,
+            backgroundImage: "radial-gradient(circle, rgba(213,179,115,0.4) 0 0.7px, transparent 0.9px)",
+            backgroundSize: "34px 34px",
+            pointerEvents: "none",
+          }} />
+
+          {/* Warm ambient glow center */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: phase === "settling" ? 0.8 : 0.2 }}
+            transition={{ duration: 1.5 }}
             style={{
               position: "absolute",
-              inset: 0,
-              opacity: 0.3,
-              backgroundImage:
-                "radial-gradient(circle, rgba(213,179,115,0.34) 0 0.7px, transparent 0.9px)",
-              backgroundSize: "38px 38px",
+              width: "60vmin",
+              height: "60vmin",
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(220,170,80,0.25) 0%, transparent 70%)",
+              pointerEvents: "none",
             }}
           />
 
-          {!prefersReducedMotion && (
-            <motion.div
-              initial={{ z: -500 }}
-              animate={{ z: 800 }}
-              transition={{ duration: 2, delay: 3, ease: "easeIn" }}
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              <div style={{ position: "absolute", inset: 0, transformStyle: "preserve-3d" }}>
-                {pages.map((page) => (
-                  <Parchment key={page.id} page={page} />
-                ))}
-              </div>
-            </motion.div>
-          )}
+          {/* The flying pages */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            transformStyle: "preserve-3d",
+            pointerEvents: "none",
+          }}>
+            {pages.map((page) => (
+              <FlyingPage key={page.id} page={page} phase={phase} />
+            ))}
+          </div>
+
+          {/* Center title reveal */}
+          <TitleCard phase={phase} />
         </motion.div>
       )}
     </AnimatePresence>

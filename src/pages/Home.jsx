@@ -204,15 +204,62 @@ export default function Home() {
     async function loadProjects() {
       try {
         setIsLoading(true);
-        const response = await fetch(`${import.meta.env.BASE_URL}repos.json`, { signal: controller.signal });
-        if (!response.ok) throw new Error(`repos.json ${response.status}`);
-        const raw = await response.json();
-        if (Array.isArray(raw) && raw.length) setProjects(raw.map(mapRepoToProject));
+        let curated = [];
+        try {
+          const response = await fetch(`${import.meta.env.BASE_URL}repos.json`, { signal: controller.signal });
+          if (response.ok) curated = await response.json();
+        } catch (e) {
+          console.warn("Could not load curated repos");
+        }
+
+        if (curated.length) {
+          setProjects(curated.map(mapRepoToProject));
+        } else {
+          setProjects(fallbackProjects.map(enrichProject));
+        }
         setLoadError(null);
+        setIsLoading(false); // Stop loading screen immediately
+
+        // Fetch github asynchronously in background
+        try {
+          const ghRes = await fetch("https://api.github.com/users/Mrudula-itsjuzme/repos?per_page=100&sort=pushed", { signal: controller.signal });
+          if (ghRes.ok) {
+            const githubRepos = await ghRes.json();
+            const curatedNames = new Set(curated.map(r => r.name?.toLowerCase()));
+            const merged = [...curated];
+            
+            githubRepos.forEach(repo => {
+              if (repo.name && !curatedNames.has(repo.name.toLowerCase())) {
+                merged.push({
+                  id: repo.id,
+                  name: repo.name,
+                  fullName: repo.full_name,
+                  description: repo.description,
+                  language: repo.language,
+                  stars: repo.stargazers_count,
+                  forks: repo.forks_count,
+                  url: repo.html_url,
+                  homepage: repo.homepage || repo.html_url,
+                  topics: repo.topics || [],
+                  priority: 99
+                });
+              }
+            });
+            
+            if (merged.length > curated.length) {
+              setProjects(merged.map(mapRepoToProject));
+            }
+          }
+        } catch (e) {
+          console.warn("Could not load github repos in background");
+        }
+
       } catch (error) {
-        if (error.name !== "AbortError") setLoadError("Using the built-in curated archive because the project catalogue could not be loaded.");
-      } finally {
-        setIsLoading(false);
+        if (error.name !== "AbortError") {
+          setLoadError("Using the built-in curated archive because the project catalogue could not be loaded.");
+          setProjects(fallbackProjects.map(enrichProject));
+          setIsLoading(false);
+        }
       }
     }
     loadProjects();

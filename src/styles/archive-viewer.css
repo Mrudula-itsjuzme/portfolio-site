@@ -10,7 +10,9 @@
 
 .archive-desk {
   width: min(98vw, 1500px);
-  min-height: min(96vh, 960px);
+  height: 96vh;
+  display: flex;
+  flex-direction: column;
   padding: 1rem 1.35rem 1.1rem;
   border: 1px solid rgba(198, 143, 55, 0.7);
   border-radius: 14px;
@@ -42,8 +44,10 @@
 
 .archive-viewer-header {
   position: relative;
-  padding: 1.2rem 12rem 0.8rem;
+  padding: 1.2rem 4rem 0.8rem;
   margin-bottom: 0.5rem;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .archive-viewer-header::before {
@@ -68,10 +72,13 @@
 
 .archive-viewer-header h2 {
   font-family: "Cinzel", serif;
-  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
   color: #ead2a0;
-  letter-spacing: 0.075em;
+  letter-spacing: 0.05em;
   text-shadow: 0 2px 0 #4a2c10, 0 0 22px rgba(220,166,76,0.16);
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.2;
 }
 
 .archive-viewer-header p {
@@ -120,12 +127,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .archive-flipbook-wrap {
   width: min(92vw, 1320px);
-  height: min(72vh, 760px);
+  height: min(65vh, 760px);
   padding: 1.25rem 1.5rem;
   overflow: visible;
   border: 1px solid rgba(154,100,43,0.56);
@@ -222,25 +232,52 @@
 }
 
 .cover-surface {
-  gap: 0.7rem;
+  padding: 1rem !important;
+  text-align: center;
+}
+
+.cover-border-inner {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid rgba(112, 68, 29, 0.4);
+  padding: 2rem 1rem;
+  box-shadow: inset 0 0 0 4px rgba(112, 68, 29, 0.08);
 }
 
 .cover-kicker {
   letter-spacing: 0.28em;
   color: #76502d;
   font-size: 0.66rem;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
 }
 
 .cover-surface h2 {
-  font-size: clamp(1.75rem, 3vw, 2.7rem);
-  letter-spacing: 0.04em;
+  font-family: "Cinzel", serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  letter-spacing: 0.05em;
+  color: #2b1810;
+  text-shadow: 1px 1px 0 rgba(255, 244, 215, 0.8);
+  margin: 0;
+  line-height: 1.2;
 }
 
-.cover-surface > p:nth-of-type(2) {
+.cover-ornament {
+  font-size: 1.8rem;
+  color: rgba(112, 68, 29, 0.6);
+  margin: 1rem 0;
+}
+
+.cover-subtitle {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-style: italic;
+  color: #4a2c16;
+  margin-bottom: 2rem;
 }
 
 .page-figure {
@@ -259,10 +296,24 @@
 }
 
 .cover-meta {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: #654322;
+  margin-top: auto;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  color: #5c3a21;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cover-spacer {
+  flex-grow: 1;
+}
+
+.cover-meta .cover-year {
+  font-size: 0.75rem;
+  color: rgba(92, 58, 33, 0.7);
 }
 
 .archive-meta {

@@ -276,6 +276,12 @@ function buildPages(project) {
   });
 
   pages.push({
+    id: "readme",
+    kind: "readme",
+    title: "Project Documentation"
+  });
+
+  pages.push({
     id: "architecture-deep",
     kind: "matrix",
     title: "Component Responsibilities",
