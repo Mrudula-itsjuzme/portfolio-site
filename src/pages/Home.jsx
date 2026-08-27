@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import CinematicDoors from "../components/CinematicDoors";
+import UnswirlingPages from "../components/UnswirlingPages";
 import WritingsScroll from "../components/WritingsScroll";
 import FeaturedVolume from "../components/FeaturedVolume";
 import Bookshelf from "../components/Bookshelf";
@@ -267,15 +267,15 @@ export default function Home() {
         {dust.map((particle) => <span key={particle.id} style={{ left: `${particle.left}%`, animationDelay: `${(particle.id % 8) * 0.7}s` }} />)}
       </div>
 
-      {!introFinished && <CinematicDoors onComplete={() => setIntroFinished(true)} />}
+      {!introFinished && <UnswirlingPages onComplete={() => setIntroFinished(true)} />}
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: introFinished ? 1 : 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        style={{ filter: (openProject || activeModal === 'writings') ? "blur(12px) brightness(0.6)" : "none", transition: "filter 0.8s ease" }}
       >
-        <header className="library-topbar">
+        <motion.div style={{ filter: (openProject || activeModal === 'writings') ? "blur(12px) brightness(0.6)" : "none", transition: "filter 0.8s ease", minHeight: "100vh" }}>
+          <header className="library-topbar">
           <div className="topbar-left">
             <div className="topbar-logo">M</div>
             <div className="topbar-title-group">
@@ -298,6 +298,27 @@ export default function Home() {
             <button className="sound-toggle" onClick={handleToggleSound} title="Toggle ambient sound">{soundEnabled ? "💡 Ambient: On" : "💡 Ambient: Off"}</button>
           </div>
         </header>
+
+        <main id="archive" className="archive-main">
+          {!isLoading && groupedProjects.map(({ category, projects: categoryProjects }) => (
+            <section key={category} style={{ marginBottom: "42px" }}>
+              <div style={{ maxWidth: "1180px", margin: "0 auto 12px", padding: "0 24px", display: "flex", alignItems: "center", gap: "16px" }}>
+                <span style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", fontSize: "0.82rem", letterSpacing: "0.18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{category}</span>
+                <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg, rgba(210,180,120,0.45), transparent)" }} />
+                <span style={{ color: "#806b47", fontFamily: "'Cinzel', serif", fontSize: "0.68rem" }}>{categoryProjects.length} {categoryProjects.length === 1 ? "volume" : "volumes"}</span>
+              </div>
+              <div className="bookshelf-section-wrapper">
+                <Bookshelf projects={categoryProjects} onOpenProject={setOpenProject} onHoverProject={setHoveredProject} onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)} />
+              </div>
+            </section>
+          ))}
+
+          {isLoading && <div className="library-notice"><div className="spinner" /><p>Loading curated archive…</p></div>}
+          {loadError && !isLoading && <div className="library-notice library-error">{loadError}</div>}
+        </main>
+
+        <div className="desk-surface" aria-hidden="true" />
+        </motion.div>
 
         <AnimatePresence>
           {activeModal === 'writings' && (
@@ -361,29 +382,10 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        <main id="archive" className="archive-main">
-          {!isLoading && groupedProjects.map(({ category, projects: categoryProjects }) => (
-            <section key={category} style={{ marginBottom: "42px" }}>
-              <div style={{ maxWidth: "1180px", margin: "0 auto 12px", padding: "0 24px", display: "flex", alignItems: "center", gap: "16px" }}>
-                <span style={{ color: "#d2b478", fontFamily: "'Cinzel', serif", fontSize: "0.82rem", letterSpacing: "0.18em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{category}</span>
-                <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg, rgba(210,180,120,0.45), transparent)" }} />
-                <span style={{ color: "#806b47", fontFamily: "'Cinzel', serif", fontSize: "0.68rem" }}>{categoryProjects.length} {categoryProjects.length === 1 ? "volume" : "volumes"}</span>
-              </div>
-              <div className="bookshelf-section-wrapper">
-                <Bookshelf projects={categoryProjects} onOpenProject={setOpenProject} onHoverProject={setHoveredProject} onBookPullSound={() => soundEnabled && playTone("pull", audioContextRef)} />
-              </div>
-            </section>
-          ))}
-
-          {isLoading && <div className="library-notice"><div className="spinner" /><p>Loading curated archive…</p></div>}
-          {loadError && !isLoading && <div className="library-notice library-error">{loadError}</div>}
-        </main>
-
         <AnimatePresence>
           {openProject && <Suspense fallback={<div className="viewer-loading">Opening book…</div>}><BookViewer project={openProject} onClose={() => setOpenProject(null)} onPageFlipSound={() => soundEnabled && playTone("flip", audioContextRef)} /></Suspense>}
         </AnimatePresence>
 
-        <div className="desk-surface" aria-hidden="true" />
       </motion.div>
     </div>
   );

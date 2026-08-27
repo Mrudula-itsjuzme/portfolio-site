@@ -28,7 +28,8 @@ export const projects = [
         kind: "architecture",
         title: "Architecture",
         diagram: ["GitHub metadata", "Prebuilt JSON", "React UI", "Bookshelf viewer"],
-        text: "The site loads repository metadata, maps each project into a book-like object, and renders it through an interactive bookshelf and page viewer."
+        text: "The site loads repository metadata, maps each project into a book-like object, and renders it through an interactive bookshelf and page viewer.",
+        image: "diagrams/portfolio.png"
       },
       {
         kind: "workflow",
@@ -91,7 +92,8 @@ export const projects = [
         kind: "architecture",
         title: "Architecture",
         diagram: ["Camera input", "Pose pipeline", "3D estimation", "Dashboard output"],
-        text: "The project is organized as a pipeline so input capture, processing, metrics, and visualization can evolve separately."
+        text: "The project is organized as a pipeline so input capture, processing, metrics, and visualization can evolve separately.",
+        image: "diagrams/motion.png"
       },
       {
         kind: "workflow",
@@ -154,7 +156,8 @@ export const projects = [
         kind: "architecture",
         title: "Architecture",
         diagram: ["EEG input", "Graph construction", "ADMM updates", "Reconstructed signal"],
-        text: "The implementation is best presented as a research pipeline, where each step should be documented with assumptions, parameters, and evaluation behavior."
+        text: "The implementation is best presented as a research pipeline, where each step should be documented with assumptions, parameters, and evaluation behavior.",
+        image: "diagrams/eeg.png"
       },
       {
         kind: "workflow",
@@ -217,7 +220,8 @@ export const projects = [
         kind: "architecture",
         title: "Architecture",
         diagram: ["Input samples", "Preprocessing", "Model script", "Evaluation output"],
-        text: "This project should avoid placeholder claims and show only verified files, scripts, and results present in the repository."
+        text: "This project should avoid placeholder claims and show only verified files, scripts, and results present in the repository.",
+        image: "diagrams/solar.png"
       },
       {
         kind: "workflow",

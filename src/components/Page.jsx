@@ -64,13 +64,14 @@ function PageBody({ project, page }) {
     return (
       <article className="page-surface">
         <h3>{page.title}</h3>
-        <ArchitectureDiagram steps={page.diagram || []} />
-        <p className="arch-caption">{page.text}</p>
         {page.image ? (
           <figure className="page-figure compact">
             <img src={page.image} alt={`${page.title} visual`} loading="lazy" />
           </figure>
-        ) : null}
+        ) : (
+          <ArchitectureDiagram steps={page.diagram || []} />
+        )}
+        <p className="arch-caption">{page.text}</p>
       </article>
     );
   }
@@ -272,12 +273,14 @@ const Page = forwardRef(function Page({ project, page, index, total }, ref) {
 
   return (
     <div className={`paper-page ${sideClass}`} ref={ref}>
-      <div className="running-head" aria-hidden="true">
-        <span>{project.spineTitle}</span>
-        <span>{page.title}</span>
+      <div className="page-inner-frame">
+        <div className="running-head" aria-hidden="true">
+          <span>{project.spineTitle}</span>
+          <span>{page.title}</span>
+        </div>
+        <PageBody project={project} page={page} />
+        <p className="folio">Page {index + 1} / {total}</p>
       </div>
-      <PageBody project={project} page={page} />
-      <p className="folio">Page {index + 1} / {total}</p>
     </div>
   );
 });
