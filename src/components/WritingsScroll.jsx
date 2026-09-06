@@ -1,244 +1,164 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { articles } from "../data/articles";
 
 export default function WritingsScroll({ onClose }) {
-  const [articles, setArticles] = useState([]);
   const [activeArticle, setActiveArticle] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState("");
-  const [editContent, setEditContent] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("portfolio_writings");
-    if (saved) {
-      try {
-        setArticles(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse writings");
-      }
-    } else {
-      const defaultArticles = [
-        { id: 1, title: "On Dark Academia and Interfaces", date: "Aug 2026", content: "The intersection of vintage aesthetics and modern UI is fascinating...", status: "Published" },
-      ];
-      setArticles(defaultArticles);
-      localStorage.setItem("portfolio_writings", JSON.stringify(defaultArticles));
-    }
-  }, []);
-
-  const handleSave = () => {
-    const updated = [...articles];
-    if (isEditing === "new") {
-      const newArticle = {
-        id: Date.now(),
-        title: editTitle || "Untitled Entry",
-        date: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric', day: 'numeric' }),
-        content: editContent,
-        status: "Draft"
-      };
-      updated.unshift(newArticle);
-    } else {
-      const index = updated.findIndex(a => a.id === activeArticle.id);
-      if (index !== -1) {
-        updated[index] = { ...updated[index], title: editTitle, content: editContent };
-      }
-    }
-    setArticles(updated);
-    localStorage.setItem("portfolio_writings", JSON.stringify(updated));
-    setActiveArticle(null);
-    setIsEditing(false);
-  };
-
-  const handleOpen = (article) => {
-    setActiveArticle(article);
-    setEditTitle(article.title);
-    setEditContent(article.content || "");
-    setIsEditing(true);
-  };
-
-  const handleNew = () => {
-    setIsEditing("new");
-    setEditTitle("");
-    setEditContent("");
-    setActiveArticle({});
-  };
-
-  const handleDelete = (id, e) => {
-    e.stopPropagation();
-    const updated = articles.filter(a => a.id !== id);
-    setArticles(updated);
-    localStorage.setItem("portfolio_writings", JSON.stringify(updated));
-    if (activeArticle?.id === id) {
-      setActiveArticle(null);
-      setIsEditing(false);
-    }
-  };
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: reduceMotion ? 0 : 0.18 }}
+      className="writings-overlay"
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 100,
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        paddingTop: "10vh",
-        background: "rgba(5, 3, 2, 0.8)",
-        backdropFilter: "blur(12px)",
+        display: "grid",
+        placeItems: "center",
+        padding: "clamp(1rem, 4vw, 3rem)",
+        background: "rgba(5, 3, 2, 0.76)",
       }}
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Writings"
     >
-      <motion.div
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
-        exit={{ scaleY: 0, opacity: 0, transition: { duration: 0.3 } }}
-        transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+      <motion.section
+        initial={reduceMotion ? false : { opacity: 0, y: 18, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={reduceMotion ? undefined : { opacity: 0, y: 12 }}
+        transition={{ duration: reduceMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(event) => event.stopPropagation()}
         style={{
-          transformOrigin: "top center",
-          width: "min(90vw, 650px)",
-          minHeight: "65vh",
-          maxHeight: "80vh",
-          overflowY: "auto",
-          background: "linear-gradient(180deg, #e6d7bd, #cbb798)",
-          boxShadow: "0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(100, 70, 40, 0.2)",
-          borderRadius: "2px",
+          width: "min(960px, 100%)",
+          maxHeight: "min(86vh, 900px)",
+          overflow: "hidden",
+          background: "linear-gradient(180deg, #eadfc9 0%, #d6c5a8 100%)",
+          border: "1px solid rgba(82, 56, 34, 0.38)",
+          boxShadow: "0 24px 80px rgba(0,0,0,0.48)",
+          color: "#2d2117",
           position: "relative",
-          padding: "3rem 2rem",
-          color: "#2e2318",
-          fontFamily: "'Cormorant Garamond', serif",
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ position: "absolute", top: -10, left: -20, right: -20, height: "20px", background: "linear-gradient(180deg, #332118, #17100d)", borderRadius: "10px", boxShadow: "0 10px 20px rgba(0,0,0,0.5)" }} />
-        <div style={{ position: "absolute", bottom: -10, left: -20, right: -20, height: "20px", background: "linear-gradient(180deg, #332118, #17100d)", borderRadius: "10px", boxShadow: "0 10px 20px rgba(0,0,0,0.5)" }} />
-        
-        <button 
-          onClick={onClose} 
-          style={{ position: "absolute", top: 20, right: 20, background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", color: "#4c2f20" }}
-        >×</button>
+        <button
+          type="button"
+          aria-label="Close writings"
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: 14,
+            right: 16,
+            zIndex: 4,
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            border: "1px solid rgba(74,47,31,0.28)",
+            background: "rgba(239,227,203,0.78)",
+            color: "#3b281b",
+            cursor: "pointer",
+            fontSize: "1.45rem",
+          }}
+        >
+          ×
+        </button>
 
-        {!isEditing ? (
-          <>
-            <motion.h2 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              style={{ fontFamily: "'Cinzel', serif", textAlign: "center", borderBottom: "1px solid rgba(76, 47, 32, 0.3)", paddingBottom: "1rem", marginBottom: "2rem" }}
+        <AnimatePresence mode="wait" initial={false}>
+          {!activeArticle ? (
+            <motion.div
+              key="index"
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ maxHeight: "inherit", overflowY: "auto", padding: "clamp(2rem, 5vw, 4rem)" }}
             >
-              Chronicles & Observations
-            </motion.h2>
-            
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}>
-              <button 
-                onClick={handleNew}
-                style={{
-                  background: "transparent",
-                  border: "1px solid #4c2f20",
-                  padding: "0.5rem 1rem",
-                  fontFamily: "'Cinzel', serif",
-                  cursor: "pointer",
-                  color: "#4c2f20",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                + Inscribe New Entry
-              </button>
-            </div>
+              <p style={{ margin: 0, fontFamily: "'Outfit', sans-serif", fontSize: ".72rem", letterSpacing: ".18em", textTransform: "uppercase", opacity: .68 }}>
+                Notes on systems, AI & creative technology
+              </p>
+              <h2 style={{ margin: ".45rem 0 .55rem", fontFamily: "'Cinzel', serif", fontSize: "clamp(2rem, 5vw, 3.4rem)", lineHeight: 1.05 }}>
+                Writings
+              </h2>
+              <p style={{ maxWidth: 640, margin: "0 0 2.25rem", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.15rem", lineHeight: 1.55, opacity: .8 }}>
+                Longer-form thinking behind the projects: reliability, product decisions, and where AI actually earns its keep.
+              </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-              {articles.map((article, i) => (
-                <motion.div
-                  key={article.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingBottom: "0.5rem",
-                    borderBottom: "1px dashed rgba(76, 47, 32, 0.2)",
-                  }}
-                >
-                  <div onClick={() => handleOpen(article)} style={{ cursor: "pointer", flex: 1 }}>
-                    <h3 style={{ margin: "0 0 0.2rem 0", fontSize: "1.3rem", fontWeight: "600" }}>{article.title}</h3>
-                    <span style={{ fontSize: "0.9rem", opacity: 0.7, fontFamily: "'Outfit', sans-serif" }}>{article.date}</span>
-                  </div>
-                  <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-                    <span style={{ fontSize: "0.8rem", fontFamily: "'Outfit', sans-serif", letterSpacing: "0.1em", textTransform: "uppercase" }}>{article.status}</span>
-                    <button onClick={(e) => handleDelete(article.id, e)} style={{ background: "none", border: "none", cursor: "pointer", color: "#8a4b38", fontSize: "1.5rem", padding: "0 0.5rem" }} title="Delete">×</button>
-                  </div>
-                </motion.div>
-              ))}
-              {articles.length === 0 && (
-                <p style={{ textAlign: "center", fontStyle: "italic", opacity: 0.8 }}>No entries found. The ledger is empty.</p>
-              )}
-            </div>
-          </>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1.5rem", borderBottom: "1px solid rgba(76, 47, 32, 0.3)", paddingBottom: "1rem" }}>
-              <button 
-                onClick={() => setIsEditing(false)}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "#4c2f20", fontFamily: "'Cinzel', serif", fontSize: "1rem" }}
+              <div style={{ display: "grid", gap: ".9rem" }}>
+                {articles.map((article, index) => (
+                  <motion.button
+                    key={article.id}
+                    type="button"
+                    onClick={() => setActiveArticle(article)}
+                    whileHover={reduceMotion ? undefined : { y: -2 }}
+                    whileTap={reduceMotion ? undefined : { scale: 0.995 }}
+                    transition={{ duration: .14 }}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "minmax(0,1fr) auto",
+                      gap: "1.25rem",
+                      textAlign: "left",
+                      width: "100%",
+                      border: "1px solid rgba(74,47,31,.2)",
+                      background: index === 0 ? "rgba(255,249,236,.6)" : "rgba(255,249,236,.3)",
+                      padding: "1.2rem 1.3rem",
+                      cursor: "pointer",
+                      color: "inherit",
+                    }}
+                  >
+                    <span>
+                      <span style={{ display: "block", fontFamily: "'Cinzel', serif", fontWeight: 700, fontSize: "clamp(1rem, 2.3vw, 1.2rem)", marginBottom: ".4rem" }}>
+                        {article.title}
+                      </span>
+                      <span style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem", lineHeight: 1.45, opacity: .78 }}>
+                        {article.excerpt}
+                      </span>
+                    </span>
+                    <span style={{ alignSelf: "start", whiteSpace: "nowrap", fontFamily: "'Outfit', sans-serif", fontSize: ".72rem", letterSpacing: ".08em", textTransform: "uppercase", opacity: .58 }}>
+                      {article.readTime} →
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          ) : (
+            <motion.article
+              key={activeArticle.id}
+              initial={reduceMotion ? false : { opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, x: -8 }}
+              transition={{ duration: reduceMotion ? 0 : .18 }}
+              style={{ maxHeight: "inherit", overflowY: "auto", padding: "clamp(2rem, 6vw, 4.5rem)" }}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveArticle(null)}
+                style={{ border: 0, background: "transparent", color: "inherit", cursor: "pointer", padding: 0, fontFamily: "'Outfit', sans-serif", fontSize: ".8rem", letterSpacing: ".08em", textTransform: "uppercase", opacity: .7 }}
               >
-                ← Back
+                ← All writings
               </button>
-              <button 
-                onClick={handleSave}
-                style={{ background: "#4c2f20", border: "none", color: "#e6d7bd", padding: "0.4rem 1rem", cursor: "pointer", fontFamily: "'Cinzel', serif" }}
-              >
-                Save
-              </button>
-            </div>
-            
-            <input 
-              value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
-              placeholder="Title..."
-              style={{
-                width: "100%",
-                background: "transparent",
-                border: "none",
-                borderBottom: "1px dashed rgba(76, 47, 32, 0.3)",
-                fontSize: "1.8rem",
-                fontFamily: "'Cinzel', serif",
-                color: "#2e2318",
-                outline: "none",
-                marginBottom: "1.5rem",
-                padding: "0.5rem 0",
-                boxSizing: "border-box"
-              }}
-            />
-            
-            <textarea
-              value={editContent}
-              onChange={(e) => setEditContent(e.target.value)}
-              placeholder="Write your entry here..."
-              style={{
-                width: "100%",
-                minHeight: "40vh",
-                background: "transparent",
-                border: "none",
-                fontSize: "1.2rem",
-                fontFamily: "'Cormorant Garamond', serif",
-                color: "#2e2318",
-                outline: "none",
-                resize: "vertical",
-                lineHeight: "1.6",
-                boxSizing: "border-box"
-              }}
-            />
-          </motion.div>
-        )}
-      </motion.div>
+
+              <header style={{ margin: "1.25rem 0 2rem", maxWidth: 760 }}>
+                <p style={{ margin: "0 0 .65rem", fontFamily: "'Outfit', sans-serif", fontSize: ".72rem", letterSpacing: ".12em", textTransform: "uppercase", opacity: .62 }}>
+                  {activeArticle.date} · {activeArticle.readTime}
+                </p>
+                <h2 style={{ margin: 0, fontFamily: "'Cinzel', serif", fontSize: "clamp(2rem, 5vw, 3.45rem)", lineHeight: 1.08 }}>
+                  {activeArticle.title}
+                </h2>
+              </header>
+
+              <div style={{ maxWidth: 760 }}>
+                {activeArticle.content.split("\n\n").map((paragraph, index) => (
+                  <p key={index} style={{ margin: "0 0 1.15rem", fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.08rem, 2vw, 1.22rem)", lineHeight: 1.72 }}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </motion.article>
+          )}
+        </AnimatePresence>
+      </motion.section>
     </motion.div>
   );
 }
