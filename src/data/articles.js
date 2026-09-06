@@ -1,5 +1,158 @@
 export const articles = [
   {
+    id: "validation-gates-markerless-mocap",
+    title: "Why Markerless Motion Capture Needs Validation Gates, Not Just Pretty Skeletons",
+    date: "Sep 2026",
+    readTime: "6 min read",
+    status: "Published",
+    excerpt: "A pose overlay can look convincing while the underlying geometry is unusable. Good mocap needs coverage, confidence, reprojection error, synchronization, and explicit failure gates.",
+    content: `A markerless motion-capture demo can lie to you without technically being broken.
+
+The skeleton moves. The joints look plausible. The video is smooth. It feels finished.
+
+But motion capture is not really a drawing problem. It is a measurement problem.
+
+If the system is meant to produce kinematics, gait parameters, 3D trajectories, or clinically meaningful movement features, visual plausibility is not enough. A wrong knee point can still look like a knee point. A triangulated joint can sit in a believable place while being geometrically inconsistent with both cameras. A detector can produce a complete-looking frame while confidence quietly collapses on one side of the body.
+
+That is why I started treating validation as part of the pipeline rather than something done after the pipeline.
+
+For single-camera pose estimation, the first useful questions are boring but essential: how much of the sequence has usable landmarks? Which joints fail most often? Is confidence stable across frames? Are there sudden jumps that suggest detector swaps or occlusions? How much smoothing is required before the trajectory stops looking physically absurd?
+
+For dual-camera reconstruction, the bar gets higher. Synchronization matters. Calibration matters. Reprojection error matters. If the same reconstructed 3D point projects badly back into one or both camera views, the 3D result should not be trusted just because it looks neat in a plot.
+
+In my motion-capture work, this changed the way I thought about output. Instead of treating a successful run as “the script completed,” I started defining quality gates.
+
+A sequence can fail even when the code succeeds.
+
+That distinction is important.
+
+A right-side pose stream with poor usable coverage should not silently feed gait analysis. A calibration with unstable reprojection error should not be promoted into confident 3D claims. A large frame-to-frame motion jump should be treated as a diagnostic signal, not smoothed away until the graph looks nicer.
+
+The system should be allowed to say: this result is not reliable enough.
+
+That sounds conservative, but it is actually what makes later analysis more useful. Once validity is explicit, downstream features can inherit trust levels. Gait events can distinguish measured values from estimates. Reports can expose where confidence dropped. Experiments become comparable because “good” has a repeatable definition.
+
+This also changes model evaluation. A detector with slightly lower headline accuracy can be better for motion capture if it gives more stable temporal trajectories. A smoother detector can be worse if it hides fast movements. A model that performs well on average can still be unusable for a specific joint or camera angle.
+
+So the useful metrics are layered: detection coverage, landmark confidence, temporal stability, synchronization quality, reprojection error, reconstruction success, and finally task-level outputs such as gait parameters.
+
+The order matters.
+
+If upstream geometry is weak, downstream clinical-looking numbers become decoration.
+
+This is one of the stranger lessons of computer vision: the more impressive the visualization becomes, the easier it is to forget that a visualization is not evidence.
+
+A good markerless mocap system should make its uncertainty visible. It should tell you what it measured, what it inferred, what it rejected, and why.
+
+The skeleton is the interface.
+
+The validation layer is the actual instrument.`
+  },
+  {
+    id: "ids-accuracy-is-not-the-whole-story",
+    title: "Why 99% Accuracy Can Still Be a Bad Intrusion Detector",
+    date: "Sep 2026",
+    readTime: "5 min read",
+    status: "Published",
+    excerpt: "Security models live in the tails. Accuracy matters, but recall, false positives, class imbalance, and operational cost decide whether an IDS is actually useful.",
+    content: `Intrusion-detection results become suspiciously easy to oversell when the first number on the page is accuracy.
+
+A model reports 99% accuracy. It sounds excellent. The instinct is to stop reading.
+
+But security systems do not fail on the average case. They fail in the minority class, the weird packet, the rare attack, the distribution shift, and the false alarm that trains an operator to ignore the next alert.
+
+That is why I care much more about the shape of the errors than the headline score.
+
+Suppose network traffic is heavily dominated by benign examples. A classifier can achieve high accuracy while still missing a meaningful fraction of attacks. In that setting, recall becomes critical because it answers the operational question: of the attacks that actually happened, how many did we catch?
+
+Then comes the opposite problem. If the model catches everything by flagging half the network, it is still useless. False-positive rate matters because every false alarm consumes attention. A security system that constantly cries wolf eventually becomes background noise.
+
+The trade-off is not academic. It maps directly to deployment.
+
+In my smart-grid intrusion-detection work on IEC 60870-5-104 traffic, the published results included 99.29% accuracy, 94.8% recall, and a 4.1% false-positive rate. Those numbers are more informative together than any one of them alone.
+
+The recall tells us the detector is not perfect. Some attacks are still missed. The false-positive rate tells us the system still creates operational noise. That is exactly the kind of thing a responsible evaluation should expose instead of burying under a strong accuracy number.
+
+The next layer is class structure. “Attack” is rarely one homogeneous thing. Different attacks can leave very different signatures, and a model can perform well on common attack families while failing on rare or subtle ones. Aggregate metrics can hide that.
+
+Then there is data leakage.
+
+Security datasets are especially vulnerable to accidental shortcuts. If train and test splits share near-duplicate flows, sessions, timestamps, source-specific artefacts, or preprocessing leakage, a model can look brilliant while learning the dataset rather than the attack behaviour.
+
+The safest evaluation is therefore adversarial toward your own result.
+
+Ask what information the model could be exploiting. Ask whether the split matches deployment reality. Ask how performance changes when traffic characteristics shift. Ask what happens to recall under rare attacks. Ask whether false positives cluster around particular benign behaviours.
+
+And if the model is intended for a real industrial protocol, evaluate the consequences of each error type.
+
+A false negative may allow malicious control traffic through. A false positive may interrupt legitimate operations or overwhelm analysts. Those are not symmetric costs.
+
+This is why security ML needs more than model selection. It needs threat-aware evaluation.
+
+The goal is not to make the confusion matrix look pretty. The goal is to understand what the system will do when somebody actively tries to make it wrong.`
+  },
+  {
+    id: "evidence-first-financial-reconciliation",
+    title: "Matching Numbers Is Not the Same as Proving Money Moved",
+    date: "Sep 2026",
+    readTime: "6 min read",
+    status: "Published",
+    excerpt: "Financial reconciliation gets dangerous when similarity is treated as proof. Evidence-first systems separate plausible matches from transactions that can actually be closed safely.",
+    content: `A payment record and a bank transaction can have the same amount and still have nothing to do with each other.
+
+That sounds obvious until you look at how many reconciliation systems are built.
+
+The common pattern is score-based matching. Same amount? Good. Similar timestamp? Better. Matching reference text? Better again. Add enough similarity and the system decides the records belong together.
+
+That is useful for finding candidates.
+
+It is not proof.
+
+Financial workflows need a distinction between “these records look related” and “the evidence is strong enough to close this reconciliation.” I built my finance-controller project around that gap.
+
+The key idea is provenance.
+
+Instead of treating reconciliation as one pairwise comparison, represent the movement of money as a chain of evidence: order, payment, fees, taxes, settlement, bank transaction. A match becomes stronger when the system can explain how value moved through that chain and where deductions came from.
+
+This matters because real payment flows are messy.
+
+A single settlement can contain multiple payments. Fees may be deducted before settlement. Taxes can appear as separate components. Timestamps drift. Bank narration is inconsistent. A transaction can be split, aggregated, delayed, or partially refunded.
+
+A naive exact matcher fails on these cases.
+
+A naive fuzzy matcher can be worse because it may confidently close the wrong records.
+
+So reconciliation should be layered.
+
+Exact matching is useful where identifiers or totals genuinely align. Composite matching is needed when multiple child transactions explain one settlement. Fuzzy matching can rank ambiguous candidates. An AI layer can help interpret messy context or explain anomalies.
+
+But those layers should not have equal authority.
+
+The AI should not be allowed to invent missing financial evidence just because a pattern looks familiar. If a fee seems plausible but there is no supporting record, the system should mark the explanation as a hypothesis, not convert it into accounting truth.
+
+That one design choice changes the entire safety profile.
+
+It also makes abstention valuable.
+
+Most ML demos treat abstention as failure. In finance, refusing to close an uncertain case can be the correct result. If the evidence is incomplete, the system should escalate or leave the item unresolved instead of forcing a match to improve a completion percentage.
+
+That means evaluation should measure unsafe closure separately from correct closure.
+
+A system that reconciles 98% of records but incorrectly closes 2% of financially ambiguous cases may be worse than a system that reconciles 93% and safely abstains on the rest.
+
+The metric has to reflect the cost of being wrong.
+
+This is also why I prefer evidence-first explanations over generic AI summaries. A useful explanation should point to the exact records, the amounts, the deductions, and the path that connects them. If the explanation cannot be traced back to data, it is commentary, not evidence.
+
+The broader lesson is bigger than finance.
+
+Whenever an AI system is making a decision with real consequences, similarity should not silently become certainty.
+
+Candidate generation, reasoning, evidence, and authority are different layers.
+
+Good systems keep them separate.`
+  },
+  {
     id: "why-prompts-are-not-an-ai-strategy",
     title: "Why Prompts Are Not an AI Strategy",
     date: "Jun 2026",
