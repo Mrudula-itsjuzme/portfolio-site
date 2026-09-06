@@ -76,13 +76,13 @@ export default function WritingsScroll({ onClose }) {
               style={{ maxHeight: "inherit", overflowY: "auto", padding: "clamp(2rem, 5vw, 4rem)" }}
             >
               <p style={{ margin: 0, fontFamily: "'Outfit', sans-serif", fontSize: ".72rem", letterSpacing: ".18em", textTransform: "uppercase", opacity: .68 }}>
-                Notes on systems, AI & creative technology
+                Essays, notes & field observations
               </p>
               <h2 style={{ margin: ".45rem 0 .55rem", fontFamily: "'Cinzel', serif", fontSize: "clamp(2rem, 5vw, 3.4rem)", lineHeight: 1.05 }}>
                 Writings
               </h2>
               <p style={{ maxWidth: 640, margin: "0 0 2.25rem", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.15rem", lineHeight: 1.55, opacity: .8 }}>
-                Longer-form thinking behind the projects: reliability, product decisions, and where AI actually earns its keep.
+                Things I've actually written: essays, public notes, startup thoughts, and the occasional idea that refused to stay in drafts.
               </p>
 
               <div style={{ display: "grid", gap: ".9rem" }}>
