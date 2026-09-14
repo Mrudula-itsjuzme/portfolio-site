@@ -395,6 +395,17 @@ function buildPages(project) {
 export default function BookViewer({ project, onClose, onPageFlipSound }) {
   const flipRef = useRef(null);
   const [page, setPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setIsMobile(window.innerWidth < 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const pages = useMemo(() => buildPages(project), [project]);
 
@@ -408,11 +419,21 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
   }, [project.id]);
 
   function flipNext() {
-    flipRef.current?.pageFlip()?.flipNext();
+    if (isMobile) {
+      setPage((p) => Math.min(p + 1, pages.length - 1));
+      onPageFlipSound?.();
+    } else {
+      flipRef.current?.pageFlip()?.flipNext();
+    }
   }
 
   function flipPrev() {
-    flipRef.current?.pageFlip()?.flipPrev();
+    if (isMobile) {
+      setPage((p) => Math.max(p - 1, 0));
+      onPageFlipSound?.();
+    } else {
+      flipRef.current?.pageFlip()?.flipPrev();
+    }
   }
 
   useEffect(() => {
@@ -453,8 +474,8 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
         <div className="archive-desk-glow" />
         <div className="archive-desk-grain" />
 
-        <button className="close-viewer archive-close" onClick={onClose}>
-          ×
+        <button className="close-viewer archive-close" onClick={onClose} aria-label="Close archive viewer">
+          ✕ Close
         </button>
 
         {/* Book body: leather spine + pages */}
@@ -472,30 +493,10 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
           <div className="archive-book-zone">
             <motion.div
               className="flipbook-wrap archive-flipbook-wrap"
-              initial={{ rotateX: 0, rotateY: 0, opacity: 0, scale: 0.8 }}
-              animate={
-                bookOpen
-                  ? {
-                      rotateX: [0, -1.5, 0.8, 0],
-                      rotateY: [0, 0.8, -0.5, 0],
-                      rotateZ: [0, 0.4, -0.3, 0],
-                      opacity: 1,
-                      scale: 1,
-                    }
-                  : { rotateX: -25, rotateY: 8, opacity: 1, scale: 0.95 }
-              }
-              transition={
-                bookOpen
-                  ? {
-                      opacity:   { duration: 0.5 },
-                      scale:     { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
-                      rotateX:   { duration: 6, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
-                      rotateY:   { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
-                      rotateZ:   { duration: 7, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" },
-                    }
-                  : { duration: 0.35, ease: [0.34, 1.56, 0.64, 1], type: "spring", stiffness: 200, damping: 18 }
-              }
-              style={{ perspective: "1400px", transformStyle: "preserve-3d" }}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={bookOpen ? { opacity: 1, scale: 1 } : { opacity: 0.8, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              style={{ perspective: "1400px" }}
             >
               <div className="archive-book-shadow" />
 
@@ -518,7 +519,7 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
                 className="cover-flip-overlay archive-cover-flip"
                 initial={{ rotateY: 0 }}
                 animate={{ rotateY: bookOpen ? -100 : 0 }}
-                transition={{ duration: 0.75, ease: [0.4, 0, 0.15, 1] }}
+                transition={{ duration: 0.55, ease: [0.4, 0, 0.15, 1] }}
                 style={{
                   transformOrigin: "1.5% 50%",
                   pointerEvents: bookOpen ? "none" : "auto",
@@ -535,37 +536,49 @@ export default function BookViewer({ project, onClose, onPageFlipSound }) {
                 </p>
               </motion.div>
 
-              <HTMLFlipBook
-                ref={flipRef}
-                width={500}
-                height={640}
-                size="stretch"
-                showCover={false}
-                maxShadowOpacity={0.55}
-                drawShadow
-                flippingTime={1100}
-                usePortrait={false}
-                startPage={0}
-                useMouseEvents
-                swipeDistance={30}
-                mobileScrollSupport
-                className="flipbook archive-flipbook"
-                style={{ perspective: "2000px" }}
-                onFlip={(e) => {
-                  setPage(e.data);
-                  onPageFlipSound?.();
-                }}
-              >
-                {pages.map((p, i) => (
+              {isMobile ? (
+                <div className="mobile-book-reader">
                   <Page
-                    key={`${project.id}-${p.id}-${i}`}
-                    page={p}
-                    index={i}
+                    key={`${project.id}-${pages[page]?.id}-${page}`}
+                    page={pages[page]}
+                    index={page}
                     total={pages.length}
                     project={project}
                   />
-                ))}
-              </HTMLFlipBook>
+                </div>
+              ) : (
+                <HTMLFlipBook
+                  ref={flipRef}
+                  width={500}
+                  height={640}
+                  size="stretch"
+                  showCover={false}
+                  maxShadowOpacity={0.4}
+                  drawShadow
+                  flippingTime={450}
+                  usePortrait={false}
+                  startPage={0}
+                  useMouseEvents
+                  swipeDistance={30}
+                  mobileScrollSupport
+                  className="flipbook archive-flipbook"
+                  style={{ perspective: "2000px" }}
+                  onFlip={(e) => {
+                    setPage(e.data);
+                    onPageFlipSound?.();
+                  }}
+                >
+                  {pages.map((p, i) => (
+                    <Page
+                      key={`${project.id}-${p.id}-${i}`}
+                      page={p}
+                      index={i}
+                      total={pages.length}
+                      project={project}
+                    />
+                  ))}
+                </HTMLFlipBook>
+              )}
             </motion.div>
 
           </div>

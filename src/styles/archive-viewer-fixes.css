@@ -1,4 +1,6 @@
-/* Precision fixes for the ornate archive viewer */
+/* ============================================================
+   Archive Viewer – Complete Layout, Padding, and UX Overrides
+   ============================================================ */
 
 .archive-viewer-backdrop {
   overflow-y: auto;
@@ -7,18 +9,52 @@
   padding: 1rem 0;
 }
 
-/* Outer modal — sized like a book, not a desk */
+/* ── Modal Desk ────────────────────────────────────────────── */
 .archive-desk {
-  width: min(96vw, 1060px);
+  width: min(96vw, 1100px);
   height: auto;
   min-height: auto;
-  padding: 0.6rem 1rem 0.8rem;
+  padding: 1rem 1.2rem 1.2rem;
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: visible; /* Allows close button to float clearly above modal */
 }
 
-/* Book body: spine strip + pages side by side */
+/* ── Close Button – Floating clear in top right with backing plate ── */
+.archive-close {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1.2rem !important;
+  background: linear-gradient(180deg, #2d1d11 0%, #120c08 100%) !important;
+  border: 1px solid rgba(201, 145, 58, 0.72) !important;
+  color: #e3be79 !important;
+  border-radius: 6px !important;
+  padding: 0.4rem 0.85rem !important;
+  font-family: "Cinzel", serif !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1 !important;
+  z-index: 50 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.archive-close:hover {
+  background: linear-gradient(180deg, #3d2817 0%, #1c130c 100%) !important;
+  border-color: rgba(225, 175, 80, 0.9) !important;
+  color: #ffd88a !important;
+  transform: translateY(-1px);
+}
+
+.archive-close:focus-visible {
+  outline: 2px solid #d4a44c !important;
+  outline-offset: 3px !important;
+}
+
+/* ── Book Structure ───────────────────────────────────────── */
 .archive-book-body {
   display: flex;
   flex-direction: row;
@@ -30,12 +66,12 @@
     -6px 0 24px rgba(0,0,0,0.45),
     6px 0 12px rgba(0,0,0,0.2),
     0 12px 40px rgba(0,0,0,0.5);
-  margin-top: 0.4rem;
+  margin-top: 1.8rem; /* Clear space below the floating close button */
 }
 
 /* Leather spine strip on the left */
 .archive-book-spine {
-  width: 36px;
+  width: 38px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -81,59 +117,21 @@
   letter-spacing: 0.1em;
 }
 
-
-.archive-viewer-header {
-  padding: 0.7rem 4rem 0.4rem;
-  margin-bottom: 0.2rem;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.archive-viewer-header h2 {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: clamp(1.2rem, 2vw, 2rem);
-  line-height: 1.15;
-  letter-spacing: 0.045em;
-  text-wrap: balance;
-  white-space: normal;
-  word-wrap: break-word;
-}
-
-.archive-viewer-header p {
-  margin-top: 0.2rem;
-}
-
-.archive-title-rule,
-.archive-viewer-header::after {
-  display: none;
-}
-
-.archive-close {
-  top: 0.8rem;
-  right: 1rem;
-}
-
-/* -------------------------------------------------------
-   PORTRAIT BOOK: each page is taller than it is wide
-   Two pages side-by-side → total width ≈ 2× page width
-   Page target: ~380px wide × 580px tall (≈ A4 portrait)
-   So book = ~760px wide × 580px tall
-------------------------------------------------------- */
+/* ── Book Zone & Wrapper ───────────────────────────────────── */
 .archive-book-zone {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: rgba(0,0,0,0.18);
+  background: rgba(0, 0, 0, 0.22);
+  padding: 1rem;
 }
 
 .archive-flipbook-wrap {
-  /* portrait: each page ~360px × 560px → book 720 × 560 */
-  width: min(80vw, 760px);
-  height: min(72vh, 600px);
-  min-height: 480px;
+  width: min(91vw, 1060px);
+  height: min(72vh, 680px);
+  min-height: 520px;
   padding: 0.8rem 1rem;
   border-radius: 12px;
   overflow: hidden;
@@ -144,425 +142,258 @@
   border-radius: 9px;
 }
 
+/* ── Paper Page Container ─────────────────────────────────── */
 .paper-page {
-  padding: 0.75rem 0.9rem 0.85rem;
+  box-sizing: border-box !important;
   background:
     radial-gradient(circle at 15% 18%, rgba(117, 72, 31, 0.055) 0 1px, transparent 1.8px),
     radial-gradient(circle at 78% 74%, rgba(117, 72, 31, 0.045) 0 1px, transparent 1.8px),
     linear-gradient(180deg, #f4e6c8 0%, #ead4aa 100%);
   background-size: 49px 47px, 61px 57px, auto;
+  overflow: hidden !important;
 }
 
+/* VERSO (Left-hand page): Spine is on the RIGHT side, outer cover on LEFT side.
+   Extra left padding ensures content clears the outer cover trim! */
+.paper-page.verso {
+  padding: 0.7rem 1.4rem 0.8rem 2.2rem !important;
+}
+
+/* RECTO (Right-hand page): Gutter/Spine is on the LEFT side, outer edge on RIGHT side.
+   Extra left padding ensures content clears the central spine gutter shadow! */
+.paper-page.recto {
+  padding: 0.7rem 2.0rem 0.8rem 1.4rem !important;
+}
+
+/* Inner page content container */
 .paper-page.recto .page-surface,
 .paper-page.verso .page-surface {
-  padding: 0.85rem 1rem 0.75rem;
-  border-color: rgba(108, 64, 27, 0.22);
-  overflow-y: auto;
-  overflow-x: hidden;
+  padding: 0.7rem 0.9rem 0.6rem !important;
+  border: 1px solid rgba(108, 64, 27, 0.22);
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100% !important;
 }
 
+/* Remove absolute decorative pseudo-elements that obscure text */
+.paper-page .page-surface::before,
+.paper-page .page-surface::after {
+  display: none !important;
+}
+
+/* ── Running Head ─────────────────────────────────────────── */
 .running-head {
-  min-height: 28px;
-  margin-bottom: 0.15rem;
-  padding: 0 0.55rem 0.34rem;
-  border-bottom: 1px solid rgba(109, 67, 30, 0.18);
-  line-height: 1.15;
+  min-height: 24px;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid rgba(109, 67, 30, 0.2);
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
 }
 
-.running-head span {
-  max-width: 47%;
+.running-section-title {
+  font-family: "Cinzel", serif;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(104, 63, 27, 0.65) !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 100%;
 }
 
-/* Cover page — show image properly */
-.cover-surface,
-.titleplate-surface {
-  justify-content: flex-start;
+/* ── Typography & Text Density ────────────────────────────── */
+.paper-page p,
+.paper-page dt,
+.paper-page dd,
+.paper-page li {
+  max-width: 66ch !important;
+  line-height: 1.65 !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  color: #342114;
 }
 
+.essay-surface p {
+  max-width: 62ch !important;
+  line-height: 1.68 !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* Manuscript grid dd spacing */
+.manuscript-grid dd {
+  margin-bottom: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+/* Pipeline workflow steps */
+.pipeline-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.55;
+}
+
+/* ── Markdown Content ─────────────────────────────────────── */
+.markdown-surface {
+  padding: 0.8rem 1rem !important;
+}
+
+.markdown-content p,
+.markdown-content li {
+  max-width: 66ch !important;
+  line-height: 1.62 !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  font-size: 0.9rem;
+}
+
+.markdown-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+/* ── Cover Page Image & Plaque ────────────────────────────── */
 .cover-surface {
-  padding: 0.5rem !important;
+  padding: 0.6rem !important;
   overflow: hidden;
 }
 
-/* Allow the cover image to display */
 .cover-image-panel img {
   display: block !important;
-}
-
-/* Legacy override — no longer hide images */
-.cover-surface .page-figure img {
-  display: block !important;
-  max-height: 200px;
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   filter: sepia(0.08) saturate(0.95);
 }
 
-/* Hide the fake generated plaque so real image can show */
-.cover-surface .page-figure::before,
-.cover-surface .page-figure::after {
-  display: none !important;
+/* Fallback plaque if image error */
+.cover-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(255, 248, 224, 0.8), rgba(206, 171, 113, 0.5));
 }
 
-.cover-meta {
-  margin-top: 0.25rem;
-}
-
-.archive-meta {
-  width: 86%;
-  margin: 0.2rem auto 0;
-  padding-top: 0.4rem;
-}
-
-.titleplate-surface {
-  gap: 0.45rem;
-  text-align: center;
-}
-
-.titleplate-surface h3 {
-  max-width: 92%;
-  margin: 0 auto;
-  font-size: clamp(1.2rem, 1.9vw, 1.75rem);
-  line-height: 1.15;
-  text-wrap: balance;
-}
-
-.titleplate-surface > p:nth-of-type(1) {
-  margin-top: 0.1rem;
-}
-
-.seal-row {
-  width: 90%;
-  margin: 0.45rem auto;
-}
-
-.seal-row span {
-  padding: 0.4rem 0.2rem;
-  font-size: 0.66rem;
-}
-
-.titleplate-surface > p:last-child {
-  width: 90%;
-  margin: 0.45rem auto 0;
-  padding-top: 0.65rem;
-  font-size: 0.95rem;
-  line-height: 1.45;
-  text-align: left;
-}
-
-.archive-brass-label {
-  display: none;
-}
-
+/* ── Navigation Controls & Footer ──────────────────────────── */
 .archive-viewer-controls {
-  margin-top: 0.5rem;
-  gap: 0.7rem;
-  flex-shrink: 0;
+  margin-top: 0.6rem !important;
+  gap: 0.8rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .archive-viewer-controls button,
 .archive-viewer-controls span {
-  min-width: 44px;
-  min-height: 36px;
-  padding: 0.35rem 0.75rem;
+  min-width: 100px !important;
+  min-height: 38px !important;
+  padding: 0.4rem 0.8rem !important;
+  border: 1px solid rgba(201, 145, 58, 0.6) !important;
+  background: linear-gradient(180deg, #2d1d11, #120c08) !important;
+  color: #e0b66f !important;
+  border-radius: 4px !important;
+  font-family: "Cinzel", serif !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.12em !important;
 }
 
-.archive-filed-under {
+.archive-viewer-controls button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #3d2817, #1c130c) !important;
+  color: #ffd88a !important;
+  border-color: rgba(225, 175, 80, 0.85) !important;
+  transform: translateY(-1px);
+}
+
+.archive-viewer-controls button:focus-visible {
+  outline: 2px solid #d4a44c !important;
+  outline-offset: 3px !important;
+}
+
+/* ── Mobile Single Page Reader Container ───────────────────── */
+.mobile-book-reader {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.5rem;
-  padding: 0.5rem 0.5rem 0;
-  text-align: center;
-  font-size: 0.82rem;
-  line-height: 1.25;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
-.archive-filed-under::before {
-  content: "Scale with intent · Design for change · Ship with clarity";
-  flex-basis: 100%;
-  margin: 0 0 0.15rem;
-  color: #b88642;
-  font-style: italic;
+.mobile-book-reader .paper-page {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0.8rem 1rem !important;
+  box-sizing: border-box !important;
 }
 
-.folio {
-  margin-top: 0.32rem;
-  font-size: 0.62rem;
-}
-
-@media (max-width: 900px) {
-  .archive-viewer-header {
-    padding: 2.7rem 1rem 0.45rem;
+/* ── Mobile Single Page Layout (<768px) ────────────────────── */
+@media (max-width: 768px) {
+  .archive-book-shadow,
+  .archive-flipbook-wrap::before,
+  .paper-page::before,
+  .paper-page::after {
+    display: none !important;
+    background: none !important;
   }
 
-  .archive-viewer-header h2 {
-    font-size: clamp(1.15rem, 5vw, 1.7rem);
+  .archive-desk {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 0.5rem !important;
+    border-radius: 0 !important;
+  }
+
+  .archive-close {
+    top: 0.4rem !important;
+    right: 0.4rem !important;
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .archive-book-body {
+    flex-direction: column !important;
+    margin-top: 2.2rem !important;
+  }
+
+  .archive-book-spine {
+    width: 100% !important;
+    height: 32px !important;
+    flex-direction: row !important;
+    padding: 0 0.8rem !important;
+    border-right: none !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .spine-label {
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+    max-height: none !important;
+    max-width: 75% !important;
   }
 
   .archive-flipbook-wrap {
-    width: 96vw;
-    height: 62vh;
-    min-height: 400px;
-    padding: 0.55rem;
+    width: 100% !important;
+    height: 72vh !important;
+    min-height: 440px !important;
+    padding: 0.3rem !important;
   }
 
-  .archive-viewer-controls button,
-  .archive-viewer-controls span {
-    min-width: 82px;
-  }
-}
-
-.archive-viewer-header {
-  padding: 0.8rem 10rem 0.45rem;
-  margin-bottom: 0.25rem;
-}
-
-.archive-viewer-header h2 {
-  max-width: 900px;
-  margin: 0 auto;
-  font-size: clamp(1.35rem, 2.15vw, 2.35rem);
-  line-height: 1.15;
-  letter-spacing: 0.045em;
-  text-wrap: balance;
-}
-
-.archive-viewer-header p {
-  margin-top: 0.2rem;
-}
-
-.archive-title-rule,
-.archive-viewer-header::after {
-  display: none;
-}
-
-.archive-close {
-  top: 0.8rem;
-  right: 1rem;
-}
-
-.archive-flipbook-wrap {
-  width: min(91vw, 1240px);
-  height: min(68vh, 690px);
-  min-height: 560px;
-  padding: 0.9rem 1.15rem;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.archive-flipbook-wrap::after {
-  inset: 0.45rem;
-  border-radius: 9px;
-}
-
-.paper-page {
-  padding: 0.75rem 0.9rem 0.85rem;
-  background:
-    radial-gradient(circle at 15% 18%, rgba(117, 72, 31, 0.055) 0 1px, transparent 1.8px),
-    radial-gradient(circle at 78% 74%, rgba(117, 72, 31, 0.045) 0 1px, transparent 1.8px),
-    linear-gradient(180deg, #f4e6c8 0%, #ead4aa 100%);
-  background-size: 49px 47px, 61px 57px, auto;
-}
-
-.paper-page.recto .page-surface,
-.paper-page.verso .page-surface {
-  padding: 0.85rem 1rem 0.75rem;
-  border-color: rgba(108, 64, 27, 0.22);
-  overflow: hidden;
-}
-
-.running-head {
-  min-height: 28px;
-  margin-bottom: 0.15rem;
-  padding: 0 0.55rem 0.34rem;
-  border-bottom: 1px solid rgba(109, 67, 30, 0.18);
-  line-height: 1.15;
-}
-
-.running-head span {
-  max-width: 47%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.cover-surface,
-.titleplate-surface {
-  justify-content: center;
-}
-
-.cover-surface {
-  gap: 0.55rem;
-  text-align: center;
-}
-
-.cover-surface h2 {
-  max-width: 92%;
-  margin: 0 auto;
-  font-size: clamp(1.45rem, 2.35vw, 2.25rem);
-  line-height: 1.12;
-  letter-spacing: 0.025em;
-  text-wrap: balance;
-}
-
-.cover-surface > p:nth-of-type(2) {
-  margin-top: 0.15rem;
-  font-size: 1rem;
-}
-
-/* Replace unreliable external preview images with a stable archive plaque. */
-.cover-surface .page-figure {
-  width: 86%;
-  min-height: 132px;
-  margin: 0.55rem auto 0.15rem;
-  display: grid;
-  place-items: center;
-  position: relative;
-  border: 1px solid rgba(102, 60, 25, 0.42);
-  background:
-    linear-gradient(135deg, rgba(255, 248, 224, 0.82), rgba(206, 171, 113, 0.58)),
-    repeating-linear-gradient(0deg, transparent 0 12px, rgba(91, 55, 27, 0.05) 12px 13px);
-  box-shadow:
-    0 9px 22px rgba(62, 31, 12, 0.2),
-    inset 0 0 0 3px rgba(255, 244, 211, 0.3);
-}
-
-.cover-surface .page-figure img {
-  display: none;
-}
-
-.cover-surface .page-figure::before {
-  content: "⌘  SOURCE REPOSITORY";
-  display: block;
-  font-family: "Cinzel", serif;
-  font-size: 0.74rem;
-  letter-spacing: 0.18em;
-  color: #674321;
-}
-
-.cover-surface .page-figure::after {
-  content: "Open the archive record for code, commits, documentation and evidence";
-  display: block;
-  max-width: 78%;
-  margin-top: 0.55rem;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 0.92rem;
-  font-style: italic;
-  line-height: 1.35;
-  color: rgba(77, 49, 25, 0.78);
-}
-
-.cover-meta {
-  margin-top: 0.25rem;
-}
-
-.archive-meta {
-  width: 86%;
-  margin: 0.2rem auto 0;
-  padding-top: 0.4rem;
-}
-
-.titleplate-surface {
-  gap: 0.45rem;
-  text-align: center;
-}
-
-.titleplate-surface h3 {
-  max-width: 92%;
-  margin: 0 auto;
-  font-size: clamp(1.2rem, 1.9vw, 1.75rem);
-  line-height: 1.15;
-  text-wrap: balance;
-}
-
-.titleplate-surface > p:nth-of-type(1) {
-  margin-top: 0.1rem;
-}
-
-.seal-row {
-  width: 90%;
-  margin: 0.45rem auto;
-}
-
-.seal-row span {
-  padding: 0.4rem 0.2rem;
-  font-size: 0.66rem;
-}
-
-.titleplate-surface > p:last-child {
-  width: 90%;
-  margin: 0.45rem auto 0;
-  padding-top: 0.65rem;
-  font-size: 0.95rem;
-  line-height: 1.45;
-  text-align: left;
-}
-
-.archive-brass-label {
-  display: none;
-}
-
-.archive-viewer-controls {
-  margin-top: 0.6rem;
-  gap: 0.7rem;
-}
-
-.archive-viewer-controls button,
-.archive-viewer-controls span {
-  min-width: 105px;
-  min-height: 38px;
-  padding: 0.4rem 0.8rem;
-}
-
-.archive-filed-under {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.65rem;
-  padding: 0.65rem 0.5rem 0;
-  text-align: center;
-  font-size: 0.82rem;
-  line-height: 1.25;
-}
-
-.archive-filed-under::before {
-  content: "Scale with intent · Design for change · Ship with clarity";
-  flex-basis: 100%;
-  margin: 0 0 0.15rem;
-  color: #b88642;
-  font-style: italic;
-}
-
-.folio {
-  margin-top: 0.32rem;
-  font-size: 0.62rem;
-}
-
-@media (max-width: 900px) {
-  .archive-viewer-header {
-    padding: 2.7rem 1rem 0.45rem;
-  }
-
-  .archive-viewer-header h2 {
-    font-size: clamp(1.15rem, 5vw, 1.7rem);
-  }
-
-  .archive-flipbook-wrap {
-    width: 96vw;
-    height: 65vh;
-    min-height: 500px;
-    padding: 0.55rem;
-  }
-
-  .archive-viewer-controls button,
-  .archive-viewer-controls span {
-    min-width: 82px;
+  .paper-page.verso,
+  .paper-page.recto {
+    padding: 0.5rem 0.8rem !important;
   }
 }

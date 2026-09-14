@@ -2,6 +2,9 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Bookshelf from "../components/Bookshelf";
 import { projects as fallbackProjects } from "../data/projects";
+import SimpleView from "../components/SimpleView";
+import { useViewMode } from "../hooks/useViewMode";
+import "../styles/simple-view.css";
 
 const BookViewer = lazy(() => import("../components/BookViewer"));
 
@@ -252,8 +255,10 @@ export default function Home() {
     () => localStorage.getItem("library-sound") !== "off"
   );
   const [projects,   setProjects]   = useState(fallbackProjects);
-  const [isLoading,  setIsLoading]  = useState(false); // repos.json renders immediately
+  const [isLoading,  setIsLoading]  = useState(false);
   const [loadError,  setLoadError]  = useState(null);
+
+  const { isSimple, toggle: toggleView, mode: viewMode } = useViewMode();
 
   const audioContextRef = useRef(null);
 
@@ -343,105 +348,122 @@ export default function Home() {
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital@0;1&display=swap"
       />
 
-      {/* Ambient dust */}
-      <DustField count={18} />
+      {/* Skip to content — keyboard accessibility */}
+      <a href="#main-content" className="sv-skip-link">Skip to content</a>
 
-      {/* Wall sconces */}
-      <Sconce side="left"  />
-      <Sconce side="right" />
-
-      {/* ── Top bar ───────────────────────────────── */}
-      <header
-        style={{
-          position: "relative",
-          zIndex: 10,
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          padding: "36px 52px 28px",
-        }}
+      {/* ── Always-visible view toggle ─────────────────────────── */}
+      <button
+        className="view-toggle-btn"
+        onClick={toggleView}
+        aria-label={isSimple ? "Switch to Immersive view" : "Switch to Simple view"}
+        aria-pressed={isSimple}
       >
-        <motion.div
-          initial={{ opacity: 0, y: -14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-        >
-          {/* eyebrow */}
-          <p
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.28em",
-              textTransform: "uppercase",
-              color: "rgba(200,175,120,0.65)",
-              marginBottom: 6,
-              fontFamily: "'Lora', Georgia, serif",
-              fontStyle: "italic",
-            }}
-          >
-            Digital Stacks
-          </p>
+        <span className="view-toggle-icon" aria-hidden="true">
+          {isSimple ? "🏛️" : "⊡"}
+        </span>
+        <span className="view-toggle-label">
+          {isSimple ? "Immersive view" : "Simple view"}
+        </span>
+      </button>
 
-          {/* main title */}
-          <h1
-            style={{
-              fontSize: "clamp(24px, 4vw, 40px)",
-              fontWeight: 600,
-              color: "rgba(240,228,200,0.92)",
-              letterSpacing: "0.02em",
-              lineHeight: 1.15,
-              margin: 0,
-              textShadow: "0 2px 18px rgba(0,0,0,0.45)",
-            }}
-          >
-            Project Library
-          </h1>
+      {/* Immersive-only decorations */}
+      {!isSimple && (
+        <>
+          <DustField count={18} />
+          <Sconce side="left"  />
+          <Sconce side="right" />
+        </>
+      )}
 
-          {/* sub hint */}
-          <p
-            style={{
-              marginTop: 8,
-              fontSize: 13,
-              fontFamily: "'Lora', Georgia, serif",
-              fontStyle: "italic",
-              color: "rgba(200,185,150,0.45)",
-              letterSpacing: "0.06em",
-            }}
-          >
-            hover · pull · open
-          </p>
-        </motion.div>
-
-        {/* Sound toggle */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          onClick={handleToggleSound}
+      {/* ── Top bar (immersive only) ─────────────────────────────── */}
+      {!isSimple && (
+        <header
           style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "0.5px solid rgba(200,175,120,0.22)",
-            borderRadius: 4,
-            color: "rgba(200,175,120,0.6)",
-            fontSize: 11,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            fontFamily: "'Lora', Georgia, serif",
-            padding: "7px 14px",
-            cursor: "pointer",
-            transition: "background 0.2s, color 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(200,175,120,0.10)";
-            e.currentTarget.style.color = "rgba(220,200,150,0.9)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-            e.currentTarget.style.color = "rgba(200,175,120,0.6)";
+            position: "relative",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            padding: "36px 52px 28px",
           }}
         >
-          {soundEnabled ? "♪  Sound" : "♪  Muted"}
-        </motion.button>
-      </header>
+          <motion.div
+            initial={{ opacity: 0, y: -14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <p
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "rgba(200,175,120,0.65)",
+                marginBottom: 6,
+                fontFamily: "'Lora', Georgia, serif",
+                fontStyle: "italic",
+              }}
+            >
+              Digital Stacks
+            </p>
+            <h1
+              style={{
+                fontSize: "clamp(24px, 4vw, 40px)",
+                fontWeight: 600,
+                color: "rgba(240,228,200,0.92)",
+                letterSpacing: "0.02em",
+                lineHeight: 1.15,
+                margin: 0,
+                textShadow: "0 2px 18px rgba(0,0,0,0.45)",
+              }}
+            >
+              Project Library
+            </h1>
+            <p
+              style={{
+                marginTop: 8,
+                fontSize: 13,
+                fontFamily: "'Lora', Georgia, serif",
+                fontStyle: "italic",
+                color: "rgba(200,185,150,0.45)",
+                letterSpacing: "0.06em",
+              }}
+            >
+              hover · pull · open
+            </p>
+          </motion.div>
+
+          {/* Sound toggle — hidden in simple mode */}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            onClick={handleToggleSound}
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "0.5px solid rgba(200,175,120,0.22)",
+              borderRadius: 4,
+              color: "rgba(200,175,120,0.6)",
+              fontSize: 11,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontFamily: "'Lora', Georgia, serif",
+              padding: "7px 14px",
+              cursor: "pointer",
+              transition: "background 0.2s, color 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(200,175,120,0.10)";
+              e.currentTarget.style.color = "rgba(220,200,150,0.9)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+              e.currentTarget.style.color = "rgba(200,175,120,0.6)";
+            }}
+          >
+            {soundEnabled ? "♪  Sound" : "♪  Muted"}
+          </motion.button>
+        </header>
+      )}
 
       {/* ── Loading state ─────────────────────────── */}
       <AnimatePresence>
@@ -501,12 +523,21 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* ── Shelves ───────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ position: "relative", zIndex: 5 }}
+      {/* ── Simple View ───────────────────────────────── */}
+      {isSimple && (
+        <div id="main-content">
+          <SimpleView projects={projects} />
+        </div>
+      )}
+
+      {/* ── Shelves (immersive only) ──────────────────── */}
+      {!isSimple && (
+        <motion.div
+          id="main-content"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          style={{ position: "relative", zIndex: 5 }}
         >
           <Bookshelf
             projects={projects}
@@ -516,6 +547,7 @@ export default function Home() {
             }
           />
         </motion.div>
+      )}
 
       {/* ── Error notice ──────────────────────────── */}
       <AnimatePresence>

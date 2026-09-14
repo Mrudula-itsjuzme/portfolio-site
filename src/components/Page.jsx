@@ -462,8 +462,7 @@ const Page = forwardRef(function Page({ project, page, index, total }, ref) {
     <div className={`paper-page ${sideClass}`} ref={ref}>
       <div className="page-inner-frame">
         <div className="running-head" aria-hidden="true">
-          <span>{project.spineTitle}</span>
-          <span>{page.title}</span>
+          <span className="running-section-title">{page.title}</span>
         </div>
         <PageBody project={project} page={page} />
         <p className="folio">Page {index + 1} / {total}</p>
