@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /** Adds `in-view` when the element scrolls into the viewport (runs once).
  *  Pass `hidden: false` to observe without hiding the element itself. */
@@ -21,10 +21,54 @@ export default function useReveal({ hidden = true } = {}) {
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.05, rootMargin: "0px 0px 50px 0px" }
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, []);
+
+    // Fallback: guarantee visibility after 1.2s
+    const t = setTimeout(() => {
+      el.classList.add("in-view");
+    }, 1200);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(t);
+    };
+  }, [hidden]);
   return ref;
+}
+
+/** Global hook to auto-reveal ALL .reveal elements on the page (even without explicit refs). */
+export function useGlobalReveal() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.05, rootMargin: "0px 0px 60px 0px" }
+    );
+
+    const elements = document.querySelectorAll(".reveal");
+    elements.forEach((el) => observer.observe(el));
+
+    // Fallback timer: ensure all elements become visible
+    const timer = setTimeout(() => {
+      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+  }, []);
 }

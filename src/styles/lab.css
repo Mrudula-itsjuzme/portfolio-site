@@ -92,14 +92,23 @@ body.lab-cursor-active button { cursor: none; }
 
 /* ============================== header ============================== */
 
+.lab-app {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .lab-header {
   position: sticky;
   top: 0;
-  z-index: 60;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 10px 22px;
+  padding: 12px 36px;
   background: var(--charcoal);
   color: var(--cream);
   border-bottom: 1px solid rgba(247, 241, 230, 0.12);
@@ -141,7 +150,7 @@ body.lab-cursor-active button { cursor: none; }
 .lab-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
@@ -162,9 +171,10 @@ body.lab-cursor-active button { cursor: none; }
 .lab {
   position: relative;
   z-index: 1;
-  max-width: 1240px;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 28px 90px;
+  padding: 0 4vw 90px;
 }
 
 .lab-section { position: relative; margin-top: 96px; }
@@ -1168,3 +1178,330 @@ body.lab-cursor-active button { cursor: none; }
   .drawer { transform: none; }
   .mocap-tag { right: 14px; }
 }
+
+/* ============================================================
+   v3 — Fullscreen mode, Theme switcher, Lightbox & Micro-features
+   ============================================================ */
+
+/* --- Theme overrides --- */
+
+[data-theme="night"] {
+  --paper: #121417;
+  --paper-alt: #1a1e24;
+  --ink: #f0ede6;
+  --charcoal: #0b0c0e;
+  --forest: #8eb38e;
+  --moss: #9ab47a;
+  --sage: #788a6d;
+  --pink: #d97575;
+  --butter: #e6c84c;
+  --clay: #db8c67;
+  --cream: #1b1f26;
+  --cyan: #5ec7c5;
+
+  --shadow-paper: 0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lift: 0 4px 8px rgba(0, 0, 0, 0.5), 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="night"] body::before {
+  opacity: 0.25;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.015) 0 1px, transparent 1px 4px);
+}
+
+[data-theme="sunset"] {
+  --paper: #281d1a;
+  --paper-alt: #332522;
+  --ink: #faedd9;
+  --charcoal: #17100e;
+  --forest: #e0946d;
+  --moss: #e0ac69;
+  --sage: #b38b70;
+  --pink: #e68a8a;
+  --butter: #f2cb63;
+  --clay: #e67553;
+  --cream: #382925;
+  --cyan: #79c7c5;
+
+  --shadow-paper: 0 2px 4px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 4px 8px rgba(0, 0, 0, 0.45), 0 16px 36px rgba(0, 0, 0, 0.65);
+}
+
+/* --- Fullscreen canvas expansion --- */
+
+html[data-fullscreen="true"] .lab,
+:fullscreen .lab {
+  max-width: min(95vw, 1560px);
+  transition: max-width 0.4s ease;
+}
+
+html[data-fullscreen="true"] .hero,
+:fullscreen .hero {
+  grid-template-columns: minmax(0, 7.2fr) minmax(0, 4.8fr);
+  gap: 48px;
+}
+
+/* --- Header pill buttons & active navigation --- */
+
+.lab-nav a.active {
+  background: rgba(247, 241, 230, 0.18);
+  color: var(--butter);
+  font-weight: 600;
+  border-bottom: 2px solid var(--butter);
+}
+
+.header-pill-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(247, 241, 230, 0.08);
+  color: rgba(247, 241, 230, 0.88);
+  border: 1px solid rgba(247, 241, 230, 0.22);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.header-pill-btn:hover {
+  background: rgba(247, 241, 230, 0.2);
+  color: var(--cream);
+  transform: translateY(-1px);
+}
+
+.header-pill-btn.fs-btn {
+  background: linear-gradient(135deg, rgba(122, 143, 90, 0.35), rgba(49, 74, 53, 0.45));
+  border-color: var(--moss);
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.header-pill-btn.fs-btn:hover,
+.header-pill-btn.fs-btn.active {
+  background: var(--moss);
+  color: var(--ink);
+  box-shadow: 0 0 10px rgba(122, 143, 90, 0.5);
+}
+
+.header-pill-btn.sound-btn.on {
+  border-color: var(--butter);
+  color: var(--butter);
+}
+
+/* --- Hero Add Note Button --- */
+
+.btn-add-note {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--forest);
+  background: var(--butter);
+  border: 1px dashed rgba(23, 21, 18, 0.3);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: var(--shadow-paper);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-add-note:hover {
+  transform: rotate(-1.5deg) scale(1.04);
+  background: #eed55c;
+}
+
+/* --- Clickable stage hover effects --- */
+
+.clickable-stage {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.clickable-stage:hover {
+  transform: scale(1.015);
+  box-shadow: 0 10px 30px rgba(23, 21, 18, 0.22);
+}
+
+/* --- Lightbox Modal --- */
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(12, 11, 9, 0.93);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: min(92vw, 1100px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #f7f1e6;
+  text-align: center;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -46px;
+  right: -10px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  z-index: 10;
+}
+
+.lightbox-close:hover {
+  background: #e26d5a;
+  transform: scale(1.1);
+}
+
+.lightbox-meta {
+  margin-bottom: 12px;
+}
+
+.lightbox-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.lightbox-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 3.2vw, 32px);
+  margin: 4px 0 0;
+  color: #f7f1e6;
+}
+
+.lightbox-stage {
+  position: relative;
+  max-height: 68vh;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  cursor: zoom-in;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.lightbox-stage.zoomed {
+  cursor: zoom-out;
+  overflow: auto;
+  max-height: 82vh;
+}
+
+.lightbox-stage.zoomed .lightbox-img {
+  transform: scale(1.45);
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.lightbox-zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: var(--sage);
+  pointer-events: none;
+}
+
+.lightbox-caption {
+  font-family: var(--hand);
+  font-size: 20px;
+  color: var(--butter);
+  margin: 14px 0 6px;
+  max-width: 680px;
+}
+
+.lightbox-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.lightbox-arrow {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 18px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.lightbox-arrow:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.lightbox-counter {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --- Toast notification --- */
+
+.lab-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1500;
+  font-family: var(--hand);
+  font-size: 19px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid var(--clay);
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.interactive-doodle {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.interactive-doodle:hover {
+  transform: scale(1.25) rotate(8deg);
+  filter: drop-shadow(0 0 6px var(--clay));
+}
+
