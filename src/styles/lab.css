@@ -171,13 +171,13 @@ body.lab-cursor-active button { cursor: none; }
 .lab {
   position: relative;
   z-index: 1;
-  max-width: 1680px;
+  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 4vw 90px;
+  padding: 0 24px 90px;
 }
 
-.lab-section { position: relative; margin-top: 96px; }
+.lab-section { position: relative; margin-top: 86px; }
 
 .lab-kicker {
   display: inline-flex;
@@ -196,7 +196,7 @@ body.lab-cursor-active button { cursor: none; }
 }
 
 .lab-h2 {
-  font-size: clamp(30px, 4.2vw, 44px);
+  font-size: clamp(28px, 3.8vw, 42px);
   line-height: 1.05;
   margin: 10px 0 6px;
 }
@@ -244,22 +244,22 @@ body.lab-cursor-active button { cursor: none; }
 .hero {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 36px;
-  padding-top: 72px;
+  padding-top: 56px;
   align-items: start;
 }
 
 .hero-hello {
   font-family: var(--hand);
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(22px, 2.5vw, 28px);
   color: var(--charcoal);
   transform: rotate(-1.4deg);
   display: inline-block;
 }
 
 .hero-name {
-  font-size: clamp(58px, 9.5vw, 128px);
+  font-size: clamp(52px, 7.8vw, 110px);
   line-height: 0.95;
   letter-spacing: 0.01em;
   margin: 6px 0 18px;
@@ -486,11 +486,14 @@ body.lab-cursor-active button { cursor: none; }
   border-radius: 10px;
   box-shadow: var(--shadow-lift);
   overflow: hidden;
+  max-width: 860px;
+  margin: 26px auto 0;
 }
 
 .project-mocap .mocap-stage img {
   width: 100%;
-  height: auto;
+  max-height: 480px;
+  object-fit: contain;
   opacity: 0.94;
   mix-blend-mode: luminosity;
 }
@@ -543,16 +546,19 @@ body.lab-cursor-active button { cursor: none; }
 
 .project-quests .quests-frame {
   background: var(--charcoal);
-  padding: 26px 26px 0;
+  padding: 24px 24px 0;
   border-radius: 14px 14px 0 0;
   box-shadow: var(--shadow-lift);
   position: relative;
   overflow: hidden;
+  max-width: 580px;
+  margin-left: auto;
 }
 
 .project-quests .quests-frame img {
   width: 100%;
-  height: auto;
+  max-height: 380px;
+  object-fit: cover;
   border-radius: 6px 6px 0 0;
 }
 
