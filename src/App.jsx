@@ -1,12 +1,12 @@
-import Home from "./pages/Home";
+import LabPage from "./components/lab/LabPage";
+import LabCursor from "./components/lab/LabCursor";
 import ErrorBoundary from "./components/ErrorBoundary";
-import CredibilityDock from "./components/CredibilityDock";
 
 export default function App() {
   return (
     <ErrorBoundary>
-      <Home />
-      <CredibilityDock />
+      <LabPage />
+      <LabCursor />
     </ErrorBoundary>
   );
 }
