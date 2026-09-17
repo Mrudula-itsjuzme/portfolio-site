@@ -41,7 +41,13 @@ function SectionHead({ kicker, title, accent, sub, id }) {
     <div ref={ref} className="reveal" id={id}>
       <span className="lab-kicker">{kicker}</span>
       <h2 className="lab-h2">
-        {title} {accent ? <span className="accent">{accent}</span> : null}
+        {title}
+        {accent ? (
+          <>
+            {"\u00A0"}
+            <span className="accent">{accent}</span>
+          </>
+        ) : null}
       </h2>
       {sub ? <p className="lab-sub">{sub}</p> : null}
     </div>
@@ -507,8 +513,8 @@ export default function LabPage() {
       <section className="lab-section" id="work" aria-label="featured work">
         <SectionHead
           kicker="the desk"
-          title="Featured"
-          accent="work"
+          title="Work &"
+          accent="experiments"
           sub="Some things I’ve built, broken, and keep coming back to. None of them are finished — that’s the point."
         />
         <MocapProject p={featuredProjects[0]} index={1} />
@@ -579,7 +585,7 @@ export default function LabPage() {
         <SectionHead
           kicker="the margins"
           title="Words &"
-          accent="experiments"
+          accent="unfinished things"
           sub="Writing I keep doing, experiments currently on the bench, and ideas that refuse to leave."
         />
         <div className="two-col">
