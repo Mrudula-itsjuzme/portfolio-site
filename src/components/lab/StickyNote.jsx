@@ -176,8 +176,68 @@ export default function StickyNote({
     setZIndex(z);
   }, [id, rotation, x, y, z]);
 
+  // "drag me" hint until the user drags any note once
+  const [hintDone, setHintDone] = useState(() => {
+    try {
+      return window.localStorage.getItem("lab-notes-hint") === "done";
+    } catch {
+      return true;
+    }
+  });
+
+  const nudge = useCallback(
+    (dx, dy) => {
+      bumpZ();
+      setPos((p) => {
+        const { maxX, maxY } = bounds();
+        const nx = Math.min(Math.max(4, p.x + dx), maxX);
+        const ny = Math.min(Math.max(0, p.y + dy), maxY);
+        const map = loadPositions();
+        savePositions({
+          ...map,
+          [id]: { ...(map[id] || {}), x: nx, y: ny, rotation: stateRef.current.tilt },
+        });
+        return { x: nx, y: ny };
+      });
+    },
+    [bounds, bumpZ, id]
+  );
+
+  const onKeyDown = useCallback(
+    (e) => {
+      if (!canDrag) return;
+      const step = e.shiftKey ? 48 : 12;
+      const dirs = {
+        ArrowLeft: [-step, 0],
+        ArrowRight: [step, 0],
+        ArrowUp: [0, -step],
+        ArrowDown: [0, step],
+      };
+      if (dirs[e.key]) {
+        e.preventDefault();
+        nudge(dirs[e.key][0], dirs[e.key][1]);
+      } else if (e.key === "Escape") {
+        reset();
+      }
+    },
+    [canDrag, nudge, reset]
+  );
+
   const dragHandlers = canDrag
-    ? { onPointerDown: onPointerDown, onDoubleClick: reset }
+    ? {
+        onPointerDown: (e) => {
+          if (!hintDone) {
+            setHintDone(true);
+            try {
+              window.localStorage.setItem("lab-notes-hint", "done");
+            } catch {
+              /* ignore */
+            }
+          }
+          onPointerDown(e);
+        },
+        onDoubleClick: reset,
+      }
     : {};
 
   return (
@@ -193,8 +253,13 @@ export default function StickyNote({
         transition: dragging ? "none" : "transform 0.25s ease, box-shadow 0.25s ease",
       }}
       {...dragHandlers}
+      onKeyDown={onKeyDown}
+      tabIndex={canDrag ? 0 : undefined}
+      role={canDrag ? "button" : undefined}
+      title={canDrag ? "drag me · arrow keys nudge · double-click or esc resets" : undefined}
       aria-label={title || "sticky note"}
     >
+      {canDrag && !hintDone ? <span className="drag-hint">drag me ✎</span> : null}
       {canDrag ? <span className="note-pin" style={{ background: pinColor(color) }} /> : null}
       {lines.map((l, i) => (
         <div key={i}>– {l}</div>

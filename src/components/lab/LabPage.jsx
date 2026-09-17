@@ -10,6 +10,7 @@ import {
   unfinishedIdeas,
   currentlyBoard,
   heroSticky,
+  sideRepos,
   quote,
 } from "../../data/lab";
 import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
@@ -88,6 +89,17 @@ function MocapProject({ p, index }) {
         style={{ marginTop: 26 }}
         data-magnetic
       >
+        <span
+          className="mocap-tag"
+          aria-hidden="true"
+        >
+          <span className="rec-dot" />
+          cam 02 · rec
+        </span>
+        <span className="corner tl" aria-hidden="true" />
+        <span className="corner tr" aria-hidden="true" />
+        <span className="corner bl" aria-hidden="true" />
+        <span className="corner br" aria-hidden="true" />
         <img src={IMG.motion} alt={`Motion capture tracking view — ${p.annotations[0]}`} />
         <span className="scanline" aria-hidden="true" />
         <span
@@ -379,12 +391,27 @@ export default function LabPage() {
   const heroTextRef = useReveal({ hidden: false });
   const coarse = useCoarsePointer();
   const reduced = usePrefersReducedMotion();
+  const progressRef = useRef(null);
+
+  // scroll progress bar
+  useEffect(() => {
+    const onScroll = () => {
+      const de = document.documentElement;
+      const max = de.scrollHeight - de.clientHeight;
+      const pct = max > 0 ? (de.scrollTop / max) * 100 : 0;
+      if (progressRef.current) progressRef.current.style.width = pct + "%";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const [notePositions] = useState(() => ({
     hero: { x: 0, y: 30 },
   }));
 
   return (
     <div className="lab" id="top">
+      <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
       <LabHeader />
 
       <main>
@@ -485,8 +512,17 @@ export default function LabPage() {
           sub="Some things I’ve built, broken, and keep coming back to. None of them are finished — that’s the point."
         />
         <MocapProject p={featuredProjects[0]} index={1} />
+        <span className="marginalia" style={{ right: "2%", top: "28%", transform: "rotate(2deg)" }} aria-hidden="true">
+          two cameras, one skeleton →
+        </span>
         <QuestsProject p={featuredProjects[1]} index={2} />
+        <span className="marginalia" style={{ left: "1%", top: "46%", transform: "rotate(-2deg)" }} aria-hidden="true">
+          ← the gamification rabbit hole
+        </span>
         <CyberBioProject p={featuredProjects[2]} index={3} />
+        <span className="marginalia" style={{ right: "3%", top: "62%", transform: "rotate(1.5deg)" }} aria-hidden="true">
+          attack, defend, then understand ↓
+        </span>
         <ArchisProject p={featuredProjects[3]} index={4} />
       </section>
 
@@ -608,6 +644,25 @@ export default function LabPage() {
         </div>
       </section>
 
+      {/* ---------------- desk drawer: side repos ---------------- */}
+      <section className="lab-section" aria-label="more experiments on github">
+        <div className="drawer reveal">
+          <span className="drawer-label">the drawer ↓ (everything else that compiles):</span>
+          {sideRepos.map((r) => (
+            <a
+              key={r.name}
+              className="chip"
+              href={r.href}
+              target="_blank"
+              rel="noreferrer"
+              title={r.note}
+            >
+              {r.name}
+            </a>
+          ))}
+        </div>
+      </section>
+
       {/* ---------------- filmstrip ---------------- */}
       <section className="lab-section" aria-label="a few frames from life">
         <div className="filmstrip" data-magnetic="off">
@@ -662,6 +717,16 @@ export default function LabPage() {
       {/* ---------------- footer ---------------- */}
       <footer className="lab-footer">
         <span className="foot-hand">thanks for scrolling this far ✦</span>
+        <a
+          className="to-top"
+          href="#top"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+          }}
+        >
+          ↑ back to the top
+        </a>
         <span>
           <a href={identity.links.github} target="_blank" rel="noreferrer">
             github
@@ -677,8 +742,13 @@ export default function LabPage() {
 
       {/* ambient doodles */}
       <CoffeeRing className="doodle" style={{ position: "absolute", right: "4%", top: 120, zIndex: 0 }} />
-      <Sparkle className="doodle clay" size={18} style={{ position: "absolute", left: "2%", top: 420 }} />
+      <Sparkle className="doodle clay twinkle" size={18} style={{ position: "absolute", left: "2%", top: 420 }} />
       <ArrowDoodle className="doodle mossy" style={{ position: "absolute", left: "3%", top: 900 }} />
+      <Sparkle className="doodle mossy twinkle slow" size={13} style={{ position: "absolute", right: "8%", top: 2100 }} />
+      <CatDoodle className="doodle clay floaty slow" size={50} style={{ position: "absolute", right: "5%", top: 3400 }} />
+      <Sparkle className="doodle pinky twinkle" size={16} style={{ position: "absolute", left: "4%", top: 4300 }} />
+      <StarDoodle className="doodle mossy twinkle slow" size={20} style={{ position: "absolute", right: "3%", top: 5200 }} />
+      <Constellation className="doodle clay" style={{ position: "absolute", left: "2%", top: 5900, opacity: 0.65 }} />
     </div>
   );
 }

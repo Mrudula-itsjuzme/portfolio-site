@@ -201,5 +201,20 @@ export const currentlyBoard = [
   "Planning what to break next",
 ];
 
+export const sideRepos = [
+  { name: "ai-council", href: "https://github.com/Mrudula-itsjuzme/Ai-Council", note: "multi-model AI coordination library" },
+  { name: "eeg-svd", href: "https://github.com/Mrudula-itsjuzme/EEG-signal-reconstruction-using-SVD", note: "SVD-based artifact removal" },
+  { name: "aircraft-yolo", href: "https://github.com/Mrudula-itsjuzme/aircraft-data-training", note: "YOLOv8 aircraft detection pipeline" },
+  { name: "ai-greenhouse", href: "https://github.com/Mrudula-itsjuzme/ai_greenhouse", note: "Arduino smart greenhouse" },
+  { name: "noise-regulation", href: "https://github.com/Mrudula-itsjuzme/noise-regulation", note: "ESP32 acoustic monitoring" },
+  { name: "cancer-genes", href: "https://github.com/Mrudula-itsjuzme/cancer-driver-gene-classification-ml", note: "bioinformatics ML pipeline" },
+  { name: "dqn-tictactoe", href: "https://github.com/Mrudula-itsjuzme/tic-tac-toe-double-dqn", note: "double DQN reinforcement learning" },
+  { name: "recipes-bot", href: "https://github.com/Mrudula-itsjuzme/recipes-chatbot-image", note: "multimodal recipe assistant" },
+  { name: "osi-sim", href: "https://github.com/Mrudula-itsjuzme/osi-model-simulation-python", note: "layer-wise OSI simulation" },
+  { name: "rasa-bot", href: "https://github.com/Mrudula-itsjuzme/Rasa-bot", note: "intent-classified chatbot framework" },
+  { name: "microservices", href: "https://github.com/Mrudula-itsjuzme/microservices", note: "distributed architecture prototype" },
+  { name: "c-syscalls", href: "https://github.com/Mrudula-itsjuzme/file-management-system-c-syscalls", note: "unix file management in C" },
+];
+
 export const quote =
   "\u201cYou don't have to have it all figured out. You just have to be curious enough to keep building.\u201d";

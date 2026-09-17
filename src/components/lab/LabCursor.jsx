@@ -1,25 +1,20 @@
 import { useEffect, useRef } from "react";
 
+const MAX_DUST = 14;
+
 /**
- * Ink-pen cursor with a restrained pencil-dust trail and magnetic tilt on
- * nearby interactive elements. Pointer (fine) devices only; disabled entirely
- * under prefers-reduced-motion.
+ * Ink-pen cursor: halo on hoverables, press squash, ink blots on click,
+ * grab state while dragging sticky notes, restrained pencil-dust trail,
+ * magnetic tilt on nearby interactive elements.
+ * Pointer-fine devices only; fully disabled under prefers-reduced-motion.
  */
 export default function LabCursor() {
   const cursorRef = useRef(null);
-  const reduced = useRef(false);
 
   useEffect(() => {
     const mqReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const mqFine = window.matchMedia("(pointer: fine)");
-    reduced.current = mqReduced.matches;
-
-    const onReduceChange = () => {
-      reduced.current = mqReduced.matches;
-      if (reduced.current) teardown();
-    };
-    mqReduced.addEventListener?.("change", onReduceChange);
-
+    let reduced = mqReduced.matches;
     let active = false;
     let raf = 0;
     let mouse = { x: -100, y: -100 };
@@ -45,13 +40,25 @@ export default function LabCursor() {
       if (now - lastDust < 90) return; // rate limit — never spam
       lastDust = now;
       const slot =
-        dust.find((d) => d.life <= 0) || (dust.length < 14 ? { el: makeDust(), life: 0 } : null);
+        dust.find((d) => d.life <= 0) || (dust.length < MAX_DUST ? { el: makeDust(), life: 0 } : null);
       if (!slot) return;
       slot.life = 1;
       slot.el.style.transform = `translate(${x + (Math.random() * 10 - 5)}px, ${
         y + 6 + Math.random() * 6
       }px)`;
       slot.el.style.opacity = boost ? "0.5" : "0.32";
+    }
+
+    function spawnBlot(x, y) {
+      const el = document.createElement("span");
+      el.className = "ink-blot";
+      const size = 26 + Math.random() * 18;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      document.body.appendChild(el);
+      el.addEventListener("animationend", () => el.remove(), { once: true });
     }
 
     function tick() {
@@ -79,17 +86,17 @@ export default function LabCursor() {
     function onMove(e) {
       mouse = { x: e.clientX, y: e.clientY };
       const el = e.target;
-      const interactive = el.closest?.("a, button, [data-magnetic]");
-      cursorRef.current?.classList.toggle("cursor-hover", !!interactive);
+      const interactive = el.closest?.("a, button, [data-magnetic], input, [role='button']");
+      const note = el.closest?.(".sticky-note");
+      cursorRef.current?.classList.toggle("cursor-hover", !!interactive && !note);
+      cursorRef.current?.classList.toggle("cursor-grab", !!note);
       if (interactive) {
         spawnDust(mouse.x, mouse.y, true);
         if (interactive.dataset.magnetic !== "off" && interactive.animate) {
           const r = interactive.getBoundingClientRect();
           const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
           const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-          interactive.style.transform = `perspective(600px) rotateX(${(-dy * 4).toFixed(
-            2
-          )}deg) rotateY(${(dx * 4).toFixed(2)}deg)`;
+          interactive.style.transform = `perspective(600px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 4).toFixed(2)}deg)`;
           interactive.dataset.magnetized = "1";
           disposers.push(() => {
             interactive.style.transform = "";
@@ -104,6 +111,15 @@ export default function LabCursor() {
       }
     }
 
+    function onDown(e) {
+      cursorRef.current?.classList.add("cursor-press");
+      spawnBlot(e.clientX, e.clientY);
+      spawnDust(e.clientX, e.clientY, true);
+    }
+    function onUp() {
+      cursorRef.current?.classList.remove("cursor-press");
+    }
+
     function onLeave() {
       if (cursorRef.current) cursorRef.current.style.opacity = "0";
     }
@@ -112,15 +128,19 @@ export default function LabCursor() {
     }
 
     function setup() {
-      if (active || reduced.current || !mqFine.matches) return;
+      if (active || reduced || !mqFine.matches) return;
       active = true;
       document.body.classList.add("lab-cursor-active");
       window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("mousedown", onDown);
+      window.addEventListener("mouseup", onUp);
       document.documentElement.addEventListener("mouseleave", onLeave);
       document.documentElement.addEventListener("mouseenter", onEnter);
       raf = requestAnimationFrame(tick);
       disposers.push(() => {
         window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mousedown", onDown);
+        window.removeEventListener("mouseup", onUp);
         document.documentElement.removeEventListener("mouseleave", onLeave);
         document.documentElement.removeEventListener("mouseenter", onEnter);
         document.body.classList.remove("lab-cursor-active");
@@ -128,7 +148,7 @@ export default function LabCursor() {
           el.style.transform = "";
           el.removeAttribute("data-magnetized");
         });
-        cursorRef.current?.classList.remove("cursor-hover");
+        cursorRef.current?.classList.remove("cursor-hover", "cursor-press", "cursor-grab");
       });
     }
 
@@ -143,6 +163,12 @@ export default function LabCursor() {
       });
     }
 
+    const onReduceChange = () => {
+      reduced = mqReduced.matches;
+      if (reduced) teardown();
+    };
+    mqReduced.addEventListener?.("change", onReduceChange);
+
     setup();
 
     return () => {
@@ -155,6 +181,7 @@ export default function LabCursor() {
 
   return (
     <div className="lab-cursor" ref={cursorRef} aria-hidden="true" style={{ opacity: 0 }}>
+      <span className="cursor-halo" />
       <span className="cursor-dot" />
       <span className="cursor-nib" />
     </div>
