@@ -1,6 +1,3 @@
-// Real content only — sourced from src/data/projects.js, src/data/articles.js,
-// CredibilityDock.jsx, and the Archis repo README / pitch (github.com/Mrudula-itsjuzme/Archis).
-
 export const identity = {
   name: "MRUDULA",
   handle: "mrudula.exe",
@@ -135,6 +132,13 @@ export const researchPapers = [
     tag: "published",
   },
   {
+    title: "EEG Reconstruction (ADMM)",
+    detail: "Time-Varying EEG Signal Reconstruction using ADMM & Graph Methods",
+    meta: "Iterative graph optimization · artifact removal & reconstruction",
+    href: "https://github.com/Mrudula-itsjuzme/MFC3_D3_EEG_Recon_ADMM",
+    tag: "published",
+  },
+  {
     title: "CyberBio (in progress)",
     detail: "Adversarial attacks & defenses in materials sequence models",
     meta: "MCMC attacks, defensive training, forensic audits",
@@ -172,11 +176,183 @@ export const recentThoughts = [
 ];
 
 export const writings = [
-  { id: "stories", title: "The Stories That Don't Exist Yet", date: "Sep 2026", status: "Essay", href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/" },
-  { id: "literature", title: "I Thought I'd Be a Literature Girl", date: "Jun 2026", status: "LinkedIn", href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/" },
-  { id: "constraints", title: "Content From Constraints, Not Vibes", date: "Jun 2026", status: "Note", href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/" },
-  { id: "leads", title: "Not Every Lead Is a Client", date: "Jun 2026", status: "Field Note", href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/" },
-  { id: "marketing", title: "Marketing Is Also a Decision System", date: "Jun 2026", status: "Field Note", href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/" },
+  {
+    id: "stories",
+    title: "The Stories That Don't Exist Yet",
+    date: "Sep 2026",
+    status: "Essay",
+    readTime: "3 min read",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/",
+    content: `There are companies that don't exist yet.
+Products that haven't been built yet.
+Problems that haven't been properly defined yet.
+
+And the companies built around those things don't exist yet.
+Neither do many of the jobs inside them.
+
+That's a strange thing to realize when you're sitting in college trying to plan a career.
+We're preparing for a job market that is still being written.
+
+And maybe that's not something we should be afraid of.
+Maybe it's an invitation.
+
+Second and third year feels like a particularly good time to take that invitation seriously. You're far enough into college to have actual skills, enough exposure to know what you like and don't like, enough people around you to find collaborators. But you're also early enough that failure isn't the end of the road.
+
+If something I build completely fails, I still have time.
+I can apply for a job. I can do an internship. I can go back to research. I can build something else. I can change my mind.
+
+I'm not late.
+
+I think we sometimes spend college optimizing ourselves to fit into jobs that already exist. Which is useful, obviously. I do it too. But I don't want these years to only be about becoming employable.
+
+I want some of them to be about finding out what I'm capable of building.
+
+Because there are companies that haven't been started yet. Products that haven't been built yet. Problems that haven't been properly defined yet.
+
+And someone has to start.
+
+I don't think everyone needs to become a founder. Startups can be chaotic, uncertain and occasionally held together by caffeine and questionable decisions.
+
+But I do think more people should experience building something from a point where the answer isn't already known.
+
+Especially while they're young enough to fail without the failure becoming a life sentence.
+
+I've always loved stories, but I think I've realized that the ones I'm most drawn to are the ones that are still being written. The ones where nobody knows the ending yet.
+
+Not just businesses.
+Stories that don't exist yet.`,
+  },
+  {
+    id: "literature",
+    title: "I Thought I'd Be a Literature Girl",
+    date: "Jun 2026",
+    status: "LinkedIn",
+    readTime: "2 min read",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/",
+    content: `I thought I'd be a literature girl.
+
+Then I got pushed into AI because apparently it was "the trend" and well, I'm from an Indian household, so obviously there was pressure to get into engineering.
+
+Either that or be a doctor.
+And well, I can't sit still enough to be a doc. So I tried engineering.
+
+AND I LOVE IT. And I don't regret not joining literature either.
+I'm basically still using English every day. Just in a .....slightly different way.
+
+Half the time I'm yapping to AI agents so they can help me build apps, automate things, or figure out whatever weird idea I'm chasing that week. Turns out understanding language, structure, and how to communicate clearly is surprisingly useful when your coworkers are increasingly made of code.
+
+I'm still getting on stages. Still writing. Not books, but articles/journals here. Still telling stories, just about different things now.
+Somehow I ended up with both things I love instead of having to choose one.
+
+Then I got curious.
+Then I started building.
+Then it got slightly out of hand.
+
+Now I'm working on motion capture, cybersecurity research, EEG reconstruction, AI products, startups, and 2am GitHub commits.
+Still obsessed with stories.
+Just writing some of them in code now.`,
+  },
+  {
+    id: "constraints",
+    title: "Content From Constraints, Not Vibes",
+    date: "Jun 2026",
+    status: "Note",
+    readTime: "2 min read",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/",
+    content: `i am learning that good brand content is not just "writing better captions."
+
+it is constraint work.
+
+what can the brand say?
+what should it never say?
+which words sound cheap?
+which claims are too big?
+which examples are real enough to use?
+where does the tone become too loud?
+where does it become too vague?
+
+that has been the most useful shift for me.
+
+content is not decoration.
+it is a system for making the brand easier to understand without making it sound desperate.
+
+the hard part is not filling a calendar.
+anyone can do that.
+
+the hard part is making sure every post has a reason to exist.
+
+one post should clarify.
+one should teach.
+one should show judgment.
+one should make the offer easier to believe.
+
+less noise.
+more signal.
+
+small lesson for the week: constraints make the writing sharper.`,
+  },
+  {
+    id: "leads",
+    title: "Not Every Lead Is a Client",
+    date: "Jun 2026",
+    status: "Field Note",
+    readTime: "2 min read",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/",
+    content: `one thing i am learning from outreach work:
+
+not every lead is a client.
+
+that sounds obvious until you actually start looking at prospects.
+
+some people have urgency but no budget.
+some have budget but no clear owner.
+some want speed because they skipped thinking.
+some want a vendor when the work needs a partner.
+some want a guarantee for outcomes nobody can fully control.
+
+the tempting thing is to treat every lead as an opportunity.
+but that makes the pipeline noisy.
+
+the better question is:
+is this person ready for the kind of work being offered?
+
+that changes how i look at outreach.
+it is not just finding more people.
+it is finding the right people, with the right problem, at the right stage.
+
+less chasing.
+more filtering.`,
+  },
+  {
+    id: "marketing",
+    title: "Marketing Is Also a Decision System",
+    date: "Jun 2026",
+    status: "Field Note",
+    readTime: "2 min read",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/recent-activity/all/",
+    content: `i am learning that performance marketing is not just "make ads and run them."
+
+that version sounds simple.
+maybe too simple.
+
+the harder part is knowing what the numbers are actually saying.
+
+which ad created attention?
+which page lost trust?
+which audience was wrong?
+which offer did not land?
+which result was real and which one was just noise?
+
+without tracking, everyone can have an opinion.
+with tracking, the campaign has a memory.
+
+that is the part i did not fully appreciate before.
+
+good marketing is not only creative.
+it is also a decision system.
+
+note to self: numbers are not boring when they stop people from guessing.`,
+  },
 ];
 
 export const currentExperiments = [

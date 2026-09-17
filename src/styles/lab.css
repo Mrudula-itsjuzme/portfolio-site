@@ -1505,3 +1505,208 @@ html[data-fullscreen="true"] .hero,
   filter: drop-shadow(0 0 6px var(--clay));
 }
 
+/* --- Essay Modal --- */
+
+.essay-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(18, 16, 14, 0.82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.essay-card {
+  position: relative;
+  background: var(--paper-alt);
+  color: var(--ink);
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 36px 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(23, 21, 18, 0.15);
+  box-shadow: var(--shadow-lift);
+}
+
+.essay-close {
+  position: absolute;
+  top: 18px; right: 20px;
+  background: transparent;
+  border: 0;
+  font-size: 20px;
+  color: var(--charcoal);
+  cursor: pointer;
+}
+
+.essay-header {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--forest);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.essay-title {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.essay-body {
+  font-family: var(--mono);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--charcoal);
+}
+
+.essay-body p {
+  margin-bottom: 16px;
+}
+
+.essay-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(23, 21, 18, 0.2);
+}
+
+.btn-text-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 143, 107, 0.7);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn-text-link:hover {
+  color: var(--forest);
+  text-decoration-color: var(--forest);
+}
+
+/* --- Doodle Canvas & Toolbar --- */
+
+.doodle-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 120;
+  pointer-events: auto;
+}
+
+.doodle-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  display: block;
+}
+
+.doodle-toolbar {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 130;
+  background: var(--charcoal);
+  color: var(--cream);
+  padding: 8px 18px;
+  border-radius: 999px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(247, 241, 230, 0.2);
+}
+
+.doodle-tool-label {
+  font-family: var(--hand);
+  font-size: 18px;
+  color: var(--sage);
+}
+
+.doodle-colors {
+  display: flex;
+  gap: 6px;
+}
+
+.color-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.color-dot.selected {
+  border-color: #fff;
+  transform: scale(1.15);
+}
+
+.brush-sizes {
+  display: flex;
+  gap: 4px;
+}
+
+.size-btn {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--cream);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.size-btn.selected {
+  background: var(--forest);
+}
+
+.doodle-action-btn {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.doodle-action-btn.close {
+  background: var(--moss);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* --- Animations --- */
+
+@keyframes flyPlane {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  50% { transform: translate(-140px, -60px) rotate(-18deg); opacity: 0.9; }
+  100% { transform: translate(-300px, -120px) rotate(-30deg); opacity: 0; }
+}
+
+.flying-plane {
+  animation: flyPlane 1.3s ease-out forwards;
+}
+
+@keyframes spinRecord {
+  to { transform: rotate(360deg); }
+}
+
+.spinning-record {
+  animation: spinRecord 2.5s linear infinite;
+}
+
+

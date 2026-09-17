@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { identity, currentStatuses } from "../../data/lab";
 import { playClickSound, playPaperSound } from "./sound";
 
-/** Sticky dark header: mrudula.exe, rotating status phrase, nav links, theme switcher, and fullscreen mode. */
-export default function LabHeader({ soundEnabled, setSoundEnabled }) {
+/** Sticky dark header: mrudula.exe, rotating status phrase, nav links, theme switcher, doodle canvas, and fullscreen mode. */
+export default function LabHeader({ soundEnabled, setSoundEnabled, doodleActive, onToggleDoodle }) {
   const [statusIndex, setStatusIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [theme, setTheme] = useState(() => {
@@ -154,6 +154,18 @@ export default function LabHeader({ soundEnabled, setSoundEnabled }) {
         >
           words
         </a>
+
+        <button
+          type="button"
+          className={`header-pill-btn doodle-btn ${doodleActive ? "active" : ""}`}
+          onClick={() => {
+            playPaperSound(soundEnabled);
+            onToggleDoodle?.();
+          }}
+          title="Draw on the paper desk!"
+        >
+          {doodleActive ? "✍️ Drawing" : "✏️ Doodle"}
+        </button>
 
         <button
           type="button"

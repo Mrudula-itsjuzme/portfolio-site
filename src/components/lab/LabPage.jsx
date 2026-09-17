@@ -16,6 +16,8 @@ import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyN
 import TiltPhoto from "./TiltPhoto";
 import LabHeader from "./LabHeader";
 import LightboxModal from "./LightboxModal";
+import EssayModal from "./EssayModal";
+import DoodleCanvas from "./DoodleCanvas";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -27,6 +29,8 @@ import {
   CatDoodle,
   Constellation,
   ScribbleX,
+  PaperPlaneDoodle,
+  VinylDoodle,
 } from "./Doodles";
 
 const IMG = {
@@ -457,6 +461,9 @@ export default function LabPage() {
     }
   });
 
+  const [doodleCanvasActive, setDoodleCanvasActive] = useState(false);
+  const [selectedEssay, setSelectedEssay] = useState(null);
+
   const [lightboxState, setLightboxState] = useState({
     isOpen: false,
     index: 0,
@@ -522,17 +529,17 @@ export default function LabPage() {
       const rect = e.currentTarget.getBoundingClientRect();
       const x = rect.left + rect.width / 2;
       const y = rect.top + rect.height / 2;
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 8; i++) {
         const dot = document.createElement("span");
         dot.className = "cursor-dust";
         dot.style.width = "4px";
         dot.style.height = "4px";
-        dot.style.background = "var(--clay)";
-        dot.style.transform = `translate(${x + (Math.random() * 40 - 20)}px, ${
-          y + (Math.random() * 40 - 20)
+        dot.style.background = ["var(--clay)", "var(--butter)", "var(--moss)", "var(--cyan)"][i % 4];
+        dot.style.transform = `translate(${x + (Math.random() * 50 - 25)}px, ${
+          y + (Math.random() * 50 - 25)
         }px)`;
         document.body.appendChild(dot);
-        setTimeout(() => dot.remove(), 600);
+        setTimeout(() => dot.remove(), 700);
       }
     },
     [soundEnabled]
@@ -567,380 +574,402 @@ export default function LabPage() {
   return (
     <div className="lab-app" id="top">
       <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
-      <LabHeader soundEnabled={soundEnabled} setSoundEnabled={setSoundEnabled} />
+      <LabHeader
+        soundEnabled={soundEnabled}
+        setSoundEnabled={setSoundEnabled}
+        doodleActive={doodleCanvasActive}
+        onToggleDoodle={() => setDoodleCanvasActive(!doodleCanvasActive)}
+      />
+
+      <DoodleCanvas active={doodleCanvasActive} onClose={() => setDoodleCanvasActive(false)} />
 
       <div className="lab">
         {toastMsg && <div className="lab-toast" role="status">{toastMsg}</div>}
 
         <main>
-        {/* ---------------- hero ---------------- */}
-        <section className="hero" ref={deskRef} aria-label="introduction">
-          <div ref={heroTextRef} className="in-view-slot">
-            <StarDoodle
-              className="doodle mossy interactive-doodle"
-              size={26}
-              style={{ position: "absolute", left: -8, top: 58, cursor: "pointer" }}
-              onClick={triggerSparkle}
-            />
-            <span className="hero-hello">Hi, I’m</span>
-            <h1 className="hero-name">
-              {identity.name}
-              <span className="scribble-x" aria-hidden="true">
-                <ScribbleX />
-              </span>
-            </h1>
-            <p className="hero-mainline">
-              I build things because{" "}
-              <span className="underline-draw">
-                I want to know what happens if they work.
-                <UnderlineScribble />
-              </span>
-            </p>
-            <p className="hero-sub">{identity.subtext}</p>
-
-            <div className="hero-roles">
-              {identity.roles.map((r) => (
-                <span className="role-chip" key={r}>
-                  {r}
-                </span>
-              ))}
-            </div>
-
-            <div className="hero-cta">
-              <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>
-                see the work ↓
-              </a>
-              <button
-                type="button"
-                className="btn-add-note"
-                onClick={handleAddNote}
-                title="Add a handwritten sticky note to the desk"
-              >
-                + add note ✎
-              </button>
-              <a className="btn-quiet" href={identity.links.github} target="_blank" rel="noreferrer">
-                github ↗
-              </a>
-            </div>
-          </div>
-
-          <div
-            ref={heroVisualsRef}
-            className="hero-visuals"
-            style={{ position: "relative", paddingTop: 26, minHeight: coarse ? 0 : 470 }}
-          >
-            <div onClick={() => openLightbox(4)} style={{ cursor: "pointer" }} title="Click to view full screen ⛶">
-              <TiltPhoto
-                src={IMG.portfolio}
-                alt="a desk scene from one of the projects"
-                caption="still here… (click to view full screen ⛶)"
-                rotate={2.4}
-                parallax={26}
-                className="parallax-layer"
-              />
-            </div>
-            {!coarse && !reduced && (
-              <div className="sticky-layer" style={{ position: "absolute", inset: 0, height: "100%" }}>
-                <StickyNote
-                  id="hero-ideas"
-                  color="pink"
-                  rotation={-3.5}
-                  x={-60}
-                  y={-6}
-                  parentRef={heroVisualsRef}
-                  lines={heroSticky}
-                  title="sticky note: ideas"
-                />
-              </div>
-            )}
-            {!coarse && !reduced && (
-              <StickyNote
-                id="hero-progress"
-                color="butter"
-                rotation={2.2}
-                x={255}
-                y={250}
-                parentRef={heroVisualsRef}
-                lines={["progress over", "perfection."]}
-                title="sticky note: progress"
-              />
-            )}
-            {!coarse && !reduced && userNotes.map((note) => (
-              <StickyNote
-                key={note.id}
-                id={note.id}
-                color={note.color}
-                rotation={parseFloat(note.rotation)}
-                x={note.x}
-                y={note.y}
-                parentRef={heroVisualsRef}
-                lines={note.lines}
-                title="custom sticky note"
-              />
-            ))}
-            {coarse && (
-              <div
-                className="sticky-note static note-pink"
-                style={{ position: "relative", marginTop: 18, transform: "rotate(-2deg)", left: 0, top: 0 }}
-              >
-                {heroSticky.map((l) => (
-                  <div key={l}>– {l}</div>
-                ))}
-                <span className="note-fold" />
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ---------------- featured work ---------------- */}
-        <section className="lab-section" id="work" aria-label="featured work">
-          <SectionHead
-            kicker="the desk"
-            title="Work &"
-            accent="experiments"
-            sub="Some things I’ve built, broken, and keep coming back to. None of them are finished — that’s the point."
-          />
-          <MocapProject p={featuredProjects[0]} index={1} onOpenLightbox={openLightbox} />
-          <span className="marginalia" style={{ right: "2%", top: "28%", transform: "rotate(2deg)" }} aria-hidden="true">
-            two cameras, one skeleton →
-          </span>
-          <QuestsProject p={featuredProjects[1]} index={2} onOpenLightbox={openLightbox} />
-          <span className="marginalia" style={{ left: "1%", top: "46%", transform: "rotate(-2deg)" }} aria-hidden="true">
-            ← the gamification rabbit hole
-          </span>
-          <CyberBioProject p={featuredProjects[2]} index={3} />
-          <span className="marginalia" style={{ right: "3%", top: "62%", transform: "rotate(1.5deg)" }} aria-hidden="true">
-            attack, defend, then understand ↓
-          </span>
-          <ArchisProject p={featuredProjects[3]} index={4} onOpenLightbox={openLightbox} />
-        </section>
-
-        {/* ---------------- research + community ---------------- */}
-        <section className="lab-section" id="research" aria-label="research and community">
-          <SectionHead
-            kicker="the shelf"
-            title="Research &"
-            accent="people"
-            sub="Papers I’ve published, and the communities I help keep alive."
-          />
-          <div className="two-col">
-            <div className="paper-block block-tilt-l reveal">
-              <h3>research papers</h3>
-              <ul className="paper-list">
-                {researchPapers.map((r) => (
-                  <li key={r.title}>
-                    <span className="li-marker">{r.tag === "published" ? "✦" : "✍"}</span>
-                    <span>
-                      <a href={r.href} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-                        {r.title}
-                      </a>
-                      <br />
-                      <span style={{ color: "rgba(23,21,18,0.6)", fontSize: 12 }}>{r.detail}</span>
-                      <br />
-                      <span style={{ color: "rgba(23,21,18,0.45)", fontSize: 11 }}>{r.meta}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="card-stack">
-              {community.map((c) => (
-                <a
-                  key={c.name}
-                  className="index-card"
-                  href={c.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ textDecoration: "none", color: "inherit", display: "block" }}
-                  onClick={() => playClickSound(soundEnabled)}
-                >
-                  <h4>{c.name}</h4>
-                  <span className="card-role">{c.role}</span>
-                  <p>{c.blurb}</p>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ---------------- words + experiments ---------------- */}
-        <section className="lab-section" id="words" aria-label="writing and experiments">
-          <SectionHead
-            kicker="the margins"
-            title="Words &"
-            accent="unfinished things"
-            sub="Writing I keep doing, experiments currently on the bench, and ideas that refuse to leave."
-          />
-          <div className="two-col">
-            <div className="paper-block block-tilt-r reveal" style={{ position: "relative" }}>
-              <CatDoodle
-                className="doodle interactive-doodle"
-                style={{ position: "absolute", right: 14, top: -18, cursor: "pointer" }}
+          {/* ---------------- hero ---------------- */}
+          <section className="hero" ref={deskRef} aria-label="introduction">
+            <div ref={heroTextRef} className="in-view-slot">
+              <StarDoodle
+                className="doodle mossy interactive-doodle"
+                size={26}
+                style={{ position: "absolute", left: -8, top: 58, cursor: "pointer" }}
                 onClick={triggerSparkle}
               />
-              <h3>recent thoughts</h3>
-              <ul className="paper-list">
-                {recentThoughts.map((t) => (
-                  <li key={t}>
-                    <span className="li-marker">→</span>
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-              <h3 style={{ marginTop: 18 }}>writing</h3>
-              <ul className="paper-list">
-                {writings.map((w) => (
-                  <li key={w.id}>
-                    <span className="li-marker">✎</span>
-                    <span>
-                      {w.href ? (
-                        <a href={w.href} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-                          {w.title}
-                        </a>
-                      ) : (
-                        w.title
-                      )}
-                    </span>
-                    <span className="li-meta">
-                      {w.status} · {w.date}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <PaperPlaneDoodle
+                size={34}
+                className="interactive-doodle"
+                style={{ position: "absolute", right: 20, top: -10, cursor: "pointer" }}
+                onClick={triggerSparkle}
+              />
+              <span className="hero-hello">Hi, I’m</span>
+              <h1 className="hero-name">
+                {identity.name}
+                <span className="scribble-x" aria-hidden="true">
+                  <ScribbleX />
+                </span>
+              </h1>
+              <p className="hero-mainline">
+                I build things because{" "}
+                <span className="underline-draw">
+                  I want to know what happens if they work.
+                  <UnderlineScribble />
+                </span>
+              </p>
+              <p className="hero-sub">{identity.subtext}</p>
 
-            <div>
-              <div className="scratch reveal" style={{ position: "relative" }}>
-                <Constellation
-                  className="doodle mossy interactive-doodle"
-                  style={{ position: "absolute", right: 10, top: 8, opacity: 0.7, cursor: "pointer" }}
-                  onClick={triggerSparkle}
-                />
-                <h3>unfinished ideas</h3>
-                {unfinishedIdeas.map((idea, i) => (
-                  <div className="scratch-line" key={idea}>
-                    <span className={i === 2 ? "strikethrough" : ""}>{idea}</span>
-                    {i === unfinishedIdeas.length - 1 ? <span className="q"> ← ?</span> : null}
-                  </div>
+              <div className="hero-roles">
+                {identity.roles.map((r) => (
+                  <span className="role-chip" key={r}>
+                    {r}
+                  </span>
                 ))}
               </div>
 
-              <div className="paper-block block-tilt-l reveal" style={{ marginTop: 26 }}>
-                <h3>currently on the bench</h3>
+              <div className="hero-cta">
+                <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>
+                  see the work ↓
+                </a>
+                <button
+                  type="button"
+                  className="btn-add-note"
+                  onClick={handleAddNote}
+                  title="Add a handwritten sticky note to the desk"
+                >
+                  + add note ✎
+                </button>
+                <a className="btn-quiet" href={identity.links.github} target="_blank" rel="noreferrer">
+                  github ↗
+                </a>
+              </div>
+            </div>
+
+            <div
+              ref={heroVisualsRef}
+              className="hero-visuals"
+              style={{ position: "relative", paddingTop: 26, minHeight: coarse ? 0 : 470 }}
+            >
+              <div onClick={() => openLightbox(4)} style={{ cursor: "pointer" }} title="Click to view full screen ⛶">
+                <TiltPhoto
+                  src={IMG.portfolio}
+                  alt="a desk scene from one of the projects"
+                  caption="still here… (click to view full screen ⛶)"
+                  rotate={2.4}
+                  parallax={26}
+                  className="parallax-layer"
+                />
+              </div>
+              {!coarse && !reduced && (
+                <div className="sticky-layer" style={{ position: "absolute", inset: 0, height: "100%" }}>
+                  <StickyNote
+                    id="hero-ideas"
+                    color="pink"
+                    rotation={-3.5}
+                    x={-40}
+                    y={-10}
+                    parentRef={heroVisualsRef}
+                    lines={heroSticky}
+                    title="sticky note: ideas"
+                  />
+                </div>
+              )}
+              {!coarse && !reduced && (
+                <StickyNote
+                  id="hero-progress"
+                  color="butter"
+                  rotation={2.2}
+                  x={270}
+                  y={240}
+                  parentRef={heroVisualsRef}
+                  lines={["progress over", "perfection."]}
+                  title="sticky note: progress"
+                />
+              )}
+              {!coarse && !reduced && userNotes.map((note) => (
+                <StickyNote
+                  key={note.id}
+                  id={note.id}
+                  color={note.color}
+                  rotation={parseFloat(note.rotation)}
+                  x={note.x}
+                  y={note.y}
+                  parentRef={heroVisualsRef}
+                  lines={note.lines}
+                  title="custom sticky note"
+                />
+              ))}
+              {coarse && (
+                <div
+                  className="sticky-note static note-pink"
+                  style={{ position: "relative", marginTop: 18, transform: "rotate(-2deg)", left: 0, top: 0 }}
+                >
+                  {heroSticky.map((l) => (
+                    <div key={l}>– {l}</div>
+                  ))}
+                  <span className="note-fold" />
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* ---------------- featured work ---------------- */}
+          <section className="lab-section" id="work" aria-label="featured work">
+            <SectionHead
+              kicker="the desk"
+              title="Work &"
+              accent="experiments"
+              sub="Some things I’ve built, broken, and keep coming back to. None of them are finished — that’s the point."
+            />
+            <MocapProject p={featuredProjects[0]} index={1} onOpenLightbox={openLightbox} />
+            <span className="marginalia" style={{ right: "2%", top: "28%", transform: "rotate(2deg)" }} aria-hidden="true">
+              two cameras, one skeleton →
+            </span>
+            <QuestsProject p={featuredProjects[1]} index={2} onOpenLightbox={openLightbox} />
+            <span className="marginalia" style={{ left: "1%", top: "46%", transform: "rotate(-2deg)" }} aria-hidden="true">
+              ← the gamification rabbit hole
+            </span>
+            <CyberBioProject p={featuredProjects[2]} index={3} />
+            <span className="marginalia" style={{ right: "3%", top: "62%", transform: "rotate(1.5deg)" }} aria-hidden="true">
+              attack, defend, then understand ↓
+            </span>
+            <ArchisProject p={featuredProjects[3]} index={4} onOpenLightbox={openLightbox} />
+          </section>
+
+          {/* ---------------- research + community ---------------- */}
+          <section className="lab-section" id="research" aria-label="research and community">
+            <SectionHead
+              kicker="the shelf"
+              title="Research &"
+              accent="people"
+              sub="Papers I’ve published, and the communities I help keep alive."
+            />
+            <div className="two-col">
+              <div className="paper-block block-tilt-l reveal">
+                <h3>research papers</h3>
                 <ul className="paper-list">
-                  {currentExperiments.map((e) => (
-                    <li key={e.label}>
-                      <span className="li-marker">⌁</span>
-                      <span>{e.label}</span>
-                      <span className="li-meta">{e.note}</span>
+                  {researchPapers.map((r) => (
+                    <li key={r.title}>
+                      <span className="li-marker">{r.tag === "published" ? "✦" : "✍"}</span>
+                      <span>
+                        <a href={r.href} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
+                          {r.title}
+                        </a>
+                        <br />
+                        <span style={{ color: "rgba(23,21,18,0.6)", fontSize: 12 }}>{r.detail}</span>
+                        <br />
+                        <span style={{ color: "rgba(23,21,18,0.45)", fontSize: 11 }}>{r.meta}</span>
+                      </span>
                     </li>
                   ))}
                 </ul>
               </div>
+
+              <div className="card-stack">
+                {community.map((c) => (
+                  <a
+                    key={c.name}
+                    className="index-card"
+                    href={c.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ textDecoration: "none", color: "inherit", display: "block" }}
+                    onClick={() => playClickSound(soundEnabled)}
+                  >
+                    <h4>{c.name}</h4>
+                    <span className="card-role">{c.role}</span>
+                    <p>{c.blurb}</p>
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ---------------- desk drawer: side repos ---------------- */}
-        <section className="lab-section" aria-label="more experiments on github">
-          <div className="drawer reveal">
-            <span className="drawer-label">the drawer ↓ (everything else that compiles):</span>
-            {sideRepos.map((r) => (
-              <a
-                key={r.name}
-                className="chip"
-                href={r.href}
-                target="_blank"
-                rel="noreferrer"
-                title={r.note}
-                onClick={() => playClickSound(soundEnabled)}
-              >
-                {r.name}
-              </a>
-            ))}
-          </div>
-        </section>
+          {/* ---------------- words + experiments ---------------- */}
+          <section className="lab-section" id="words" aria-label="writing and experiments">
+            <SectionHead
+              kicker="the margins"
+              title="Words &"
+              accent="unfinished things"
+              sub="Writing I keep doing, experiments currently on the bench, and ideas that refuse to leave."
+            />
+            <div className="two-col">
+              <div className="paper-block block-tilt-r reveal" style={{ position: "relative" }}>
+                <CatDoodle
+                  className="doodle interactive-doodle"
+                  style={{ position: "absolute", right: 14, top: -18, cursor: "pointer" }}
+                  onClick={triggerSparkle}
+                />
+                <VinylDoodle
+                  className="interactive-doodle"
+                  style={{ position: "absolute", right: 65, top: -14, cursor: "pointer" }}
+                  onClick={triggerSparkle}
+                />
+                <h3>recent thoughts</h3>
+                <ul className="paper-list">
+                  {recentThoughts.map((t, idx) => (
+                    <li key={t}>
+                      <span className="li-marker">→</span>
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+                <h3 style={{ marginTop: 18 }}>writing</h3>
+                <ul className="paper-list">
+                  {writings.map((w) => (
+                    <li key={w.id}>
+                      <span className="li-marker">✎</span>
+                      <span>
+                        <button
+                          type="button"
+                          className="btn-text-link"
+                          onClick={() => {
+                            playPaperSound(soundEnabled);
+                            setSelectedEssay(w);
+                          }}
+                          title="Click to read essay"
+                        >
+                          {w.title}
+                        </button>
+                      </span>
+                      <span className="li-meta">
+                        {w.status} · {w.date}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-        {/* ---------------- filmstrip ---------------- */}
-        <section className="lab-section" aria-label="a few frames from life">
-          <div className="filmstrip" data-magnetic="off">
-            <div className="sprockets" aria-hidden="true">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <i key={i} />
+              <div>
+                <div className="scratch reveal" style={{ position: "relative" }}>
+                  <Constellation
+                    className="doodle mossy interactive-doodle"
+                    style={{ position: "absolute", right: 10, top: 8, opacity: 0.7, cursor: "pointer" }}
+                    onClick={triggerSparkle}
+                  />
+                  <h3>unfinished ideas</h3>
+                  {unfinishedIdeas.map((idea, i) => (
+                    <div className="scratch-line" key={idea}>
+                      <span className={i === 2 ? "strikethrough" : ""}>{idea}</span>
+                      {i === unfinishedIdeas.length - 1 ? <span className="q"> ← ?</span> : null}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="paper-block block-tilt-l reveal" style={{ marginTop: 26 }}>
+                  <h3>currently on the bench</h3>
+                  <ul className="paper-list">
+                    {currentExperiments.map((e) => (
+                      <li key={e.label}>
+                        <span className="li-marker">⌁</span>
+                        <span>{e.label}</span>
+                        <span className="li-meta">{e.note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ---------------- desk drawer: side repos ---------------- */}
+          <section className="lab-section" aria-label="more experiments on github">
+            <div className="drawer reveal">
+              <span className="drawer-label">the drawer ↓ (everything else that compiles):</span>
+              {sideRepos.map((r) => (
+                <a
+                  key={r.name}
+                  className="chip"
+                  href={r.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={r.note}
+                  onClick={() => playClickSound(soundEnabled)}
+                >
+                  {r.name}
+                </a>
               ))}
             </div>
-            <figure className="frame clickable-stage" onClick={() => openLightbox(0)} title="Click to view full screen ⛶">
-              <img src={IMG.motion} alt="frame: mocap skeleton mid-capture" loading="lazy" />
-              <figcaption>mocap, take 14 ⛶</figcaption>
-            </figure>
-            <figure className="frame clickable-stage" onClick={() => openLightbox(1)} title="Click to view full screen ⛶">
-              <img src={IMG.solar} alt="frame: quests scene" loading="lazy" />
-              <figcaption>quests beta ⛶</figcaption>
-            </figure>
-            <figure className="frame clickable-stage" onClick={() => openLightbox(3)} title="Click to view full screen ⛶">
-              <img src={IMG.eeg} alt="frame: room model" loading="lazy" />
-              <figcaption>archis room ⛶</figcaption>
-            </figure>
-            <figure className="frame clickable-stage" onClick={() => openLightbox(4)} title="Click to view full screen ⛶">
-              <img src={IMG.portfolio} alt="frame: desk at night" loading="lazy" />
-              <figcaption>2am desk ⛶</figcaption>
-            </figure>
-            <div className="sprockets" aria-hidden="true">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <i key={i} />
-              ))}
+          </section>
+
+          {/* ---------------- filmstrip ---------------- */}
+          <section className="lab-section" aria-label="a few frames from life">
+            <div className="filmstrip" data-magnetic="off">
+              <div className="sprockets" aria-hidden="true">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <i key={i} />
+                ))}
+              </div>
+              <figure className="frame clickable-stage" onClick={() => openLightbox(0)} title="Click to view full screen ⛶">
+                <img src={IMG.motion} alt="frame: mocap skeleton mid-capture" loading="lazy" />
+                <figcaption>mocap, take 14 ⛶</figcaption>
+              </figure>
+              <figure className="frame clickable-stage" onClick={() => openLightbox(1)} title="Click to view full screen ⛶">
+                <img src={IMG.solar} alt="frame: quests scene" loading="lazy" />
+                <figcaption>quests beta ⛶</figcaption>
+              </figure>
+              <figure className="frame clickable-stage" onClick={() => openLightbox(3)} title="Click to view full screen ⛶">
+                <img src={IMG.eeg} alt="frame: room model" loading="lazy" />
+                <figcaption>archis room ⛶</figcaption>
+              </figure>
+              <figure className="frame clickable-stage" onClick={() => openLightbox(4)} title="Click to view full screen ⛶">
+                <img src={IMG.portfolio} alt="frame: desk at night" loading="lazy" />
+                <figcaption>2am desk ⛶</figcaption>
+              </figure>
+              <div className="sprockets" aria-hidden="true">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <i key={i} />
+                ))}
+              </div>
             </div>
+            <p
+              style={{
+                fontFamily: "var(--hand)",
+                fontSize: 19,
+                transform: "rotate(-1deg)",
+                margin: "14px 4px 0",
+                color: "var(--charcoal)",
+              }}
+            >
+              a few frames from life → (click frames to inspect full screen ⛶)
+            </p>
+          </section>
+
+          {/* ---------------- quote ---------------- */}
+          <div className="quote-card" data-magnetic>
+            {quote}
+            <span className="q-sign">— taped above my desk</span>
           </div>
-          <p
-            style={{
-              fontFamily: "var(--hand)",
-              fontSize: 19,
-              transform: "rotate(-1deg)",
-              margin: "14px 4px 0",
-              color: "var(--charcoal)",
+        </main>
+
+        {/* ---------------- footer ---------------- */}
+        <footer className="lab-footer">
+          <span className="foot-hand">thanks for scrolling this far ✦</span>
+          <a
+            className="to-top"
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              playPaperSound(soundEnabled);
+              window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
             }}
           >
-            a few frames from life → (click frames to inspect full screen ⛶)
-          </p>
-        </section>
-
-        {/* ---------------- quote ---------------- */}
-        <div className="quote-card" data-magnetic>
-          {quote}
-          <span className="q-sign">— taped above my desk</span>
-        </div>
-      </main>
-
-      {/* ---------------- footer ---------------- */}
-      <footer className="lab-footer">
-        <span className="foot-hand">thanks for scrolling this far ✦</span>
-        <a
-          className="to-top"
-          href="#top"
-          onClick={(e) => {
-            e.preventDefault();
-            playPaperSound(soundEnabled);
-            window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
-          }}
-        >
-          ↑ back to the top
-        </a>
-        <span>
-          <a href={identity.links.github} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-            github
-          </a>{" "}
-          ·{" "}
-          <a href={identity.links.linkedin} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-            linkedin
-          </a>{" "}
-          ·{" "}
-          <a href={identity.links.email} onClick={handleCopyEmail} title="Click to copy email">
-            email 📋
+            ↑ back to the top
           </a>
-        </span>
-        <span>© {new Date().getFullYear()} Pedamallu Sai Mrudula · built by hand, on paper</span>
-      </footer>
+          <span>
+            <a href={identity.links.github} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
+              github
+            </a>{" "}
+            ·{" "}
+            <a href={identity.links.linkedin} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
+              linkedin
+            </a>{" "}
+            ·{" "}
+            <a href={identity.links.email} onClick={handleCopyEmail} title="Click to copy email">
+              email 📋
+            </a>
+          </span>
+          <span>© {new Date().getFullYear()} Pedamallu Sai Mrudula · built by hand, on paper</span>
+        </footer>
       </div>{/* end .lab */}
 
       {/* Lightbox Modal */}
@@ -950,6 +979,13 @@ export default function LabPage() {
         items={GALLERY}
         currentIndex={lightboxState.index}
         onSelectIndex={(idx) => setLightboxState((s) => ({ ...s, index: idx }))}
+      />
+
+      {/* Essay Reader Modal */}
+      <EssayModal
+        isOpen={!!selectedEssay}
+        onClose={() => setSelectedEssay(null)}
+        article={selectedEssay}
       />
 
       {/* ambient doodles */}
