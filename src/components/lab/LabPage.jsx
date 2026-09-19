@@ -10,6 +10,7 @@ import {
   unfinishedIdeas,
   heroSticky,
   sideRepos,
+  projectConstellation,
   quote,
 } from "../../data/lab";
 import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
@@ -17,7 +18,8 @@ import TiltPhoto from "./TiltPhoto";
 import LabHeader from "./LabHeader";
 import LightboxModal from "./LightboxModal";
 import EssayModal from "./EssayModal";
-import DoodleCanvas from "./DoodleCanvas";\nimport PersonalDesk from "./PersonalDesk";
+import DoodleCanvas from "./DoodleCanvas";
+import PersonalDesk from "./PersonalDesk";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
