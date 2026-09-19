@@ -33,6 +33,31 @@ export default function MovableScrap({ id, x, y, rotation = 0, tone = "paper", p
     };
   }, [parentRef]);
 
+  useEffect(() => {
+    const shuffle = () => {
+      const b = bounds();
+      const nx = Math.round(Math.random() * Math.max(0, b.maxX));
+      const ny = Math.round(52 + Math.random() * Math.max(0, b.maxY - 52));
+      const all = load();
+      const top = Object.values(all).reduce((m, item) => Math.max(m, item?.z || 0), 3) + 1;
+      setPos({ x: nx, y: ny });
+      setZ(top);
+      save({ ...all, [id]: { x: nx, y: ny, z: top } });
+    };
+
+    const resetLayout = () => {
+      setPos({ x, y });
+      setZ(3);
+    };
+
+    window.addEventListener("lab:shuffle", shuffle);
+    window.addEventListener("lab:reset-layout", resetLayout);
+    return () => {
+      window.removeEventListener("lab:shuffle", shuffle);
+      window.removeEventListener("lab:reset-layout", resetLayout);
+    };
+  }, [bounds, id, x, y]);
+
   const onPointerDown = (e) => {
     if (e.button !== 0 || window.matchMedia("(pointer: coarse)").matches) return;
     e.preventDefault();

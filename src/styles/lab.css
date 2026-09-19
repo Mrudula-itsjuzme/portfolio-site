@@ -2737,3 +2737,251 @@ html[data-fullscreen="true"] .hero,
 [data-theme="night"] .workboard-label small {
   color: rgba(23,21,18,.5);
 }
+
+
+/* ============================================================
+   interaction pass — more play, less prose
+   ============================================================ */
+
+.interaction-dock {
+  position: fixed;
+  left: 18px;
+  bottom: 20px;
+  z-index: 1460;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.interaction-main {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(23,21,18,.22);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: var(--shadow-lift);
+  font-size: 19px;
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease;
+}
+
+.interaction-main:hover,
+.interaction-dock.open .interaction-main {
+  transform: rotate(12deg) scale(1.08);
+  background: var(--butter);
+}
+
+.interaction-fan {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  transform-origin: left center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-12px) scale(.96);
+  transition: opacity .16s ease, transform .18s ease;
+}
+
+.interaction-dock.open .interaction-fan {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
+.interaction-fan button {
+  border: 1px solid rgba(23,21,18,.18);
+  background: var(--cream);
+  color: var(--ink);
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9px;
+  cursor: pointer;
+  box-shadow: var(--shadow-paper);
+  transition: transform .14s ease, background .14s ease;
+}
+
+.interaction-fan button:nth-child(1) { transform: rotate(-2deg); }
+.interaction-fan button:nth-child(2) { transform: rotate(1deg); }
+.interaction-fan button:nth-child(3) { transform: rotate(-1deg); }
+.interaction-fan button:nth-child(4) { transform: rotate(2deg); }
+
+.interaction-fan button:hover {
+  transform: translateY(-3px) rotate(0deg);
+  background: var(--butter);
+}
+
+.interaction-fan button.active {
+  background: var(--moss);
+  color: var(--cream);
+}
+
+.interaction-hint {
+  position: absolute;
+  left: 54px;
+  top: -17px;
+  font-family: var(--hand);
+  font-size: 13px;
+  color: var(--clay);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.chaos-spark {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--clay);
+  animation: chaos-pop .72s cubic-bezier(.18,.75,.28,1) forwards;
+}
+
+.chaos-spark:nth-of-type(3n) { color: var(--moss); }
+.chaos-spark:nth-of-type(4n) { color: var(--butter); }
+
+@keyframes chaos-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.25) rotate(0deg);
+  }
+  16% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.25) rotate(90deg);
+  }
+}
+
+.lab-shake .hero-workboard,
+.lab-shake .constellation-grid {
+  animation: lab-shuffle-wobble .48s ease;
+}
+
+@keyframes lab-shuffle-wobble {
+  0%, 100% { transform: rotate(.35deg); }
+  22% { transform: rotate(-1.4deg) translateX(-3px); }
+  48% { transform: rotate(1.2deg) translateX(4px); }
+  72% { transform: rotate(-.6deg) translateX(-2px); }
+}
+
+/* pointer-following highlight, but the native cursor stays untouched */
+.constellation-card,
+.project,
+.contribution-row,
+.index-card,
+.paper-block {
+  position: relative;
+}
+
+.constellation-card::before,
+.project::before,
+.contribution-row::before,
+.index-card::before,
+.paper-block::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle 110px at var(--hover-x, 50%) var(--hover-y, 50%),
+    rgba(227,205,101,.17),
+    transparent 72%
+  );
+  transition: opacity .15s ease;
+  z-index: 0;
+}
+
+.reactive-surface::before {
+  opacity: 1;
+}
+
+.constellation-card > *,
+.project > *,
+.contribution-row > *,
+.index-card > *,
+.paper-block > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* tiny physical reactions */
+.project:hover .project-title {
+  transform: translateX(3px);
+}
+
+.project-title {
+  transition: transform .18s ease;
+}
+
+.fact-table tr {
+  transition: transform .14s ease, background .14s ease;
+}
+
+.fact-table tr:hover {
+  transform: translateX(5px);
+  background: rgba(227,205,101,.10);
+}
+
+.role-chip {
+  transition: transform .16s ease, background .16s ease;
+}
+
+.role-chip:hover {
+  transform: rotate(2deg) translateY(-3px) scale(1.04);
+  background: var(--butter);
+}
+
+.interactive-doodle {
+  transition: transform .18s ease;
+}
+
+.interactive-doodle:hover {
+  transform: rotate(12deg) scale(1.14);
+}
+
+@media (max-width: 720px) {
+  .interaction-dock {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .interaction-fan {
+    position: absolute;
+    left: 0;
+    bottom: 54px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .interaction-hint {
+    display: none;
+  }
+
+  .constellation-card::before,
+  .project::before,
+  .contribution-row::before,
+  .index-card::before,
+  .paper-block::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chaos-spark,
+  .lab-shake .hero-workboard,
+  .lab-shake .constellation-grid {
+    animation: none !important;
+  }
+
+  .interaction-main,
+  .interaction-fan,
+  .interaction-fan button,
+  .role-chip,
+  .interactive-doodle,
+  .fact-table tr,
+  .project-title {
+    transition: none !important;
+  }
+}

@@ -22,6 +22,7 @@ import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
 import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
+import InteractionDock from "./InteractionDock";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -966,6 +967,10 @@ export default function LabPage() {
       />
 
       <PersonalDesk
+        doodleActive={doodleCanvasActive}
+        onToggleDoodle={() => setDoodleCanvasActive((v) => !v)}
+      />
+      <InteractionDock
         doodleActive={doodleCanvasActive}
         onToggleDoodle={() => setDoodleCanvasActive((v) => !v)}
       />
