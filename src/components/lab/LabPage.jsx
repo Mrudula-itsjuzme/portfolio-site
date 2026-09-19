@@ -137,7 +137,7 @@ function MocapProject({ p, index, onOpenLightbox }) {
         className="mocap-stage parallax-layer clickable-stage"
         style={{ marginTop: 26, cursor: "pointer" }}
         onClick={() => onOpenLightbox(0)}
-        title="Click to view full screen ⛶"
+        title="open image"
         data-magnetic
       >
         <span className="mocap-tag" aria-hidden="true">
@@ -215,70 +215,42 @@ function MocapProject({ p, index, onOpenLightbox }) {
 /* Project: Quests — cinematic / product                               */
 /* ------------------------------------------------------------------ */
 
-function QuestsProject({ p, index, onOpenLightbox }) {
+function QuestsProject({ p, index }) {
   const ref = useReveal();
   return (
     <article ref={ref} className="project project-quests reveal" aria-label={p.name}>
-      <div className="quests-wide">
+      <div className="project-meta-row">
+        <span className="project-index">{String(index).padStart(2, "0")} /</span>
+        <h3 className="project-title">
+          <a href={p.github} target="_blank" rel="noreferrer">{p.name}</a>
+        </h3>
+        <span className="project-year">{p.year}</span>
+      </div>
+
+      <div className="quests-real-grid">
         <div>
-          <div className="project-meta-row">
-            <span className="project-index">{String(index).padStart(2, "0")} /</span>
-            <h3 className="project-title">
-              <a href={p.github} target="_blank" rel="noreferrer">
-                {p.name}
-              </a>
-            </h3>
-            <span className="project-year">{p.year}</span>
-          </div>
           <p className="project-blurb">{p.blurb}</p>
           <div className="tag-row">
-            {p.tags.map((t) => (
-              <span className="tag" key={t}>
-                {t}
-              </span>
-            ))}
+            {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
           </div>
-          <table className="fact-table">
-            <tbody>
-              {p.facts.map(([k, v]) => (
-                <tr key={k}>
-                  <td>{k}</td>
-                  <td>{v}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
-
-        <div
-          className="quests-frame clickable-stage"
-          data-magnetic
-          onClick={() => onOpenLightbox(1)}
-          style={{ cursor: "pointer" }}
-          title="Click to view full screen ⛶"
-        >
-          <span className="tape" style={{ left: "8%", top: -12, transform: "rotate(-4deg)" }} />
-          <img src={IMG.solar} alt={`Quests app scene — ${p.annotations[0]}`} />
-          <div className="quests-ui" aria-hidden="true">
-            <div className="ui-head">today’s quests</div>
-            <div className="ui-row"><span className="dot" /> walk without your phone</div>
-            <div className="ui-row"><span className="dot amber" /> read 10 pages</div>
-            <div className="ui-row"><span className="dot" /> ship the small fix</div>
-          </div>
-          <p
-            style={{
-              fontFamily: "var(--hand)",
-              color: "var(--cream)",
-              fontSize: 17,
-              textAlign: "center",
-              margin: "10px 0 12px",
-              transform: "rotate(-1deg)",
-            }}
-          >
-            {p.annotations[0]} ✦ (click to expand)
+        <div className="product-note">
+          <span className="product-note-label">closed beta / right now</span>
+          <p>
+            tiny tester pool. real persistence bugs. UI feedback that actually changed the build.
+            exactly the unglamorous part i wanted to reach.
           </p>
+          <a href={p.github} target="_blank" rel="noreferrer">open the repo ↗</a>
         </div>
       </div>
+
+      <table className="fact-table">
+        <tbody>
+          {p.facts.map(([k, v]) => (
+            <tr key={k}><td>{k}</td><td>{v}</td></tr>
+          ))}
+        </tbody>
+      </table>
     </article>
   );
 }
@@ -371,70 +343,51 @@ function BlueprintSvg() {
   );
 }
 
-function ArchisProject({ p, index, onOpenLightbox }) {
+function ArchisProject({ p, index }) {
   const ref = useReveal();
   return (
     <article ref={ref} className="project project-archis reveal" aria-label={p.name}>
       <div className="project-meta-row">
         <span className="project-index">{String(index).padStart(2, "0")} /</span>
         <h3 className="project-title">
-          <a href={p.github} target="_blank" rel="noreferrer">
-            {p.name}
-          </a>
+          <a href={p.github} target="_blank" rel="noreferrer">{p.name}</a>
         </h3>
         <span className="project-year">{p.year}</span>
-        <a className="btn-quiet" href={p.demo} target="_blank" rel="noreferrer">
-          live prototype ↗
-        </a>
+        <a className="btn-quiet" href={p.demo} target="_blank" rel="noreferrer">prototype ↗</a>
       </div>
+
       <p className="project-blurb">{p.blurb}</p>
 
-      <div className="archis-strip" style={{ marginTop: 34 }}>
-        <div className="stage-card" data-magnetic>
-          <span className="stage-label">blueprint</span>
-          <BlueprintSvg />
+      <div className="archis-real-flow" aria-label="Archis workflow">
+        <div className="archis-step">
+          <span>01</span>
+          <strong>blueprint</strong>
+          <small>start with what the architect actually drew</small>
         </div>
-        <div className="stage-arrow" aria-hidden="true">→</div>
-        <div
-          className="stage-card clickable-stage"
-          style={{ transform: "rotate(0.8deg)", cursor: "pointer" }}
-          data-magnetic
-          onClick={() => onOpenLightbox(2)}
-          title="Click to view full screen ⛶"
-        >
-          <span className="stage-label">interpreted ⛶</span>
-          <img src={IMG.portfolio} alt="Interpreted architectural space from the blueprint" />
+        <div className="archis-flow-arrow">→</div>
+        <div className="archis-step">
+          <span>02</span>
+          <strong>interpret</strong>
+          <small>infer relationships, but keep uncertainty visible</small>
         </div>
-        <div className="stage-arrow" aria-hidden="true">→</div>
-        <div
-          className="stage-card clickable-stage"
-          style={{ transform: "rotate(-0.6deg)", cursor: "pointer" }}
-          data-magnetic
-          onClick={() => onOpenLightbox(3)}
-          title="Click to view full screen ⛶"
-        >
-          <span className="stage-label">3d / room ⛶</span>
-          <img src={IMG.eeg} alt="Semantic 3D room model derived from the plan" />
+        <div className="archis-flow-arrow">→</div>
+        <div className="archis-step">
+          <span>03</span>
+          <strong>change carefully</strong>
+          <small>make the smallest useful edit without erasing intent</small>
         </div>
       </div>
 
-      <table className="fact-table" style={{ marginTop: 20 }}>
+      <table className="fact-table">
         <tbody>
           {p.facts.map(([k, v]) => (
-            <tr key={k}>
-              <td>{k}</td>
-              <td>{v}</td>
-            </tr>
+            <tr key={k}><td>{k}</td><td>{v}</td></tr>
           ))}
         </tbody>
       </table>
 
       <div className="tag-row">
-        {p.tags.map((t) => (
-          <span className="tag" key={t}>
-            {t}
-          </span>
-        ))}
+        {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
       </div>
     </article>
   );
@@ -455,7 +408,7 @@ export default function LabPage() {
 
   const [soundEnabled, setSoundEnabled] = useState(() => {
     try {
-      return localStorage.getItem("lab-sound") !== "off";
+      return localStorage.getItem("lab-sound") === "on";
     } catch {
       return true;
     }
@@ -602,7 +555,7 @@ export default function LabPage() {
                 style={{ position: "absolute", right: 20, top: -10, cursor: "pointer" }}
                 onClick={triggerSparkle}
               />
-              <span className="hero-hello">Hi, I’m</span>
+              <span className="hero-hello">hi. i’m</span>
               <h1 className="hero-name">
                 {identity.name}
                 <span className="scribble-x" aria-hidden="true">
@@ -610,9 +563,9 @@ export default function LabPage() {
                 </span>
               </h1>
               <p className="hero-mainline">
-                I build things because{" "}
+                I build things until{" "}
                 <span className="underline-draw">
-                  I want to know what happens if they work.
+                  I understand them.
                   <UnderlineScribble />
                 </span>
               </p>
@@ -653,7 +606,7 @@ export default function LabPage() {
                 <TiltPhoto
                   src={IMG.portfolio}
                   alt="a desk scene from one of the projects"
-                  caption="still here… (click to view full screen ⛶)"
+                  caption="one of the many tabs open in my head"
                   rotate={2.4}
                   parallax={26}
                   className="parallax-layer"
@@ -715,16 +668,16 @@ export default function LabPage() {
           {/* ---------------- featured work ---------------- */}
           <section className="lab-section" id="work" aria-label="featured work">
             <SectionHead
-              kicker="the desk"
-              title="Work &"
-              accent="experiments"
-              sub="Some things I’ve built, broken, and keep coming back to. None of them are finished — that’s the point."
+              kicker="things i build"
+              title="Selected"
+              accent="work"
+              sub="The projects I can explain without pretending they’re more finished than they are."
             />
             <MocapProject p={featuredProjects[0]} index={1} onOpenLightbox={openLightbox} />
             <span className="marginalia" style={{ right: "2%", top: "28%", transform: "rotate(2deg)" }} aria-hidden="true">
               two cameras, one skeleton →
             </span>
-            <QuestsProject p={featuredProjects[1]} index={2} onOpenLightbox={openLightbox} />
+            <QuestsProject p={featuredProjects[1]} index={2} />
             <span className="marginalia" style={{ left: "1%", top: "46%", transform: "rotate(-2deg)" }} aria-hidden="true">
               ← the gamification rabbit hole
             </span>
@@ -732,16 +685,16 @@ export default function LabPage() {
             <span className="marginalia" style={{ right: "3%", top: "62%", transform: "rotate(1.5deg)" }} aria-hidden="true">
               attack, defend, then understand ↓
             </span>
-            <ArchisProject p={featuredProjects[3]} index={4} onOpenLightbox={openLightbox} />
+            <ArchisProject p={featuredProjects[3]} index={4} />
           </section>
 
           {/* ---------------- research + community ---------------- */}
           <section className="lab-section" id="research" aria-label="research and community">
             <SectionHead
-              kicker="the shelf"
-              title="Research &"
-              accent="people"
-              sub="Papers I’ve published, and the communities I help keep alive."
+              kicker="research + people"
+              title="Things I’ve"
+              accent="worked on"
+              sub="Published work, ongoing research, and communities I’ve helped build."
             />
             <div className="two-col">
               <div className="paper-block block-tilt-l reveal">
@@ -787,10 +740,10 @@ export default function LabPage() {
           {/* ---------------- words + experiments ---------------- */}
           <section className="lab-section" id="words" aria-label="writing and experiments">
             <SectionHead
-              kicker="the margins"
-              title="Words &"
-              accent="unfinished things"
-              sub="Writing I keep doing, experiments currently on the bench, and ideas that refuse to leave."
+              kicker="outside the code"
+              title="Writing &"
+              accent="loose ends"
+              sub="Notes, essays, and ideas I haven’t managed to stop thinking about."
             />
             <div className="two-col">
               <div className="paper-block block-tilt-r reveal" style={{ position: "relative" }}>
@@ -874,7 +827,7 @@ export default function LabPage() {
           {/* ---------------- desk drawer: side repos ---------------- */}
           <section className="lab-section" aria-label="more experiments on github">
             <div className="drawer reveal">
-              <span className="drawer-label">the drawer ↓ (everything else that compiles):</span>
+              <span className="drawer-label">other repos i still like →</span>
               {sideRepos.map((r) => (
                 <a
                   key={r.name}
