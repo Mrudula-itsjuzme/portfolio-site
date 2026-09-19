@@ -917,7 +917,7 @@ export default function LabPage() {
               email 📋
             </a>
           </span>
-          <span>© {new Date().getFullYear()} Pedamallu Sai Mrudula · built by hand, on paper</span>
+          <span>© {new Date().getFullYear()} Mrudula · made, moved around, scribbled on</span>
         </footer>
       </div>{/* end .lab */}
 
