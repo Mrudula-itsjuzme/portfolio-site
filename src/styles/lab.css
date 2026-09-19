@@ -6571,3 +6571,393 @@ html[data-fullscreen="true"] .hero,
     flex-basis: 100%;
   }
 }
+
+
+/* ============================================================
+   final polish — anchored actions + readable evidence
+   ============================================================ */
+
+/* Project header actions should feel attached, not dropped into whitespace. */
+.project-proof-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 34px;
+  align-items: end;
+}
+
+.project-proof-head > div:first-child {
+  min-width: 0;
+}
+
+.project-github-btn,
+.project-private-badge,
+.project-link-stack .btn-quiet {
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.project-github-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  justify-self: end;
+  align-self: end;
+  min-width: 0;
+  padding: 10px 14px;
+  background: rgba(255,255,255,.52);
+  color: var(--ink);
+  border: 1px solid rgba(23,21,18,.13);
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.project-github-btn span {
+  font-size: 10px;
+  letter-spacing: .11em;
+  color: var(--clay);
+}
+
+.project-github-btn strong {
+  font: 600 13px/1.2 var(--mono);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.project-github-btn:hover {
+  border-color: rgba(49,74,53,.38);
+  transform: translateY(-1px);
+}
+
+.project-private-badge {
+  justify-self: end;
+  align-self: end;
+  min-width: 230px;
+  padding: 10px 14px;
+}
+
+.project-private-badge span {
+  font-size: 10px;
+}
+
+.project-private-badge strong {
+  font-size: 13px;
+}
+
+.project-link-stack {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 8px;
+  align-self: end;
+}
+
+.project-link-stack .btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid rgba(23,21,18,.13);
+  background: rgba(255,255,255,.42);
+  font: 600 13px/1.2 var(--mono);
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Make evidence readable at a glance. */
+.panel-kicker,
+.quests-loop-card > .panel-kicker,
+.quests-rules-card > .panel-kicker,
+.cyberbio-findings > .panel-kicker {
+  font-size: 11px;
+  letter-spacing: .11em;
+}
+
+.metric-row {
+  padding: 16px 0;
+}
+
+.metric-row > span {
+  font-size: 11px;
+  letter-spacing: .09em;
+}
+
+.metric-row > strong {
+  margin-top: 5px;
+  font: 600 15px/1.45 var(--mono);
+}
+
+.mocap-now {
+  padding-top: 20px;
+}
+
+.mocap-now > span {
+  font-size: 11px;
+}
+
+.mocap-now p {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.quests-loop > div {
+  min-height: 132px;
+  padding: 18px;
+}
+
+.quests-loop > div b {
+  font-size: 10px;
+}
+
+.quests-loop > div strong {
+  font-size: 28px;
+}
+
+.quests-loop > div small {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.quests-rule-grid > div {
+  padding: 18px 20px;
+}
+
+.quests-rule-grid strong {
+  font-size: 13px;
+}
+
+.quests-rule-grid span {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.quests-product-bar > div {
+  min-height: 78px;
+  padding: 15px 18px;
+}
+
+.quests-product-bar span {
+  font-size: 10px;
+  letter-spacing: .09em;
+}
+
+.quests-product-bar strong {
+  margin-top: 5px;
+  font: 600 13px/1.4 var(--mono);
+}
+
+.cyberbio-findings {
+  padding-top: 8px;
+}
+
+.finding-row {
+  padding: 17px 0;
+  gap: 14px;
+}
+
+.finding-row > span {
+  font-size: 11px;
+}
+
+.finding-row strong {
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+
+.finding-row p {
+  margin-top: 6px;
+  font: 600 14px/1.45 var(--mono);
+}
+
+.cyberbio-findings > small {
+  display: block;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.archis-flow-clean span {
+  font-size: 13px;
+}
+
+.archis-facts td:first-child {
+  font-size: 11px;
+}
+
+.archis-facts td:last-child {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* Research evidence should read like evidence, not micro-captioning. */
+.research-row-label {
+  font-size: 10px;
+}
+
+.research-row h3 {
+  font-size: 29px;
+}
+
+.research-row p {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.research-row-metrics span {
+  padding: 7px 9px;
+  font-size: 11px;
+}
+
+.research-row-links a {
+  font-size: 12px;
+}
+
+/* Secondary products also get readable proof text. */
+.product-eyebrow,
+.product-feature-head small {
+  font-size: 10px;
+}
+
+.product-feature-card > p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.product-proof-stack span {
+  padding: 8px 11px;
+  font-size: 11px;
+}
+
+.product-feature-foot > small,
+.product-feature-foot a {
+  font-size: 11px;
+}
+
+/* Keep the tiny archive line visually attached instead of flinging links rightward. */
+.other-builds-line {
+  justify-content: flex-start;
+  gap: 14px;
+}
+
+.other-builds-line > span {
+  margin-right: 10px;
+  flex: 0 0 auto;
+  font-size: 18px;
+}
+
+.other-builds-line a {
+  padding: 6px 9px;
+  border: 1px solid rgba(23,21,18,.09);
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+/* Footer links should feel like one deliberate navigation cluster. */
+.lab-footer-final {
+  grid-template-columns: auto 1fr auto;
+  gap: 34px;
+  min-height: 106px;
+  align-items: center;
+}
+
+.footer-links {
+  justify-self: center;
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid rgba(23,21,18,.10);
+  background: rgba(255,255,255,.28);
+}
+
+.footer-links a {
+  padding: 11px 14px;
+  font-size: 11px;
+  border-right: 1px solid rgba(23,21,18,.09);
+}
+
+.footer-links a:last-child {
+  border-right: 0;
+}
+
+.lab-footer-final .to-top,
+.lab-footer-final > span:last-child {
+  font-size: 12px;
+}
+
+/* General microcopy floor. */
+.tag {
+  font-size: 11px;
+  padding: 6px 9px;
+}
+
+figcaption {
+  font-size: 12px !important;
+}
+
+[data-theme="night"] .project-github-btn,
+[data-theme="night"] .project-link-stack .btn-quiet,
+[data-theme="night"] .footer-links,
+[data-theme="night"] .other-builds-line a {
+  background: rgba(241,232,220,.035);
+  border-color: rgba(241,232,220,.10);
+  color: var(--ink);
+}
+
+[data-theme="night"] .footer-links a {
+  border-right-color: rgba(241,232,220,.08);
+}
+
+@media (max-width: 900px) {
+  .project-proof-head {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .project-github-btn,
+  .project-private-badge,
+  .project-link-stack {
+    justify-self: start;
+  }
+
+  .project-link-stack {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .lab-footer-final {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    justify-items: start;
+  }
+
+  .footer-links {
+    justify-self: start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 620px) {
+  .project-github-btn,
+  .project-private-badge {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .project-link-stack {
+    width: 100%;
+  }
+
+  .project-link-stack > * {
+    flex: 1 1 auto;
+  }
+
+  .footer-links {
+    width: 100%;
+  }
+
+  .footer-links a {
+    flex: 1 1 50%;
+    text-align: center;
+    border-bottom: 1px solid rgba(23,21,18,.08);
+  }
+}
