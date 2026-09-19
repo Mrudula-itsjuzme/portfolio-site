@@ -17,7 +17,7 @@ import TiltPhoto from "./TiltPhoto";
 import LabHeader from "./LabHeader";
 import LightboxModal from "./LightboxModal";
 import EssayModal from "./EssayModal";
-import DoodleCanvas from "./DoodleCanvas";
+import DoodleCanvas from "./DoodleCanvas";\nimport PersonalDesk from "./PersonalDesk";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -844,47 +844,43 @@ export default function LabPage() {
             </div>
           </section>
 
-          {/* ---------------- filmstrip ---------------- */}
-          <section className="lab-section" aria-label="a few frames from life">
-            <div className="filmstrip" data-magnetic="off">
-              <div className="sprockets" aria-hidden="true">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <i key={i} />
-                ))}
-              </div>
-              <figure className="frame clickable-stage" onClick={() => openLightbox(0)} title="Click to view full screen ⛶">
-                <img src={IMG.motion} alt="frame: mocap skeleton mid-capture" loading="lazy" />
-                <figcaption>mocap, take 14 ⛶</figcaption>
-              </figure>
-              <figure className="frame clickable-stage" onClick={() => openLightbox(1)} title="Click to view full screen ⛶">
-                <img src={IMG.solar} alt="frame: quests scene" loading="lazy" />
-                <figcaption>quests beta ⛶</figcaption>
-              </figure>
-              <figure className="frame clickable-stage" onClick={() => openLightbox(3)} title="Click to view full screen ⛶">
-                <img src={IMG.eeg} alt="frame: room model" loading="lazy" />
-                <figcaption>archis room ⛶</figcaption>
-              </figure>
-              <figure className="frame clickable-stage" onClick={() => openLightbox(4)} title="Click to view full screen ⛶">
-                <img src={IMG.portfolio} alt="frame: desk at night" loading="lazy" />
-                <figcaption>2am desk ⛶</figcaption>
-              </figure>
-              <div className="sprockets" aria-hidden="true">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <i key={i} />
-                ))}
-              </div>
+          {/* ---------------- project constellation ---------------- */}
+          <section className="lab-section constellation-section" aria-label="more projects">
+            <div className="constellation-head reveal">
+              <span className="lab-kicker">the rest of the tabs</span>
+              <h2 className="lab-h2">Project <span className="accent">constellation</span></h2>
+              <p className="lab-sub">
+                Not everything needs a giant case study. Some things are research, some are products,
+                some are old experiments I still steal ideas from.
+              </p>
             </div>
-            <p
-              style={{
-                fontFamily: "var(--hand)",
-                fontSize: 19,
-                transform: "rotate(-1deg)",
-                margin: "14px 4px 0",
-                color: "var(--charcoal)",
-              }}
-            >
-              a few frames from life → (click frames to inspect full screen ⛶)
-            </p>
+
+            <div className="constellation-grid reveal">
+              {projectConstellation.map((p, i) => (
+                <a
+                  className={"constellation-card kind-" + p.kind}
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  key={p.name}
+                  style={{ "--tilt": `${[-1.2, 0.7, -0.4, 1.1, -0.8, 0.5][i % 6]}deg` }}
+                  onClick={() => playClickSound(soundEnabled)}
+                >
+                  <span className="constellation-dot">✦</span>
+                  <span className="constellation-kind">{p.kind}</span>
+                  <h3>{p.name}</h3>
+                  <p>{p.note}</p>
+                  <span className="constellation-link">peek ↗</span>
+                </a>
+              ))}
+            </div>
+
+            <div className="constellation-doodles" aria-hidden="true">
+              <PaperPlaneDoodle size={44} />
+              <StarDoodle size={24} />
+              <Sparkle size={16} />
+              <Constellation />
+            </div>
           </section>
 
           {/* ---------------- quote ---------------- */}
@@ -921,7 +917,7 @@ export default function LabPage() {
               email 📋
             </a>
           </span>
-          <span>© {new Date().getFullYear()} Pedamallu Sai Mrudula · built by hand, on paper</span>
+          <span>© {new Date().getFullYear()} Mrudula · made, moved around, scribbled on</span>
         </footer>
       </div>{/* end .lab */}
 
@@ -941,14 +937,19 @@ export default function LabPage() {
         article={selectedEssay}
       />
 
-      {/* ambient doodles */}
+      <PersonalDesk
+        doodleActive={doodleCanvasActive}
+        onToggleDoodle={() => setDoodleCanvasActive((v) => !v)}
+      />
+
+            {/* ambient doodles */}
       <CoffeeRing className="doodle interactive-doodle" style={{ position: "absolute", right: "4%", top: 120, zIndex: 0, cursor: "pointer" }} onClick={triggerSparkle} />
       <Sparkle className="doodle clay twinkle interactive-doodle" size={18} style={{ position: "absolute", left: "2%", top: 420, cursor: "pointer" }} onClick={triggerSparkle} />
       <ArrowDoodle className="doodle mossy" style={{ position: "absolute", left: "3%", top: 900 }} />
       <Sparkle className="doodle mossy twinkle slow interactive-doodle" size={13} style={{ position: "absolute", right: "8%", top: 2100, cursor: "pointer" }} onClick={triggerSparkle} />
       <CatDoodle className="doodle clay floaty slow interactive-doodle" size={50} style={{ position: "absolute", right: "5%", top: 3400, cursor: "pointer" }} onClick={triggerSparkle} />
       <Sparkle className="doodle pinky twinkle interactive-doodle" size={16} style={{ position: "absolute", left: "4%", top: 4300, cursor: "pointer" }} onClick={triggerSparkle} />
-      <StarDoodle className="doodle mossy twinkle slow interactive-doodle" size={20} style={{ position: "absolute", right: "3%", top: 5200, cursor: "pointer" }} onClick={triggerSparkle} />
+      <StarDoodle className="doodle mossy twinkle slow interactive-doodle" size={20} style={{ position: "absolute", right: "3%", top: 5200, cursor: "pointer" }} onClick={triggerSparkle} />\n      <PaperPlaneDoodle className="doodle clay floaty interactive-doodle" size={34} style={{ position: "absolute", left: "5%", top: 2650, cursor: "pointer" }} onClick={triggerSparkle} />\n      <VinylDoodle className="doodle pinky interactive-doodle" style={{ position: "absolute", right: "7%", top: 4550, cursor: "pointer" }} onClick={triggerSparkle} />\n      <CoffeeRing className="doodle mossy" style={{ position: "absolute", left: "4%", top: 6100, opacity: 0.45 }} />
       <Constellation className="doodle clay interactive-doodle" style={{ position: "absolute", left: "2%", top: 5900, opacity: 0.65, cursor: "pointer" }} onClick={triggerSparkle} />
     </div>
   );

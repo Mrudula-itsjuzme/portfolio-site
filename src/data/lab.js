@@ -116,6 +116,64 @@ export const featuredProjects = [
   },
 ];
 
+
+export const projectConstellation = [
+  {
+    name: "Semantic Workspace",
+    href: "https://github.com/Mrudula-itsjuzme/Semantic_Workspace",
+    note: "Cloud + DBMS project growing into a research workspace with retrieval, graphs, vectors, and structured knowledge.",
+    kind: "systems",
+  },
+  {
+    name: "AnswerBubble",
+    href: "https://github.com/Mrudula-itsjuzme/Answer_bubble",
+    note: "Desktop AI meeting copilot experiments: screenshot context, ghost typing, notes, and local-first utility.",
+    kind: "product",
+  },
+  {
+    name: "AI Council",
+    href: "https://github.com/Mrudula-itsjuzme/Ai-Council",
+    note: "Multi-model coordination experiments instead of pretending one model should do everything.",
+    kind: "agents",
+  },
+  {
+    name: "EEG Reconstruction",
+    href: "https://github.com/Mrudula-itsjuzme/MFC3_D3_EEG_Recon_ADMM",
+    note: "Signal reconstruction with ADMM and graph methods, part optimization notebook, part signal-forensics rabbit hole.",
+    kind: "research",
+  },
+  {
+    name: "Speak134",
+    href: "https://github.com/Mrudula-itsjuzme/speak134",
+    note: "Voice-first language learning experiments around tutor personas, memory, correction, and feedback.",
+    kind: "product",
+  },
+  {
+    name: "Northlight",
+    href: "https://github.com/Mrudula-itsjuzme/northlight",
+    note: "Earlier product/brand systems exploration. Kept because the thinking still leaks into newer work.",
+    kind: "archive",
+  },
+  {
+    name: "Smart Grid IDS",
+    href: "https://github.com/Mrudula-itsjuzme/cyberattack-on-smart-grids",
+    note: "Cybersecurity research around IEC 60870-5-104 intrusion detection, tied to my IEEE Access paper.",
+    kind: "research",
+  },
+  {
+    name: "Solar Fault Detection",
+    href: "https://github.com/Mrudula-itsjuzme/solarpanel-fault-detection",
+    note: "PV fault detection using PyramidNet + GRU, with published results across binary and multi-fault settings.",
+    kind: "research",
+  },
+  {
+    name: "Systems / Open Source",
+    href: "https://github.com/Mrudula-itsjuzme?tab=repositories",
+    note: "DALI, CUTLASS, Sports2D, LeRobot, OS/networking exercises, and the smaller things I use to learn in public.",
+    kind: "oss",
+  },
+];
+
 export const researchPapers = [
   {
     title: "IEEE Access 2025 — Smart Grid Intrusion Detection",
