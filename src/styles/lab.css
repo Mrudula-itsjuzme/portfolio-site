@@ -2703,3 +2703,37 @@ html[data-fullscreen="true"] .hero,
     margin-left: 4px;
   }
 }
+
+
+/* paper scraps stay readable even when the room goes dark */
+.movable-scrap,
+.desk-card {
+  color: #171512;
+}
+
+.movable-scrap .scrap-status {
+  color: #314a35;
+}
+
+.desk-card input,
+.desk-card select,
+.desk-card textarea,
+.desk-task button {
+  color: #171512;
+}
+
+[data-theme="night"] .hero-workboard {
+  background:
+    linear-gradient(rgba(235,226,210,.94), rgba(235,226,210,.94)),
+    repeating-linear-gradient(0deg, transparent 0 29px, rgba(49,74,53,.10) 29px 30px),
+    repeating-linear-gradient(90deg, transparent 0 29px, rgba(49,74,53,.06) 29px 30px);
+  border-color: rgba(247,241,230,.18);
+}
+
+[data-theme="night"] .workboard-label span {
+  color: #314a35;
+}
+
+[data-theme="night"] .workboard-label small {
+  color: rgba(23,21,18,.5);
+}
