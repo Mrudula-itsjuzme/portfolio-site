@@ -47,64 +47,6 @@ const IMG = {
   eeg: "diagrams/eeg.png",
 };
 
-const MOCAP_MEDIA = [
-  {
-    id: "capture",
-    type: "video",
-    label: "annotated capture",
-    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/annotated_front.mp4",
-    note: "front camera · MediaPipe overlay",
-  },
-  {
-    id: "quality",
-    type: "image",
-    label: "quality improvement",
-    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/offline_quality_improvement_card.png",
-    note: "before / after pipeline quality",
-  },
-  {
-    id: "sync",
-    type: "image",
-    label: "sync sweep",
-    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/sync_offset_sweep_card.png",
-    note: "camera offset search",
-  },
-  {
-    id: "reprojection",
-    type: "image",
-    label: "reprojection",
-    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
-    note: "documented benchmark output",
-  },
-];
-
-const QUESTS_MEDIA = [
-  {
-    id: "quests",
-    label: "quest hub",
-    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
-    note: "actual QA capture · quest flow",
-  },
-  {
-    id: "map",
-    label: "world map",
-    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/15-map-final.png",
-    note: "actual QA capture · explore/map",
-  },
-  {
-    id: "rewards",
-    label: "rewards",
-    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
-    note: "actual QA capture · progression",
-  },
-  {
-    id: "profile",
-    label: "profile",
-    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
-    note: "actual QA capture · explorer profile",
-  },
-];
-
 const CYBERBIO_MEDIA = [
   {
     id: "defense",
@@ -144,84 +86,6 @@ const ARCHIS_MEDIA = [
     label: "workspace concept",
     src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/workspace-concept.svg",
     note: "product workspace concept",
-  },
-];
-
-const MOCAP_BOARD = [
-  {
-    id: "quality",
-    type: "image",
-    src: MOCAP_MEDIA[1].src,
-    label: "quality improvement",
-    caption: "before / after pipeline quality",
-    initial: { x: 34, y: 44, r: -1.2 },
-    kind: "proof-large",
-  },
-  {
-    id: "sync",
-    type: "image",
-    src: MOCAP_MEDIA[2].src,
-    label: "sync sweep",
-    caption: "camera offset search",
-    initial: { x: 690, y: 52, r: 2.2 },
-    kind: "proof-small",
-  },
-  {
-    id: "reprojection",
-    type: "image",
-    src: MOCAP_MEDIA[3].src,
-    label: "reprojection",
-    caption: "documented benchmark output",
-    initial: { x: 710, y: 300, r: -1.6 },
-    kind: "proof-small",
-  },
-  {
-    id: "jitter",
-    type: "image",
-    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/temporal_jitter_plot.png",
-    label: "temporal jitter",
-    caption: "raw vs stabilized trajectory",
-    initial: { x: 105, y: 388, r: 1.3 },
-    kind: "proof-medium",
-  },
-];
-
-const QUESTS_BOARD = [
-  {
-    id: "quests",
-    type: "image",
-    src: QUESTS_MEDIA[0].src,
-    label: "quest hub",
-    caption: "actual QA capture · quest flow",
-    initial: { x: 310, y: 42, r: -1.1 },
-    kind: "proof-phone-main",
-  },
-  {
-    id: "map",
-    type: "image",
-    src: QUESTS_MEDIA[1].src,
-    label: "world map",
-    caption: "actual QA capture · explore/map",
-    initial: { x: 690, y: 72, r: 2.2 },
-    kind: "proof-phone",
-  },
-  {
-    id: "rewards",
-    type: "image",
-    src: QUESTS_MEDIA[2].src,
-    label: "rewards",
-    caption: "actual QA capture · progression",
-    initial: { x: 675, y: 330, r: -2 },
-    kind: "proof-phone",
-  },
-  {
-    id: "profile",
-    type: "image",
-    src: QUESTS_MEDIA[3].src,
-    label: "profile",
-    caption: "actual QA capture · explorer profile",
-    initial: { x: 70, y: 310, r: 1.4 },
-    kind: "proof-phone",
   },
 ];
 
@@ -365,37 +229,25 @@ function MocapProject({ p, index }) {
         </a>
       </div>
 
-      <div className="mocap-evidence-layout">
-        <figure className="mocap-main-figure">
-          <img src={MOCAP_MEDIA[1].src} alt="Motion Capture quality improvement result" loading="lazy" />
-          <figcaption>quality improvement · before / after pipeline quality</figcaption>
+      <div className="mocap-clean-layout">
+        <figure className="mocap-local-visual">
+          <img src={IMG.motion} alt="Motion Capture project diagram" loading="lazy" />
+          <figcaption>pipeline / gait-analysis project visual</figcaption>
         </figure>
 
         <aside className="mocap-metrics-panel">
           <span className="panel-kicker">documented run</span>
           {p.facts.map(([k,v]) => (
-            <div className="metric-row" key={k}><span>{k}</span><strong>{v}</strong></div>
+            <div className="metric-row" key={k}>
+              <span>{k}</span>
+              <strong>{v}</strong>
+            </div>
           ))}
           <div className="mocap-now">
             <span>validating now</span>
             <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
           </div>
         </aside>
-
-        <div className="mocap-support-strip">
-          <figure>
-            <img src={MOCAP_MEDIA[2].src} alt="Sync sweep result" loading="lazy" />
-            <figcaption>sync sweep</figcaption>
-          </figure>
-          <figure>
-            <img src={MOCAP_MEDIA[3].src} alt="Reprojection error result" loading="lazy" />
-            <figcaption>reprojection</figcaption>
-          </figure>
-          <figure>
-            <img src="https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/temporal_jitter_plot.png" alt="Temporal jitter plot" loading="lazy" />
-            <figcaption>temporal jitter</figcaption>
-          </figure>
-        </div>
       </div>
 
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
@@ -405,7 +257,7 @@ function MocapProject({ p, index }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Project: Quests — cinematic / product                               */
+/* Project: Quests — product system                                    */
 /* ------------------------------------------------------------------ */
 
 function QuestsProject({ p, index }) {
@@ -427,30 +279,35 @@ function QuestsProject({ p, index }) {
         </a>
       </div>
 
-      <div className="quests-showcase">
-        <div className="quests-phone side-phone left-phone">
-          <img src={QUESTS_MEDIA[3].src} alt="Quests profile screen" loading="lazy" />
-          <span>profile</span>
+      <div className="quests-system-layout">
+        <div className="quests-loop-card">
+          <span className="panel-kicker">the loop</span>
+          <div className="quests-loop">
+            <div><b>01</b><strong>pick</strong><small>daily / weekly / world quests</small></div>
+            <span>→</span>
+            <div><b>02</b><strong>do</strong><small>real-world action + capture</small></div>
+            <span>→</span>
+            <div><b>03</b><strong>verify</strong><small>rules first, human review when needed</small></div>
+            <span>→</span>
+            <div><b>04</b><strong>progress</strong><small>XP + coins without duplicate rewards</small></div>
+          </div>
         </div>
-        <div className="quests-phone hero-phone">
-          <img src={QUESTS_MEDIA[0].src} alt="Quests quest hub screen" loading="lazy" />
-          <span>quest hub</span>
-        </div>
-        <div className="quests-phone side-phone right-phone">
-          <img src={QUESTS_MEDIA[1].src} alt="Quests world map screen" loading="lazy" />
-          <span>world map</span>
-        </div>
-        <div className="quests-phone rewards-phone">
-          <img src={QUESTS_MEDIA[2].src} alt="Quests rewards screen" loading="lazy" />
-          <span>rewards</span>
-        </div>
-      </div>
 
-      <div className="quests-product-bar">
-        <div><span>beta</span><strong>3–4 testers</strong></div>
-        <div><span>client</span><strong>React + Vite + Capacitor</strong></div>
-        <div><span>writes</span><strong>server-authoritative + idempotent</strong></div>
-        <div><span>focus</span><strong>persistence + UX polish</strong></div>
+        <div className="quests-rules-card">
+          <span className="panel-kicker">things I refused to fake</span>
+          <div className="quests-rule-grid">
+            <div><strong>server-authoritative</strong><span>progression is not trusted to the client</span></div>
+            <div><strong>idempotent rewards</strong><span>same capture cannot quietly pay twice</span></div>
+            <div><strong>D → S rarity</strong><span>higher grades get stricter verification</span></div>
+            <div><strong>closed beta</strong><span>3–4 testers finding persistence + UX bugs</span></div>
+          </div>
+        </div>
+
+        <div className="quests-product-bar">
+          {p.facts.map(([k,v]) => (
+            <div key={k}><span>{k}</span><strong>{v}</strong></div>
+          ))}
+        </div>
       </div>
 
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
@@ -1170,7 +1027,7 @@ export default function LabPage() {
               <h2 className="lab-h2">Useful <span className="accent">bits</span></h2>
             </div>
 
-            <div className="closing-desk-grid">
+            <div className="closing-desk-grid closing-desk-simple">
               <div className="closing-card closing-now">
                 <span className="closing-label">right now</span>
                 {currentWorks.slice(0, 3).map((item) => (
@@ -1182,35 +1039,12 @@ export default function LabPage() {
               </div>
 
               <div className="closing-card closing-links">
-                <span className="closing-label">open</span>
+                <span className="closing-label">find me</span>
                 <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
                 <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
                 <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
                 <a href={identity.links.email} onClick={handleCopyEmail}>email ↗</a>
               </div>
-
-              <div className="closing-card closing-proof">
-                <span className="closing-label">receipts</span>
-                <div><strong>{researchPapers.filter((p) => p.tag === "published").length}</strong><small>published papers</small></div>
-                <div><strong>{contributions.filter((p) => p.status === "merged").length}</strong><small>merged PRs</small></div>
-                <div><strong>{contributions.filter((p) => p.status === "open").length}</strong><small>open PRs</small></div>
-              </div>
-            </div>
-
-            <div className="closing-shelf-strip">
-              <span className="closing-shelf-label">a few things to open next</span>
-              {publishedWriting.slice(0, 2).map((item) => (
-                <a href={item.href} target="_blank" rel="noreferrer" key={item.id}>
-                  <small>{item.kind}</small>
-                  <strong>{item.title}</strong>
-                </a>
-              ))}
-              {writings.slice(0, 2).map((item) => (
-                <a href={item.href} target="_blank" rel="noreferrer" key={item.title}>
-                  <small>{item.status}</small>
-                  <strong>{item.title}</strong>
-                </a>
-              ))}
             </div>
           </section>
         </main>
