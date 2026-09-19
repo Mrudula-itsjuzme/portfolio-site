@@ -15,14 +15,14 @@ import {
   projectConstellation,
   quote,
 } from "../../data/lab";
-import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
+import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
 import LightboxModal from "./LightboxModal";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
 import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
-import InteractionDock from "./InteractionDock";
+import InteractionDock from "./InteractionDock";\nimport GlobalStickyNotes, { makeGlobalNote } from "./GlobalStickyNotes";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -457,29 +457,47 @@ export default function LabPage() {
 
   const handleAddNote = useCallback(() => {
     playPaperSound(soundEnabled);
-    const input = prompt("Type your handwritten note for the desk:", "keep building ✦");
+    const input = prompt("Sticky note:", "do this next");
     if (!input || !input.trim()) return;
-    const colors = ["pink", "butter", "sage", "paper"];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    const newNote = {
-      id: `user-note-${Date.now()}`,
-      color: randomColor,
-      lines: [input.trim()],
-      x: 30 + Math.floor(Math.random() * 140),
-      y: 120 + Math.floor(Math.random() * 180),
-      rotation: (Math.random() * 8 - 4).toFixed(1),
-    };
-    setUserNotes((prev) => {
-      const updated = [...prev, newNote];
-      try {
-        localStorage.setItem("lab-user-notes", JSON.stringify(updated));
-      } catch {
-        /* ignore */
-      }
-      return updated;
-    });
-    showToast("Added sticky note to your desk! ✎");
+    setUserNotes((prev) => [...prev, makeGlobalNote(input.trim())]);
+    showToast("note dropped");
   }, [soundEnabled, showToast]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("lab-user-notes", JSON.stringify(userNotes));
+    } catch {}
+  }, [userNotes]);
+
+  useEffect(() => {
+    let lastTap = { time: 0, x: 0, y: 0 };
+
+    const activateInk = (target) => {
+      if (target?.closest?.("a, button, input, textarea, select, .global-sticky, .movable-scrap, .doodle-toolbar")) return;
+      setDoodleCanvasActive(true);
+      showToast("ink mode");
+    };
+
+    const onDoubleClick = (e) => activateInk(e.target);
+    const onPointerUp = (e) => {
+      if (e.pointerType !== "touch") return;
+      const now = performance.now();
+      const near = Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 24;
+      if (now - lastTap.time < 320 && near) {
+        activateInk(e.target);
+        lastTap = { time: 0, x: 0, y: 0 };
+      } else {
+        lastTap = { time: now, x: e.clientX, y: e.clientY };
+      }
+    };
+
+    window.addEventListener("dblclick", onDoubleClick);
+    window.addEventListener("pointerup", onPointerUp, { passive: true });
+    return () => {
+      window.removeEventListener("dblclick", onDoubleClick);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, [showToast]);
 
   const triggerSparkle = useCallback(
     (e) => {
@@ -539,7 +557,7 @@ export default function LabPage() {
         onToggleDoodle={() => setDoodleCanvasActive(!doodleCanvasActive)}
       />
 
-      <DoodleCanvas active={doodleCanvasActive} onClose={() => setDoodleCanvasActive(false)} />
+      <DoodleCanvas active={doodleCanvasActive} onClose={() => setDoodleCanvasActive(false)} />\n      <GlobalStickyNotes notes={userNotes} onChange={setUserNotes} />
 
       <div className="lab">
         {toastMsg && <div className="lab-toast" role="status">{toastMsg}</div>}
@@ -592,9 +610,9 @@ export default function LabPage() {
                   type="button"
                   className="btn-add-note"
                   onClick={handleAddNote}
-                  title="Add a handwritten sticky note to the desk"
+                  title="Drop a sticky note anywhere on the page"
                 >
-                  + add note ✎
+                  + sticky note
                 </button>
                 <a className="btn-quiet" href={identity.links.github} target="_blank" rel="noreferrer">
                   github ↗
@@ -609,7 +627,7 @@ export default function LabPage() {
             >
               <div className="workboard-label">
                 <span>right now</span>
-                <small>drag the scraps around · double-click resets</small>
+                <small>drag scraps · double-click blank space to draw</small>
               </div>
 
               {currentWorks.map((work, i) => {
@@ -638,19 +656,7 @@ export default function LabPage() {
                 );
               })}
 
-              {!coarse && !reduced && userNotes.map((note) => (
-                <StickyNote
-                  key={note.id}
-                  id={note.id}
-                  color={note.color}
-                  rotation={parseFloat(note.rotation)}
-                  x={note.x}
-                  y={note.y}
-                  parentRef={heroVisualsRef}
-                  lines={note.lines}
-                  title="custom sticky note"
-                />
-              ))}
+
 
               <Sparkle className="workboard-sparkle sparkle-a" size={18} aria-hidden="true" />
               <StarDoodle className="workboard-sparkle sparkle-b" size={24} aria-hidden="true" />
