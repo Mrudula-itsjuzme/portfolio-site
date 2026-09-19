@@ -25,7 +25,6 @@ import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
 import InteractionDock from "./InteractionDock";
 import GlobalStickyNotes, { makeGlobalNote } from "./GlobalStickyNotes";
-import Scrapboard from "./Scrapboard";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -350,7 +349,7 @@ function SectionHead({ kicker, title, accent, sub, id }) {
 function MocapProject({ p, index }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-mocap reveal" aria-label={p.name}>
+    <article ref={ref} className="project project-mocap project-layout-lab reveal" aria-label={p.name}>
       <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
@@ -366,34 +365,41 @@ function MocapProject({ p, index }) {
         </a>
       </div>
 
-      <div className="project-doodle-layer" aria-hidden="true">
-        <ArrowDoodle className="section-doodle doodle-a clay" />
-        <Sparkle className="section-doodle doodle-b mossy" size={16} />
+      <div className="mocap-evidence-layout">
+        <figure className="mocap-main-figure">
+          <img src={MOCAP_MEDIA[1].src} alt="Motion Capture quality improvement result" loading="lazy" />
+          <figcaption>quality improvement · before / after pipeline quality</figcaption>
+        </figure>
+
+        <aside className="mocap-metrics-panel">
+          <span className="panel-kicker">documented run</span>
+          {p.facts.map(([k,v]) => (
+            <div className="metric-row" key={k}><span>{k}</span><strong>{v}</strong></div>
+          ))}
+          <div className="mocap-now">
+            <span>validating now</span>
+            <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
+          </div>
+        </aside>
+
+        <div className="mocap-support-strip">
+          <figure>
+            <img src={MOCAP_MEDIA[2].src} alt="Sync sweep result" loading="lazy" />
+            <figcaption>sync sweep</figcaption>
+          </figure>
+          <figure>
+            <img src={MOCAP_MEDIA[3].src} alt="Reprojection error result" loading="lazy" />
+            <figcaption>reprojection</figcaption>
+          </figure>
+          <figure>
+            <img src="https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/temporal_jitter_plot.png" alt="Temporal jitter plot" loading="lazy" />
+            <figcaption>temporal jitter</figcaption>
+          </figure>
+        </div>
       </div>
 
-      <Scrapboard
-        className="mocap-scrapboard"
-        variant="paper"
-        items={MOCAP_BOARD}
-        note={{
-          kicker: "documented run",
-          text: "4.78 px mean reprojection · 0.993 triangulation · jitter ↓ 77%",
-        }}
-      />
-
-      <div className="mocap-bottom-grid">
-        <div className="mocap-data mocap-data-inline">
-          <div className="data-title">documented run</div>
-          <table className="fact-table">
-            <tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody>
-          </table>
-        </div>
-        <div className="mocap-notes">
-          <span className="mocap-note-label">validating now</span>
-          <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
-          <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
-        </div>
-      </div>
+      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+      <div className="project-edge-doodles" aria-hidden="true"><ArrowDoodle /><Sparkle size={14} /></div>
     </article>
   );
 }
@@ -405,7 +411,7 @@ function MocapProject({ p, index }) {
 function QuestsProject({ p, index }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-quests reveal" aria-label={p.name}>
+    <article ref={ref} className="project project-quests project-layout-product reveal" aria-label={p.name}>
       <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
@@ -421,25 +427,34 @@ function QuestsProject({ p, index }) {
         </a>
       </div>
 
-      <div className="project-doodle-layer" aria-hidden="true">
-        <PaperPlaneDoodle className="section-doodle doodle-a clay" size={30} />
-        <StarDoodle className="section-doodle doodle-b mossy" size={18} />
+      <div className="quests-showcase">
+        <div className="quests-phone side-phone left-phone">
+          <img src={QUESTS_MEDIA[3].src} alt="Quests profile screen" loading="lazy" />
+          <span>profile</span>
+        </div>
+        <div className="quests-phone hero-phone">
+          <img src={QUESTS_MEDIA[0].src} alt="Quests quest hub screen" loading="lazy" />
+          <span>quest hub</span>
+        </div>
+        <div className="quests-phone side-phone right-phone">
+          <img src={QUESTS_MEDIA[1].src} alt="Quests world map screen" loading="lazy" />
+          <span>world map</span>
+        </div>
+        <div className="quests-phone rewards-phone">
+          <img src={QUESTS_MEDIA[2].src} alt="Quests rewards screen" loading="lazy" />
+          <span>rewards</span>
+        </div>
       </div>
 
-      <Scrapboard
-        className="quests-scrapboard"
-        variant="paper"
-        items={QUESTS_BOARD}
-        note={{
-          kicker: "closed beta / right now",
-          text: "3–4 testers · persistence fixes · UX fixes · release polish",
-        }}
-      />
-
-      <div className="project-proof-bottom">
-        <table className="fact-table"><tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody></table>
+      <div className="quests-product-bar">
+        <div><span>beta</span><strong>3–4 testers</strong></div>
+        <div><span>client</span><strong>React + Vite + Capacitor</strong></div>
+        <div><span>writes</span><strong>server-authoritative + idempotent</strong></div>
+        <div><span>focus</span><strong>persistence + UX polish</strong></div>
       </div>
+
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+      <div className="project-edge-doodles" aria-hidden="true"><PaperPlaneDoodle size={28} /><StarDoodle size={16} /></div>
     </article>
   );
 }
@@ -451,7 +466,7 @@ function QuestsProject({ p, index }) {
 function CyberBioProject({ p, index }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-cyberbio reveal" aria-label={p.name}>
+    <article ref={ref} className="project project-cyberbio project-layout-research reveal" aria-label={p.name}>
       <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
@@ -467,33 +482,35 @@ function CyberBioProject({ p, index }) {
         </a>
       </div>
 
-      <div className="project-doodle-layer" aria-hidden="true">
-        <Constellation className="section-doodle doodle-a mossy" />
-        <Sparkle className="section-doodle doodle-b clay" size={15} />
-      </div>
-
-      <Scrapboard
-        className="cyberbio-scrapboard"
-        variant="lab"
-        items={CYBERBIO_BOARD}
-        note={{
-          kicker: "current pass",
-          text: "multi-seed stats · representation sensitivity · physical checks",
-        }}
-      />
-
-      <div className="project-proof-bottom">
-        <div className="reaction">
+      <div className="cyberbio-report-grid">
+        <figure className="cyberbio-primary">
+          <img src={CYBERBIO_MEDIA[0].src} alt="Baseline versus defended model robustness across five seeds" loading="lazy" />
+          <figcaption>baseline vs defended · multi-seed robustness comparison</figcaption>
+        </figure>
+        <div className="cyberbio-sideplots">
+          <figure>
+            <img src={CYBERBIO_MEDIA[1].src} alt="CyberBio ablation study" loading="lazy" />
+            <figcaption>ablation</figcaption>
+          </figure>
+          <figure>
+            <img src={CYBERBIO_MEDIA[2].src} alt="CyberBio MCMC drift plot" loading="lazy" />
+            <figcaption>MCMC drift</figcaption>
+          </figure>
+        </div>
+        <aside className="cyberbio-findings">
+          <span className="panel-kicker">what survived scrutiny</span>
           {p.facts.map(([k,v],i) => (
-            <div className="r-line" key={k}>
-              <span className="r-key">{k}</span>
-              <span className="r-arrow">{i === p.facts.length - 1 ? "⇒" : "→"}</span>
-              <span>{v}</span>
+            <div className="finding-row" key={k}>
+              <span>{String(i + 1).padStart(2,"0")}</span>
+              <div><strong>{k}</strong><p>{v}</p></div>
             </div>
           ))}
-        </div>
+          <small>current pass: multi-seed stats · representation sensitivity · physical checks</small>
+        </aside>
       </div>
+
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+      <div className="project-edge-doodles" aria-hidden="true"><Constellation /><Sparkle size={14} /></div>
     </article>
   );
 }
@@ -524,7 +541,7 @@ function BlueprintSvg() {
 function ArchisProject({ p, index }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-archis reveal" aria-label={p.name}>
+    <article ref={ref} className="project project-archis project-layout-architecture reveal" aria-label={p.name}>
       <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
@@ -543,31 +560,28 @@ function ArchisProject({ p, index }) {
         </div>
       </div>
 
-      <div className="project-doodle-layer" aria-hidden="true">
-        <ArrowDoodle className="section-doodle doodle-a mossy" />
-        <CoffeeRing className="section-doodle doodle-b clay" />
+      <div className="archis-concept-sheet">
+        <figure className="archis-hero-panel">
+          <img src={ARCHIS_MEDIA[0].src} alt="Archis workspace concept" loading="lazy" />
+          <figcaption>workspace · current product direction</figcaption>
+        </figure>
+        <figure className="archis-support-panel">
+          <img src={ARCHIS_MEDIA[1].src} alt="Archis semantic loop" loading="lazy" />
+          <figcaption>semantic loop</figcaption>
+        </figure>
+        <figure className="archis-support-panel">
+          <img src={ARCHIS_MEDIA[2].src} alt="Archis workspace concept detail" loading="lazy" />
+          <figcaption>workspace concept</figcaption>
+        </figure>
       </div>
 
-      <Scrapboard
-        className="archis-scrapboard"
-        variant="draft"
-        items={ARCHIS_BOARD}
-        note={{
-          kicker: "prototype",
-          text: "architect-first · intent-preserving edits · linked 2D / 3D",
-        }}
-      />
-
-      <div className="archis-real-flow" aria-label="Archis workflow">
-        <div className="archis-step"><span>01</span><strong>architect draft</strong><small>start from authored geometry</small></div>
-        <div className="archis-flow-arrow">→</div>
-        <div className="archis-step"><span>02</span><strong>semantic model</strong><small>constraints + relationships + intent hypotheses</small></div>
-        <div className="archis-flow-arrow">→</div>
-        <div className="archis-step"><span>03</span><strong>minimal edit</strong><small>show impact before accepting change</small></div>
+      <div className="archis-flow-clean">
+        <span>architect draft</span><b>→</b><span>semantic model</span><b>→</b><span>intent hypotheses</span><b>→</b><span>minimal edit</span>
       </div>
 
-      <table className="fact-table"><tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody></table>
+      <table className="fact-table archis-facts"><tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody></table>
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+      <div className="project-edge-doodles" aria-hidden="true"><ArrowDoodle /><CoffeeRing /></div>
     </article>
   );
 }
@@ -1109,14 +1123,13 @@ export default function LabPage() {
             </div>
 
             <div className="constellation-grid reveal">
-              {projectConstellation.map((p, i) => (
+              {projectConstellation.map((p) => (
                 <a
                   className={"constellation-card kind-" + p.kind}
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
                   key={p.name}
-                  style={{ "--tilt": `${[-1.2, 0.7, -0.4, 1.1, -0.8, 0.5][i % 6]}deg` }}
                   onClick={() => playClickSound(soundEnabled)}
                 >
                   <span className="constellation-dot">✦</span>
@@ -1140,9 +1153,7 @@ export default function LabPage() {
             </div>
 
             <div className="constellation-doodles" aria-hidden="true">
-              <PaperPlaneDoodle size={44} />
-              <StarDoodle size={24} />
-              <Sparkle size={16} />
+              <PaperPlaneDoodle size={38} />
               <Constellation />
             </div>
           </section>
@@ -1184,6 +1195,22 @@ export default function LabPage() {
                 <div><strong>{contributions.filter((p) => p.status === "merged").length}</strong><small>merged PRs</small></div>
                 <div><strong>{contributions.filter((p) => p.status === "open").length}</strong><small>open PRs</small></div>
               </div>
+            </div>
+
+            <div className="closing-shelf-strip">
+              <span className="closing-shelf-label">a few things to open next</span>
+              {publishedWriting.slice(0, 2).map((item) => (
+                <a href={item.href} target="_blank" rel="noreferrer" key={item.id}>
+                  <small>{item.kind}</small>
+                  <strong>{item.title}</strong>
+                </a>
+              ))}
+              {writings.slice(0, 2).map((item) => (
+                <a href={item.href} target="_blank" rel="noreferrer" key={item.title}>
+                  <small>{item.status}</small>
+                  <strong>{item.title}</strong>
+                </a>
+              ))}
             </div>
           </section>
         </main>
