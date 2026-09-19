@@ -5789,3 +5789,102 @@ html[data-fullscreen="true"] .hero,
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   rhythm hotfix — kill stacked project dead-air
+   ============================================================ */
+
+.project {
+  margin-top: 64px;
+  padding-bottom: 30px;
+}
+
+.project + .project {
+  margin-top: 0;
+  padding-top: 64px;
+}
+
+.project-proof-head {
+  margin-bottom: 24px;
+}
+
+.project-quests {
+  padding-bottom: 18px;
+}
+
+.quests-showcase {
+  min-height: 545px;
+  margin-top: 0;
+}
+
+.hero-phone {
+  width: 248px;
+}
+
+.left-phone {
+  width: 188px;
+  left: 12%;
+  top: 118px;
+}
+
+.right-phone {
+  width: 190px;
+  right: 12%;
+  top: 86px;
+}
+
+.rewards-phone {
+  width: 176px;
+  right: 23%;
+  bottom: 8px;
+}
+
+.quests-product-bar {
+  margin-top: 0;
+}
+
+.project-cyberbio {
+  padding-top: 58px !important;
+}
+
+.project-archis {
+  padding-top: 58px !important;
+}
+
+.project-mocap .tag-row,
+.project-quests .tag-row,
+.project-cyberbio .tag-row,
+.project-archis .tag-row {
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+@media (min-width: 1200px) {
+  .lab-section#work {
+    margin-top: 54px;
+  }
+
+  .project + .project {
+    padding-top: 56px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .quests-showcase {
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 760px) {
+  .project,
+  .project + .project {
+    margin-top: 48px;
+    padding-top: 42px;
+    padding-bottom: 30px;
+  }
+
+  .project:first-of-type {
+    padding-top: 0;
+  }
+}
