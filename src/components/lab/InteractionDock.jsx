@@ -18,7 +18,7 @@ function burst(x = window.innerWidth / 2, y = window.innerHeight / 2) {
   }
 }
 
-export default function InteractionDock({ doodleActive, onToggleDoodle }) {
+export default function InteractionDock({ doodleActive, onToggleDoodle, onAddNote }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function InteractionDock({ doodleActive, onToggleDoodle }) {
       </button>
 
       <div className="interaction-fan" aria-hidden={!open}>
-        <button type="button" onClick={shuffle} title="shuffle movable scraps (S)">shuffle</button>
+        <button type="button" onClick={onAddNote} title="drop a sticky note anywhere">note</button>\n        <button type="button" onClick={shuffle} title="shuffle movable scraps (S)">shuffle</button>
         <button type="button" onClick={onToggleDoodle} className={doodleActive ? "active" : ""} title="draw on the page (D)">
           {doodleActive ? "done" : "draw"}
         </button>
