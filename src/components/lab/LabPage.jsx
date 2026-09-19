@@ -982,7 +982,7 @@ export default function LabPage() {
             <div className="constellation-grid reveal">
               {projectConstellation.map((p) => (
                 <a
-                  className={"constellation-card kind-" + p.kind}
+                  className={"constellation-card kind-" + p.kind + (p.featured ? " constellation-featured" : "")}
                   href={p.href}
                   target="_blank"
                   rel="noreferrer"
@@ -1014,43 +1014,10 @@ export default function LabPage() {
               <Constellation />
             </div>
           </section>
-
-          {/* ---------------- closing desk ---------------- */}
-          <section className="closing-desk lab-section section-has-doodles" aria-label="quick links and current work">
-            <div className="closing-desk-doodles" aria-hidden="true">
-              <CatDoodle size={34} />
-              <ArrowDoodle />
-            </div>
-
-            <div className="closing-desk-head">
-              <span className="lab-kicker">before you leave</span>
-              <h2 className="lab-h2">Useful <span className="accent">bits</span></h2>
-            </div>
-
-            <div className="closing-desk-grid closing-desk-simple">
-              <div className="closing-card closing-now">
-                <span className="closing-label">right now</span>
-                {currentWorks.slice(0, 3).map((item) => (
-                  <a href={item.href} target="_blank" rel="noreferrer" key={item.id} className="closing-row">
-                    <span>{item.name}</span>
-                    <small>{item.status}</small>
-                  </a>
-                ))}
-              </div>
-
-              <div className="closing-card closing-links">
-                <span className="closing-label">find me</span>
-                <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
-                <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
-                <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
-                <a href={identity.links.email} onClick={handleCopyEmail}>email ↗</a>
-              </div>
-            </div>
-          </section>
         </main>
 
         {/* ---------------- footer ---------------- */}
-        <footer className="lab-footer lab-footer-tight">
+        <footer className="lab-footer lab-footer-final">
           <a
             className="to-top"
             href="#top"
@@ -1062,6 +1029,14 @@ export default function LabPage() {
           >
             ↑ back to top
           </a>
+
+          <nav className="footer-links" aria-label="final links">
+            <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
+            <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
+            <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
+            <a href={identity.links.email} onClick={handleCopyEmail}>email ↗</a>
+          </nav>
+
           <span>© {new Date().getFullYear()} Mrudula</span>
         </footer>
       </div>{/* end .lab */}
