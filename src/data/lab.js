@@ -311,6 +311,35 @@ export const recentThoughts = [
   "can a portfolio be a tool instead of a brochure?",
 ];
 
+export const publishedWriting = [
+  {
+    id: "daffodils-ai-poetry",
+    kind: "literary journal",
+    title: "On Artificial Intelligence, Poetry, and Human Creativity",
+    venue: "The Daffodils",
+    year: "2025",
+    detail: "Essay on AI, poetry, authorship, originality, literary labor, and human experience.",
+    status: "published",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+  },
+  {
+    id: "xx-anthology",
+    kind: "anthology",
+    title: "XX: Story from Foetus to Foeticide",
+    venue: "Spectrum of Thoughts Publication",
+    year: "2023",
+    detail: "Co-author contribution in the published anthology · ISBN 978-93-5605-245-1.",
+    status: "published",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+  },
+];
+
+export const publicationCount = {
+  label: "published volumes",
+  value: "11",
+  note: "books / anthologies / journals across earlier writing work",
+};
+
 export const writings = [
   {
     id: "stories",
