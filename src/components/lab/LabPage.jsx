@@ -891,7 +891,8 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- research + community ---------------- */}
-          <section className="lab-section section-has-doodles" id="research" aria-label="research and community">\n            <div className="section-doodle-pair research-doodles" aria-hidden="true"><StarDoodle size={18} /><Sparkle size={13} /></div>
+          <section className="lab-section section-has-doodles" id="research" aria-label="research and community">
+            <div className="section-doodle-pair research-doodles" aria-hidden="true"><StarDoodle size={18} /><Sparkle size={13} /></div>
             <SectionHead
               kicker="research + people"
               title="Things I’ve"
@@ -960,7 +961,8 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- words + experiments ---------------- */}
-          <section className="lab-section section-has-doodles" id="words" aria-label="writing and experiments">\n            <div className="section-doodle-pair words-doodles" aria-hidden="true"><CatDoodle size={30} /><VinylDoodle /></div>
+          <section className="lab-section section-has-doodles" id="words" aria-label="writing and experiments">
+            <div className="section-doodle-pair words-doodles" aria-hidden="true"><CatDoodle size={30} /><VinylDoodle /></div>
             <SectionHead
               kicker="outside the code"
               title="Writing &"
