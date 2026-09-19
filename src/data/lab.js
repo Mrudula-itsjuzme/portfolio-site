@@ -118,19 +118,20 @@ export const featuredProjects = [
     tagline: "Markerless. Two cameras. Real movement.",
     year: "2026",
     github: "https://github.com/Mrudula-itsjuzme/Motion-capture",
+    repoPrivate: true,
     tags: ["computer vision", "biomechanics", "gait analysis"],
     blurb:
-      "Accessible motion capture with common cameras — dual-camera 3D triangulation, trajectory stabilization, gait features, and validity gates before any of it counts as analysis.",
+      "Markerless dual-camera gait analysis built around a stricter question than “does the skeleton look right?” — every exported metric carries validity checks, provenance, and explicit abstention when the evidence is not good enough.",
     annotations: [
       "tracking movement without markers.",
       "two cameras → one skeleton.",
       "jitter ↓ 77%",
     ],
     facts: [
-      ["reprojection error", "4.78 px mean / 4.01 px median"],
-      ["triangulation success", "0.993 on the documented run"],
-      ["jitter reduction", "77% · acceleration ↓ 88%"],
-      ["gait phase test suite", "263 tests passed"],
+      ["trust model", "metric-specific validity + fail-closed export gating"],
+      ["pipeline", "dual-camera 3D + gait features + provenance"],
+      ["testing", "399 passing tests in the current engineering line"],
+      ["next evidence", "external BioCV validation still pending"],
     ],
     variant: "mocap",
   },
@@ -143,12 +144,12 @@ export const featuredProjects = [
     github: "https://github.com/Mrudula-itsjuzme/quests",
     tags: ["react", "mobile", "gamification"],
     blurb:
-      "A mobile-first quest system built with React, Vite, Capacitor, Express, PostgreSQL, and Supabase — with rarity rules, cooldowns, idempotent rewards, server-authoritative progression, and a tiny closed beta that keeps finding the useful bugs.",
+      "A released mobile-first exploration platform with native Android/iOS builds, server-authoritative progression, evidence-backed captures, maps, rewards, public profiles, and a closed beta still finding the useful bugs.",
     annotations: ["small steps, wilder days", "XP ledger + streaks", "prod mode rejects shortcuts"],
     facts: [
-      ["client", "React + Vite + Capacitor mobile shell"],
-      ["auth", "Supabase-backed auth + protected writes"],
-      ["writes", "versioned, idempotency-key required"],
+      ["release", "v1.2.0 · web + native mobile builds"],
+      ["progression", "server-authoritative + idempotent rewards"],
+      ["world layer", "maps, GPS capture clusters, profiles, journal"],
       ["beta", "3–4 testers · persistence + UX fixes in progress"],
     ],
     variant: "quests",
@@ -162,13 +163,13 @@ export const featuredProjects = [
     github: "https://github.com/Mrudula-itsjuzme/cyberbio",
     tags: ["deep learning", "materials", "adversarial ml"],
     blurb:
-      "A multi-phase adversarial ML investigation across materials sequence models and a safe synthetic bio benchmark — with failed hypotheses, confounders, and forensic audits kept as part of the record.",
+      "A leakage-audited adversarial robustness study for polymer sequence models, now centered on polyVERSE bandgap prediction with sealed test data, five-seed benchmarks, representation-preserving controls, and chemistry-changing stress tests.",
     annotations: ["attack →", "defend →", "understand →"],
     facts: [
-      ["shortcut learning", "length-only baseline beat the Transformer MAE"],
-      ["MCMC attack drift", "up to 158 K in documented experiments"],
-      ["defense", "adversarial training cut worst-case drift"],
-      ["honesty", "falsified hypotheses kept in the repo"],
+      ["active lineage", "polyVERSE bandgap · 4,209 records"],
+      ["baseline", "sealed-test MAE 0.4619 eV · R² 0.8019"],
+      ["representation drift", "0.8968 → 0.4079 eV on scaffold split"],
+      ["stress test", "MCMC-style drift ≈0.22 → ≈0.18 eV with consistency regularization"],
     ],
     variant: "cyberbio",
   },
@@ -182,62 +183,82 @@ export const featuredProjects = [
     demo: "https://archis-xi.vercel.app",
     tags: ["design", "3d", "spatial ai"],
     blurb:
-      "An architecture-software prototype that starts from the architect's first draft, infers which relationships look intentional, asks when it's unsure, and finds the smallest change that survives the architect's original intent.",
+      "An architecture-software prototype testing whether an architect-authored draft can become a semantic model that exposes constraints, change impact, and eventually intent hypotheses without taking authorship away from the architect.",
     annotations: ["from blueprints to real spaces", "intent hypotheses, not facts", "smallest useful change"],
     facts: [
       ["thesis", "intent-preserving transformation, not generation"],
-      ["flow", "draft → semantic model → intent hypotheses → confirm"],
-      ["impact layer", "geometry + relationships + protected intent"],
-      ["prototype", "shared semantic model, linked 2D/3D, variants"],
+      ["implemented", "shared semantic model · linked 2D/3D · deterministic variants"],
+      ["impact layer", "constraints + relationships + change requests"],
+      ["research next", "latent intent inference + minimal-change search"],
     ],
     variant: "archis",
   },
 ];
 
 
-export const projectConstellation = [
+export const productProjects = [
   {
-    name: "Semantic Workspace",
-    href: "https://github.com/Mrudula-itsjuzme/Semantic_Workspace",
-    note: "Cloud + DBMS project growing into a research workspace with retrieval, graphs, vectors, and structured knowledge.",
-    kind: "systems",
-    featured: true,
-    proofLines: ["graph + vector + relational", "GraphRAG workspace", "cloud + DBMS"],
-    proofLabel: "current system",
+    name: "MisSpoke",
+    repoName: "speak134",
+    href: "https://github.com/Mrudula-itsjuzme/speak134",
+    demo: "https://misspoke1.vercel.app",
+    note: "Voice-first language learning with adaptive AI tutors, multilingual practice, local learning memory, and session analytics.",
+    proofLines: [
+      "ElevenLabs conversational voice",
+      "OpenRouter tutor layer",
+      "IndexedDB learning memory",
+      "Supabase auth + multilingual translation",
+    ],
+    meta: "built with Meghana Kotharu",
+    variant: "voice",
   },
   {
     name: "AnswerBubble",
     href: "https://github.com/Mrudula-itsjuzme/Answer_bubble",
-    note: "Desktop AI meeting copilot with live transcription, question detection, floating answers, and local memory.",
-    kind: "product",
-    featured: true,
-    proofLines: ["<500ms question detection", "multi-provider LLM failover", "no raw audio stored"],
-    proofLabel: "repo architecture",
+    note: "Desktop AI meeting copilot with live transcription, question detection, floating answers, notes, and local semantic memory.",
+    proofLines: [
+      "<500 ms question detection path",
+      "multi-provider LLM failover",
+      "Tauri desktop overlay",
+      "no raw audio stored",
+    ],
+    meta: "React + TypeScript + Tauri",
+    variant: "desktop",
+  },
+];
+
+export const researchRows = [
+  {
+    name: "Smart Grid Intrusion Detection",
+    label: "FIRST AUTHOR · IEEE ACCESS",
+    note: "IEC 60870-5-104 intrusion detection for critical power-grid communications.",
+    metrics: ["99.29% accuracy", "94.8% recall", "4.1% FPR"],
+    primaryHref: "https://ieeexplore.ieee.org/document/11083563",
+    primaryLabel: "paper",
+    secondaryHref: "https://github.com/Mrudula-itsjuzme/cyberattack-on-smart-grids",
+    secondaryLabel: "related repo",
+  },
+  {
+    name: "PV Fault Detection",
+    label: "CO-AUTHOR · ENERGY CONVERSION & MANAGEMENT: X",
+    note: "Lightweight hierarchical spatial feature extraction with sequential GRU modeling for PV fault diagnosis.",
+    metrics: ["96% binary", "91% across 12 faults", "PyramidNet + GRU"],
+    primaryHref: "https://doi.org/10.1016/j.ecmx.2025.101293",
+    primaryLabel: "paper",
   },
   {
     name: "EEG Reconstruction",
-    href: "https://github.com/Mrudula-itsjuzme/MFC3_D3_EEG_Recon_ADMM",
-    note: "Time-varying EEG reconstruction using ADMM and graph methods.",
-    kind: "research",
-    proofLines: ["ADMM + graph methods", "artifact removal", "signal reconstruction"],
-    proofLabel: "research project",
+    label: "TEAM PROJECT",
+    note: "Time-varying EEG reconstruction using local graph structure and ADMM optimization.",
+    metrics: ["ADMM", "local graph methods", "signal reconstruction"],
+    primaryHref: "https://github.com/Mrudula-itsjuzme/MFC3_D3_EEG_Recon_ADMM",
+    primaryLabel: "repo",
   },
-  {
-    name: "Smart Grid IDS",
-    href: "https://github.com/Mrudula-itsjuzme/cyberattack-on-smart-grids",
-    note: "IEC 60870-5-104 intrusion detection tied to my first-author IEEE Access paper.",
-    kind: "research",
-    proofLines: ["99.29% accuracy", "94.8% recall", "first-author IEEE Access"],
-    proofLabel: "published result",
-  },
-  {
-    name: "Solar Fault Detection",
-    href: "https://github.com/Mrudula-itsjuzme/solarpanel-fault-detection",
-    note: "PV fault detection using PyramidNet + GRU across binary and multi-fault settings.",
-    kind: "research",
-    proofLines: ["96% binary", "91% across 12 fault classes", "PyramidNet + GRU"],
-    proofLabel: "published result",
-  },
+];
+
+export const otherBuilds = [
+  { name: "AI Council", href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/" },
+  { name: "Habbit", href: "https://github.com/Mrudula-itsjuzme/mind" },
 ];
 
 export const researchPapers = [

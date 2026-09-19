@@ -4,7 +4,9 @@ import {
   featuredProjects,
   currentWorks,
   contributions,
-  researchPapers,
+  researchRows,
+  productProjects,
+  otherBuilds,
   community,
   selectionTrail,
   recentThoughts,
@@ -13,8 +15,6 @@ import {
   currentExperiments,
   unfinishedIdeas,
   heroSticky,
-  sideRepos,
-  projectConstellation,
 } from "../../data/lab";
 import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
@@ -223,10 +223,17 @@ function MocapProject({ p, index }) {
           </div>
           <p className="project-blurb">{p.blurb}</p>
         </div>
-        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
-          <span>GitHub</span>
-          <strong>source + experiments ↗</strong>
-        </a>
+        {p.repoPrivate ? (
+          <div className="project-private-badge">
+            <span>research repo</span>
+            <strong>private · evidence shown here</strong>
+          </div>
+        ) : (
+          <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>source + experiments ↗</strong>
+          </a>
+        )}
       </div>
 
       <div className="mocap-clean-layout">
@@ -724,6 +731,45 @@ export default function LabPage() {
             <ArchisProject p={featuredProjects[3]} index={4} />
           </section>
 
+          {/* ---------------- products ---------------- */}
+          <section className="lab-section product-projects-section" aria-label="products">
+            <SectionHead
+              kicker="products"
+              title="Built to be"
+              accent="used"
+              sub="Two product builds that deserve more than a tiny repo chip."
+            />
+
+            <div className="product-duo reveal">
+              {productProjects.map((p) => (
+                <article className={"product-feature-card product-" + p.variant} key={p.name}>
+                  <div className="product-feature-head">
+                    <div>
+                      <span className="product-eyebrow">{p.variant === "voice" ? "voice / learning" : "desktop / systems"}</span>
+                      <h3>{p.name}</h3>
+                      {p.repoName ? <small>repo: {p.repoName}</small> : null}
+                    </div>
+                    <span className="product-mark" aria-hidden="true">{p.variant === "voice" ? "◉" : "⌘"}</span>
+                  </div>
+
+                  <p>{p.note}</p>
+
+                  <div className="product-proof-stack">
+                    {p.proofLines.map((line) => <span key={line}>{line}</span>)}
+                  </div>
+
+                  <div className="product-feature-foot">
+                    <small>{p.meta}</small>
+                    <div>
+                      {p.demo ? <a href={p.demo} target="_blank" rel="noreferrer">live app ↗</a> : null}
+                      <a href={p.href} target="_blank" rel="noreferrer">GitHub ↗</a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
           {/* ---------------- current contributions ---------------- */}
           <section className="lab-section contribution-section" id="contributions" aria-label="open source contributions">
             <SectionHead
@@ -764,30 +810,29 @@ export default function LabPage() {
           <section className="lab-section section-has-doodles" id="research" aria-label="research and community">
             <div className="section-doodle-pair research-doodles" aria-hidden="true"><StarDoodle size={18} /><Sparkle size={13} /></div>
             <SectionHead
-              kicker="research + people"
-              title="Things I’ve"
-              accent="worked on"
-              sub="Published work, ongoing research, and communities I’ve helped build."
+              kicker="published / research"
+              title="Work with"
+              accent="receipts"
+              sub="Published papers, team research, and communities I’ve helped build."
             />
-            <div className="two-col">
-              <div className="paper-block block-tilt-l reveal">
-                <h3>research papers</h3>
-                <ul className="paper-list">
-                  {researchPapers.map((r) => (
-                    <li key={r.title}>
-                      <span className="li-marker">{r.tag === "published" ? "✦" : "✍"}</span>
-                      <span>
-                        <a href={r.href} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-                          {r.title}
-                        </a>
-                        <br />
-                        <span style={{ color: "rgba(23,21,18,0.6)", fontSize: 12 }}>{r.detail}</span>
-                        <br />
-                        <span style={{ color: "rgba(23,21,18,0.45)", fontSize: 11 }}>{r.meta}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+            <div className="research-community-grid">
+              <div className="research-row-list reveal" aria-label="published and research work">
+                {researchRows.map((r) => (
+                  <article className="research-row" key={r.name}>
+                    <div className="research-row-main">
+                      <span className="research-row-label">{r.label}</span>
+                      <h3>{r.name}</h3>
+                      <p>{r.note}</p>
+                    </div>
+                    <div className="research-row-metrics">
+                      {r.metrics.map((m) => <span key={m}>{m}</span>)}
+                    </div>
+                    <div className="research-row-links">
+                      <a href={r.primaryHref} target="_blank" rel="noreferrer">{r.primaryLabel} ↗</a>
+                      {r.secondaryHref ? <a href={r.secondaryHref} target="_blank" rel="noreferrer">{r.secondaryLabel} ↗</a> : null}
+                    </div>
+                  </article>
+                ))}
               </div>
 
               <div className="card-stack">
@@ -948,70 +993,13 @@ export default function LabPage() {
             </div>
           </section>
 
-          {/* ---------------- desk drawer: side repos ---------------- */}
-          <section className="lab-section" aria-label="more experiments on github">
-            <div className="drawer reveal">
-              <span className="drawer-label">other repos i still like →</span>
-              {sideRepos.map((r) => (
-                <a
-                  key={r.name}
-                  className="chip"
-                  href={r.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  title={r.note}
-                  onClick={() => playClickSound(soundEnabled)}
-                >
-                  {r.name}
-                </a>
+          {/* ---------------- other builds ---------------- */}
+          <section className="lab-section other-builds-section" aria-label="other builds">
+            <div className="other-builds-line reveal">
+              <span>other things</span>
+              {otherBuilds.map((item) => (
+                <a href={item.href} target="_blank" rel="noreferrer" key={item.name}>{item.name} ↗</a>
               ))}
-            </div>
-          </section>
-
-          {/* ---------------- project constellation ---------------- */}
-          <section className="lab-section constellation-section section-has-doodles" aria-label="more projects">
-            <div className="constellation-head reveal">
-              <span className="lab-kicker">the rest of the tabs</span>
-              <h2 className="lab-h2">Project <span className="accent">constellation</span></h2>
-              <p className="lab-sub">
-                Not everything needs a giant case study. Some things are research, some are products,
-                some are old experiments I still steal ideas from.
-              </p>
-            </div>
-
-            <div className="constellation-grid reveal">
-              {projectConstellation.map((p) => (
-                <a
-                  className={"constellation-card kind-" + p.kind + (p.featured ? " constellation-featured" : "")}
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  key={p.name}
-                  onClick={() => playClickSound(soundEnabled)}
-                >
-                  <span className="constellation-dot">✦</span>
-                  <span className="constellation-kind">{p.kind}</span>
-                  <h3>{p.name}</h3>
-                  <p>{p.note}</p>
-                  {p.proofImage ? (
-                    <div className="constellation-proof-image">
-                      <img src={p.proofImage} alt="" loading="lazy" />
-                      <small>{p.proofLabel}</small>
-                    </div>
-                  ) : p.proofLines ? (
-                    <div className="constellation-proof-lines">
-                      <small>{p.proofLabel}</small>
-                      {p.proofLines.map((line) => <span key={line}>{line}</span>)}
-                    </div>
-                  ) : null}
-                  <span className="constellation-link">peek ↗</span>
-                </a>
-              ))}
-            </div>
-
-            <div className="constellation-doodles" aria-hidden="true">
-              <PaperPlaneDoodle size={38} />
-              <Constellation />
             </div>
           </section>
         </main>
