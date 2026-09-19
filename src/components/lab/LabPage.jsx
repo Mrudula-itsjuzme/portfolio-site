@@ -54,28 +54,28 @@ const MOCAP_MEDIA = [
     id: "capture",
     type: "video",
     label: "annotated capture",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/annotated_front.mp4",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/annotated_front.mp4",
     note: "front camera · MediaPipe overlay",
   },
   {
     id: "quality",
     type: "image",
     label: "quality improvement",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/offline_quality_improvement_card.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/offline_quality_improvement_card.png",
     note: "before / after pipeline quality",
   },
   {
     id: "sync",
     type: "image",
     label: "sync sweep",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/sync_offset_sweep_card.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/sync_offset_sweep_card.png",
     note: "camera offset search",
   },
   {
     id: "reprojection",
     type: "image",
     label: "reprojection",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
     note: "documented benchmark output",
   },
 ];
@@ -84,25 +84,25 @@ const QUESTS_MEDIA = [
   {
     id: "quests",
     label: "quest hub",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
     note: "actual QA capture · quest flow",
   },
   {
     id: "map",
     label: "world map",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/15-map-final.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/15-map-final.png",
     note: "actual QA capture · explore/map",
   },
   {
     id: "rewards",
     label: "rewards",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
     note: "actual QA capture · progression",
   },
   {
     id: "profile",
     label: "profile",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
     note: "actual QA capture · explorer profile",
   },
 ];
@@ -111,19 +111,19 @@ const CYBERBIO_MEDIA = [
   {
     id: "defense",
     label: "baseline vs defended",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
     note: "multi-seed robustness comparison",
   },
   {
     id: "ablation",
     label: "ablation",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/ablation_study_chart.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/ablation_study_chart.png",
     note: "attack / defense ablation",
   },
   {
     id: "mcmc",
     label: "MCMC drift",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
     note: "drift across search steps",
   },
 ];
@@ -132,19 +132,19 @@ const ARCHIS_MEDIA = [
   {
     id: "hero",
     label: "workspace",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/archis-hero.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/archis-hero.svg",
     note: "repo hero · current product direction",
   },
   {
     id: "loop",
     label: "semantic loop",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/semantic-loop.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/semantic-loop.svg",
     note: "semantic interaction loop",
   },
   {
     id: "concept",
     label: "workspace concept",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/workspace-concept.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/workspace-concept.svg",
     note: "product workspace concept",
   },
 ];
@@ -178,13 +178,13 @@ const MOCAP_BOARD = [
     kind: "proof-small",
   },
   {
-    id: "capture",
-    type: "video",
-    src: MOCAP_MEDIA[0].src,
-    label: "annotated capture",
-    caption: "front camera · MediaPipe overlay",
-    initial: { x: 100, y: 382, r: 1.3 },
-    kind: "proof-video",
+    id: "jitter",
+    type: "image",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/temporal_jitter_plot.png",
+    label: "temporal jitter",
+    caption: "raw vs stabilized trajectory",
+    initial: { x: 105, y: 388, r: 1.3 },
+    kind: "proof-medium",
   },
 ];
 
@@ -891,7 +891,7 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- research + community ---------------- */}
-          <section className="lab-section" id="research" aria-label="research and community">
+          <section className="lab-section section-has-doodles" id="research" aria-label="research and community">\n            <div className="section-doodle-pair research-doodles" aria-hidden="true"><StarDoodle size={18} /><Sparkle size={13} /></div>
             <SectionHead
               kicker="research + people"
               title="Things I’ve"
@@ -960,7 +960,7 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- words + experiments ---------------- */}
-          <section className="lab-section" id="words" aria-label="writing and experiments">
+          <section className="lab-section section-has-doodles" id="words" aria-label="writing and experiments">\n            <div className="section-doodle-pair words-doodles" aria-hidden="true"><CatDoodle size={30} /><VinylDoodle /></div>
             <SectionHead
               kicker="outside the code"
               title="Writing &"
@@ -1097,7 +1097,7 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- project constellation ---------------- */}
-          <section className="lab-section constellation-section" aria-label="more projects">
+          <section className="lab-section constellation-section section-has-doodles" aria-label="more projects">
             <div className="constellation-head reveal">
               <span className="lab-kicker">the rest of the tabs</span>
               <h2 className="lab-h2">Project <span className="accent">constellation</span></h2>
@@ -1210,18 +1210,6 @@ export default function LabPage() {
         onAddNote={handleAddNote}
       />
 
-            {/* ambient doodles stay in edge lanes */}
-      <CoffeeRing className="doodle edge-doodle edge-right interactive-doodle" style={{ top: 120 }} onClick={triggerSparkle} />
-      <Sparkle className="doodle edge-doodle edge-left clay twinkle interactive-doodle" size={18} style={{ top: 420 }} onClick={triggerSparkle} />
-      <ArrowDoodle className="doodle edge-doodle edge-left mossy" style={{ top: 900 }} />
-      <Sparkle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={13} style={{ top: 2100 }} onClick={triggerSparkle} />
-      <CatDoodle className="doodle edge-doodle edge-right clay floaty slow interactive-doodle" size={42} style={{ top: 3400 }} onClick={triggerSparkle} />
-      <Sparkle className="doodle edge-doodle edge-left pinky twinkle interactive-doodle" size={16} style={{ top: 4300 }} onClick={triggerSparkle} />
-      <StarDoodle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={20} style={{ top: 5200 }} onClick={triggerSparkle} />
-      <PaperPlaneDoodle className="doodle edge-doodle edge-left clay floaty interactive-doodle" size={30} style={{ top: 2650 }} onClick={triggerSparkle} />
-      <VinylDoodle className="doodle edge-doodle edge-right pinky interactive-doodle" style={{ top: 4550 }} onClick={triggerSparkle} />
-      <CoffeeRing className="doodle edge-doodle edge-left mossy" style={{ top: 6100, opacity: 0.35 }} />
-      <Constellation className="doodle edge-doodle edge-left clay interactive-doodle" style={{ top: 5900, opacity: 0.45 }} onClick={triggerSparkle} />
-    </div>
+          </div>
   );
 }
