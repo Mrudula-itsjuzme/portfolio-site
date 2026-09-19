@@ -334,11 +334,6 @@ export const publishedWriting = [
   },
 ];
 
-export const publicationCount = {
-  label: "published volumes",
-  value: "11",
-  note: "books / anthologies / journals across earlier writing work",
-};
 
 export const writings = [
   {
