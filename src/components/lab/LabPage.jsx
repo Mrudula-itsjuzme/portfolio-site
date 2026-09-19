@@ -996,20 +996,21 @@ export default function LabPage() {
       <InteractionDock
         doodleActive={doodleCanvasActive}
         onToggleDoodle={() => setDoodleCanvasActive((v) => !v)}
+        onAddNote={handleAddNote}
       />
 
-            {/* ambient doodles */}
-      <CoffeeRing className="doodle interactive-doodle" style={{ position: "absolute", right: "4%", top: 120, zIndex: 0, cursor: "pointer" }} onClick={triggerSparkle} />
-      <Sparkle className="doodle clay twinkle interactive-doodle" size={18} style={{ position: "absolute", left: "2%", top: 420, cursor: "pointer" }} onClick={triggerSparkle} />
-      <ArrowDoodle className="doodle mossy" style={{ position: "absolute", left: "3%", top: 900 }} />
-      <Sparkle className="doodle mossy twinkle slow interactive-doodle" size={13} style={{ position: "absolute", right: "8%", top: 2100, cursor: "pointer" }} onClick={triggerSparkle} />
-      <CatDoodle className="doodle clay floaty slow interactive-doodle" size={50} style={{ position: "absolute", right: "5%", top: 3400, cursor: "pointer" }} onClick={triggerSparkle} />
-      <Sparkle className="doodle pinky twinkle interactive-doodle" size={16} style={{ position: "absolute", left: "4%", top: 4300, cursor: "pointer" }} onClick={triggerSparkle} />
-      <StarDoodle className="doodle mossy twinkle slow interactive-doodle" size={20} style={{ position: "absolute", right: "3%", top: 5200, cursor: "pointer" }} onClick={triggerSparkle} />
-      <PaperPlaneDoodle className="doodle clay floaty interactive-doodle" size={34} style={{ position: "absolute", left: "5%", top: 2650, cursor: "pointer" }} onClick={triggerSparkle} />
-      <VinylDoodle className="doodle pinky interactive-doodle" style={{ position: "absolute", right: "7%", top: 4550, cursor: "pointer" }} onClick={triggerSparkle} />
-      <CoffeeRing className="doodle mossy" style={{ position: "absolute", left: "4%", top: 6100, opacity: 0.45 }} />
-      <Constellation className="doodle clay interactive-doodle" style={{ position: "absolute", left: "2%", top: 5900, opacity: 0.65, cursor: "pointer" }} onClick={triggerSparkle} />
+            {/* ambient doodles stay in edge lanes */}
+      <CoffeeRing className="doodle edge-doodle edge-right interactive-doodle" style={{ top: 120 }} onClick={triggerSparkle} />
+      <Sparkle className="doodle edge-doodle edge-left clay twinkle interactive-doodle" size={18} style={{ top: 420 }} onClick={triggerSparkle} />
+      <ArrowDoodle className="doodle edge-doodle edge-left mossy" style={{ top: 900 }} />
+      <Sparkle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={13} style={{ top: 2100 }} onClick={triggerSparkle} />
+      <CatDoodle className="doodle edge-doodle edge-right clay floaty slow interactive-doodle" size={42} style={{ top: 3400 }} onClick={triggerSparkle} />
+      <Sparkle className="doodle edge-doodle edge-left pinky twinkle interactive-doodle" size={16} style={{ top: 4300 }} onClick={triggerSparkle} />
+      <StarDoodle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={20} style={{ top: 5200 }} onClick={triggerSparkle} />
+      <PaperPlaneDoodle className="doodle edge-doodle edge-left clay floaty interactive-doodle" size={30} style={{ top: 2650 }} onClick={triggerSparkle} />
+      <VinylDoodle className="doodle edge-doodle edge-right pinky interactive-doodle" style={{ top: 4550 }} onClick={triggerSparkle} />
+      <CoffeeRing className="doodle edge-doodle edge-left mossy" style={{ top: 6100, opacity: 0.35 }} />
+      <Constellation className="doodle edge-doodle edge-left clay interactive-doodle" style={{ top: 5900, opacity: 0.45 }} onClick={triggerSparkle} />
     </div>
   );
 }
