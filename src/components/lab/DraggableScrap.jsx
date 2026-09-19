@@ -18,8 +18,8 @@ export default function DraggableScrap({
   useEffect(() => {
     const move = (e) => {
       if (!drag.current) return;
-      const nextX = e.clientX - drag.current.dx;
-      const nextY = e.clientY - drag.current.dy;
+      const nextX = e.clientX - drag.current.parentLeft - drag.current.dx;
+      const nextY = e.clientY - drag.current.parentTop - drag.current.dy;
       setPos((p) => ({ ...p, x: nextX, y: nextY }));
     };
 
@@ -42,9 +42,12 @@ export default function DraggableScrap({
   const start = (e) => {
     if (disabled || e.button !== 0 || e.target.closest?.("a, button, video")) return;
     const rect = e.currentTarget.getBoundingClientRect();
+    const parentRect = e.currentTarget.offsetParent?.getBoundingClientRect?.() || { left: 0, top: 0 };
     drag.current = {
       dx: e.clientX - rect.left,
       dy: e.clientY - rect.top,
+      parentLeft: parentRect.left,
+      parentTop: parentRect.top,
     };
     setDragging(true);
     setZ((n) => n + 20);
