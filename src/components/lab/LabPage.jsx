@@ -15,7 +15,6 @@ import {
   heroSticky,
   sideRepos,
   projectConstellation,
-  quote,
 } from "../../data/lab";
 import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
@@ -1148,16 +1147,49 @@ export default function LabPage() {
             </div>
           </section>
 
-          {/* ---------------- quote ---------------- */}
-          <div className="quote-card" data-magnetic>
-            {quote}
-            <span className="q-sign">— taped above my desk</span>
-          </div>
+          {/* ---------------- closing desk ---------------- */}
+          <section className="closing-desk lab-section section-has-doodles" aria-label="quick links and current work">
+            <div className="closing-desk-doodles" aria-hidden="true">
+              <CatDoodle size={34} />
+              <ArrowDoodle />
+            </div>
+
+            <div className="closing-desk-head">
+              <span className="lab-kicker">before you leave</span>
+              <h2 className="lab-h2">Useful <span className="accent">bits</span></h2>
+            </div>
+
+            <div className="closing-desk-grid">
+              <div className="closing-card closing-now">
+                <span className="closing-label">right now</span>
+                {currentWorks.slice(0, 3).map((item) => (
+                  <a href={item.href} target="_blank" rel="noreferrer" key={item.id} className="closing-row">
+                    <span>{item.name}</span>
+                    <small>{item.status}</small>
+                  </a>
+                ))}
+              </div>
+
+              <div className="closing-card closing-links">
+                <span className="closing-label">open</span>
+                <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
+                <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
+                <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
+                <a href={identity.links.email} onClick={handleCopyEmail}>email ↗</a>
+              </div>
+
+              <div className="closing-card closing-proof">
+                <span className="closing-label">receipts</span>
+                <div><strong>{researchPapers.filter((p) => p.tag === "published").length}</strong><small>published papers</small></div>
+                <div><strong>{contributions.filter((p) => p.status === "merged").length}</strong><small>merged PRs</small></div>
+                <div><strong>{contributions.filter((p) => p.status === "open").length}</strong><small>open PRs</small></div>
+              </div>
+            </div>
+          </section>
         </main>
 
         {/* ---------------- footer ---------------- */}
-        <footer className="lab-footer">
-          <span className="foot-hand">thanks for scrolling this far ✦</span>
+        <footer className="lab-footer lab-footer-tight">
           <a
             className="to-top"
             href="#top"
@@ -1167,22 +1199,9 @@ export default function LabPage() {
               window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
             }}
           >
-            ↑ back to the top
+            ↑ back to top
           </a>
-          <span>
-            <a href={identity.links.github} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-              github
-            </a>{" "}
-            ·{" "}
-            <a href={identity.links.linkedin} target="_blank" rel="noreferrer" onClick={() => playClickSound(soundEnabled)}>
-              linkedin
-            </a>{" "}
-            ·{" "}
-            <a href={identity.links.email} onClick={handleCopyEmail} title="Click to copy email">
-              email 📋
-            </a>
-          </span>
-          <span>© {new Date().getFullYear()} Mrudula · made, moved around, scribbled on</span>
+          <span>© {new Date().getFullYear()} Mrudula</span>
         </footer>
       </div>{/* end .lab */}
 
