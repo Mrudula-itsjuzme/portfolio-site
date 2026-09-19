@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import {
   identity,
   featuredProjects,
+  currentWorks,
+  contributions,
   researchPapers,
   community,
   recentThoughts,
@@ -14,12 +16,12 @@ import {
   quote,
 } from "../../data/lab";
 import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
-import TiltPhoto from "./TiltPhoto";
 import LabHeader from "./LabHeader";
 import LightboxModal from "./LightboxModal";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
 import PersonalDesk from "./PersonalDesk";
+import MovableScrap from "./MovableScrap";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -601,45 +603,40 @@ export default function LabPage() {
 
             <div
               ref={heroVisualsRef}
-              className="hero-visuals"
-              style={{ position: "relative", paddingTop: 26, minHeight: coarse ? 0 : 470 }}
+              className="hero-workboard"
+              aria-label="current work board"
             >
-              <div onClick={() => openLightbox(4)} style={{ cursor: "pointer" }} title="Click to view full screen ⛶">
-                <TiltPhoto
-                  src={IMG.portfolio}
-                  alt="a desk scene from one of the projects"
-                  caption="one of the many tabs open in my head"
-                  rotate={2.4}
-                  parallax={26}
-                  className="parallax-layer"
-                />
+              <div className="workboard-label">
+                <span>right now</span>
+                <small>drag the scraps around · double-click resets</small>
               </div>
-              {!coarse && !reduced && (
-                <div className="sticky-layer" style={{ position: "absolute", inset: 0, height: "100%" }}>
-                  <StickyNote
-                    id="hero-ideas"
-                    color="pink"
-                    rotation={-3.5}
-                    x={-40}
-                    y={-10}
+
+              {currentWorks.map((work, i) => {
+                const positions = [
+                  { x: 12, y: 58, r: -2.2 },
+                  { x: 250, y: 42, r: 1.6 },
+                  { x: 34, y: 250, r: 1.2 },
+                  { x: 278, y: 246, r: -1.5 },
+                ];
+                const p = positions[i] || { x: 20 + i * 24, y: 70 + i * 36, r: 0 };
+                return (
+                  <MovableScrap
+                    key={work.id}
+                    id={work.id}
+                    x={p.x}
+                    y={p.y}
+                    rotation={p.r}
+                    tone={work.tone}
                     parentRef={heroVisualsRef}
-                    lines={heroSticky}
-                    title="sticky note: ideas"
-                  />
-                </div>
-              )}
-              {!coarse && !reduced && (
-                <StickyNote
-                  id="hero-progress"
-                  color="butter"
-                  rotation={2.2}
-                  x={270}
-                  y={240}
-                  parentRef={heroVisualsRef}
-                  lines={["progress over", "perfection."]}
-                  title="sticky note: progress"
-                />
-              )}
+                  >
+                    <div className="scrap-status">{work.status}</div>
+                    <h3><a href={work.href} target="_blank" rel="noreferrer">{work.name}</a></h3>
+                    <p>{work.note}</p>
+                    <span className="scrap-next">{work.next}</span>
+                  </MovableScrap>
+                );
+              })}
+
               {!coarse && !reduced && userNotes.map((note) => (
                 <StickyNote
                   key={note.id}
@@ -653,17 +650,10 @@ export default function LabPage() {
                   title="custom sticky note"
                 />
               ))}
-              {coarse && (
-                <div
-                  className="sticky-note static note-pink"
-                  style={{ position: "relative", marginTop: 18, transform: "rotate(-2deg)", left: 0, top: 0 }}
-                >
-                  {heroSticky.map((l) => (
-                    <div key={l}>– {l}</div>
-                  ))}
-                  <span className="note-fold" />
-                </div>
-              )}
+
+              <Sparkle className="workboard-sparkle sparkle-a" size={18} aria-hidden="true" />
+              <StarDoodle className="workboard-sparkle sparkle-b" size={24} aria-hidden="true" />
+              <ArrowDoodle className="workboard-arrow" aria-hidden="true" />
             </div>
           </section>
 
@@ -688,6 +678,42 @@ export default function LabPage() {
               attack, defend, then understand ↓
             </span>
             <ArchisProject p={featuredProjects[3]} index={4} />
+          </section>
+
+          {/* ---------------- current contributions ---------------- */}
+          <section className="lab-section contribution-section" id="contributions" aria-label="open source contributions">
+            <SectionHead
+              kicker="outside my repos"
+              title="Contributions"
+              accent="in the wild"
+              sub="Merged work and PRs still under review. Open is open; merged is merged."
+            />
+
+            <div className="contribution-ledger reveal">
+              <div className="ledger-spine" aria-hidden="true" />
+              {contributions.map((item) => (
+                <a
+                  className={"contribution-row status-" + item.status}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  key={item.href}
+                >
+                  <span className="contribution-status">
+                    <i aria-hidden="true" />
+                    {item.status}
+                  </span>
+                  <span className="contribution-project">{item.project}</span>
+                  <span className="contribution-title">{item.title}</span>
+                  <span className="contribution-when">{item.when}</span>
+                  <span className="contribution-arrow">↗</span>
+                </a>
+              ))}
+            </div>
+
+            <p className="contribution-note">
+              tiny docs fixes count. so do bug fixes. i’d rather show the actual PR than inflate either one.
+            </p>
           </section>
 
           {/* ---------------- research + community ---------------- */}
