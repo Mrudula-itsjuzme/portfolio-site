@@ -785,7 +785,7 @@ export default function LabPage() {
                   style={{ position: "absolute", right: 65, top: -14, cursor: "pointer" }}
                   onClick={triggerSparkle}
                 />
-                <h3>recent thoughts</h3>
+                <h3>questions stuck in my head</h3>
                 <ul className="paper-list">
                   {recentThoughts.map((t, idx) => (
                     <li key={t}>
