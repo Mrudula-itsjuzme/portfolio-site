@@ -5888,3 +5888,229 @@ html[data-fullscreen="true"] .hero,
     padding-top: 0;
   }
 }
+
+
+/* ============================================================
+   simplify pass — no Quests screenshots, reliable Mocap media,
+   no duplicated ending
+   ============================================================ */
+
+.mocap-clean-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, .7fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.mocap-local-visual {
+  margin: 0;
+  padding: 18px;
+  background: #faf7f0;
+  border: 1px solid rgba(23,21,18,.10);
+  box-shadow: 0 12px 28px rgba(23,21,18,.07);
+}
+
+.mocap-local-visual img {
+  display: block;
+  width: 100%;
+  min-height: 430px;
+  max-height: 560px;
+  object-fit: contain;
+  background: #f4efe6;
+}
+
+.mocap-local-visual figcaption {
+  margin-top: 10px;
+  font: 9px var(--mono);
+  color: rgba(23,21,18,.52);
+}
+
+.project-quests {
+  background: transparent;
+}
+
+.quests-system-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.quests-loop-card,
+.quests-rules-card {
+  padding: 22px 24px;
+  border: 1px solid rgba(23,21,18,.11);
+  background: rgba(255,255,255,.34);
+}
+
+.quests-loop {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.quests-loop > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 122px;
+  padding: 14px 14px 16px;
+  border-top: 2px solid var(--forest);
+  background: var(--paper-alt);
+}
+
+.quests-loop > div b {
+  font: 8px var(--mono);
+  color: var(--clay);
+  font-weight: 400;
+}
+
+.quests-loop > div strong {
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.quests-loop > div small {
+  font-size: 9px;
+  line-height: 1.45;
+  color: rgba(23,21,18,.56);
+}
+
+.quests-loop > span {
+  display: grid;
+  place-items: center;
+  color: var(--clay);
+  font-family: var(--hand);
+  font-size: 18px;
+}
+
+.quests-rule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid rgba(23,21,18,.08);
+  background: rgba(23,21,18,.08);
+}
+
+.quests-rule-grid > div {
+  display: grid;
+  gap: 5px;
+  padding: 16px 18px;
+  background: var(--cream);
+}
+
+.quests-rule-grid strong {
+  font: 10px var(--mono);
+  color: var(--forest);
+  font-weight: 500;
+}
+
+.quests-rule-grid span {
+  font-size: 9px;
+  line-height: 1.45;
+  color: rgba(23,21,18,.58);
+}
+
+.quests-product-bar {
+  margin-top: 0;
+}
+
+.closing-desk {
+  margin-top: clamp(78px, 8vw, 110px);
+  padding-top: 32px;
+}
+
+.closing-desk-grid.closing-desk-simple {
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+  gap: 36px;
+}
+
+.closing-desk-grid.closing-desk-simple .closing-card {
+  padding: 8px 0 18px;
+  border-left: 0;
+  border-right: 0;
+}
+
+.closing-desk-grid.closing-desk-simple .closing-links {
+  padding-left: 24px;
+  border-left: 1px solid rgba(23,21,18,.09);
+}
+
+.closing-desk::before {
+  display: none;
+}
+
+.lab-footer-tight {
+  min-height: 60px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+[data-theme="night"] .mocap-local-visual {
+  background: #f3eadc;
+  color: #171512;
+}
+
+[data-theme="night"] .mocap-local-visual figcaption {
+  color: rgba(23,21,18,.55);
+}
+
+[data-theme="night"] .quests-loop-card,
+[data-theme="night"] .quests-rules-card {
+  background: rgba(241,232,220,.025);
+  border-color: rgba(241,232,220,.08);
+}
+
+[data-theme="night"] .quests-loop > div {
+  background: #2a221e;
+}
+
+[data-theme="night"] .quests-loop > div small,
+[data-theme="night"] .quests-rule-grid span {
+  color: rgba(241,232,220,.64);
+}
+
+[data-theme="night"] .quests-rule-grid {
+  background: rgba(241,232,220,.07);
+  border-color: rgba(241,232,220,.07);
+}
+
+[data-theme="night"] .quests-rule-grid > div {
+  background: #2d241f;
+}
+
+[data-theme="night"] .closing-desk-grid.closing-desk-simple .closing-links {
+  border-left-color: rgba(241,232,220,.09);
+}
+
+@media (max-width: 900px) {
+  .mocap-clean-layout,
+  .closing-desk-grid.closing-desk-simple {
+    grid-template-columns: 1fr;
+  }
+
+  .quests-loop {
+    grid-template-columns: 1fr;
+  }
+
+  .quests-loop > span {
+    transform: rotate(90deg);
+    min-height: 18px;
+  }
+
+  .quests-rule-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .closing-desk-grid.closing-desk-simple .closing-links {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .mocap-local-visual img {
+    min-height: 0;
+  }
+}
