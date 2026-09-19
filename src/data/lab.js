@@ -1,7 +1,7 @@
 export const identity = {
   name: "MRUDULA",
   handle: "mrudula.exe",
-  roles: ["AI engineering student", "researcher", "builder", "overthinker"],
+  roles: ["AI engineering student", "researcher", "builder", "writer"],
   subtext:
     "Third-year AI engineering student. I build systems, test weird ideas, and keep the failures visible long enough to learn from them — from markerless motion capture and adversarial ML to products that escape the notebook.",
   links: {
@@ -13,23 +13,101 @@ export const identity = {
 };
 
 export const currentStatuses = [
-  "same brain, new problems",
-  "shipping small things before they become big things",
-  "debugging mocap (again)",
-  "turning experiments into evidence",
-  "iterating on Quests beta",
-  "overcaffeinated and refactoring",
-  "asking what happens if it works",
-  "probably should be asleep",
+  "quests · closed beta fixes",
+  "mocap · gait validation",
+  "cyberbio · evidence pass",
+  "open source · PRs in review",
 ];
 
 export const heroSticky = [
-  "make this cooler",
-  "fix mocap (again)",
   "ship Quests",
-  "stop procrastinating",
-  "write",
-  "be a little kinder",
+  "gait validity > pretty skeleton",
+  "physical oracle?",
+  "write something not for linkedin",
+];
+
+export const currentWorks = [
+  {
+    id: "now-quests",
+    name: "Quests",
+    status: "closed beta",
+    note: "3–4 testers are finding the boring bugs that matter: persistence, UX friction, and whether the progression loop actually sticks.",
+    next: "next build → persistence + release polish",
+    href: "https://github.com/Mrudula-itsjuzme/quests",
+    tone: "butter",
+  },
+  {
+    id: "now-mocap",
+    name: "Motion Capture",
+    status: "validation",
+    note: "The skeleton is not the finish line. I’m tightening repeatability, camera quality gates, gait events, and the parts that decide whether a run is usable.",
+    next: "next → one clean repeatable gait run",
+    href: "https://github.com/Mrudula-itsjuzme/Motion-capture",
+    tone: "sage",
+  },
+  {
+    id: "now-cyberbio",
+    name: "CyberBio",
+    status: "evidence pass",
+    note: "The attacks work. Now I’m trying to make the conclusions harder to fool: multi-seed stats, representation sensitivity, physical checks, cleaner reporting.",
+    next: "next → freeze the canonical experiment",
+    href: "https://github.com/Mrudula-itsjuzme/cyberbio",
+    tone: "pink",
+  },
+  {
+    id: "now-portfolio",
+    name: "This site",
+    status: "alive",
+    note: "Turning a portfolio into a place I can actually use: movable scraps, doodles, a local desk, current work, and less recruiter theatre.",
+    next: "next → keep only the fun parts that earn their space",
+    href: "https://github.com/Mrudula-itsjuzme/portfolio-site",
+    tone: "paper",
+  },
+];
+
+export const contributions = [
+  {
+    project: "NVIDIA DALI",
+    title: "docs: fix minor typos in documentation",
+    status: "merged",
+    href: "https://github.com/NVIDIA/DALI/pull/6459",
+    when: "Aug 2026",
+  },
+  {
+    project: "NVIDIA NeMo Speech",
+    title: "docs: fix minor typos in documentation",
+    status: "merged",
+    href: "https://github.com/NVIDIA-NeMo/Speech/pull/16130",
+    when: "Aug 2026",
+  },
+  {
+    project: "Hugging Face LeRobot",
+    title: "fix(eval): avoid recording directory collisions across batches",
+    status: "open",
+    href: "https://github.com/huggingface/lerobot/pull/4622",
+    when: "Sep 2026",
+  },
+  {
+    project: "Sports2D",
+    title: "handle temporal lower-limb L/R swaps",
+    status: "open",
+    href: "https://github.com/davidpagnon/Sports2D/pull/41",
+    when: "Sep 2026",
+  },
+  {
+    project: "NVIDIA CUTLASS",
+    title: "docs: fix minor typos in documentation",
+    status: "open",
+    href: "https://github.com/NVIDIA/cutlass/pull/3530",
+    when: "Sep 2026",
+  },
+  {
+    project: "NVIDIA-AI-IOT trt_pose",
+    title: "fix: use ONNX backend for torch2trt conversion in notebooks",
+    status: "open",
+    href: "https://github.com/NVIDIA-AI-IOT/trt_pose/pull/188",
+    when: "Sep 2026",
+  },
 ];
 
 export const featuredProjects = [
@@ -178,7 +256,7 @@ export const researchPapers = [
   {
     title: "IEEE Access 2025 — Smart Grid Intrusion Detection",
     detail: "Smart Grid Intrusion Detection for IEC 60870-5-104",
-    meta: "energy conversion & management: X · PV fault detection using PyramidNet + GRU",
+    meta: "first author · IEEE Access 2025 · 99.29% accuracy · 94.8% recall",
     href: "https://ieeexplore.ieee.org/document/11083563",
     tag: "published",
   },
@@ -227,10 +305,10 @@ export const community = [
 ];
 
 export const recentThoughts = [
-  "What even is attention?",
-  "On building in public (kinda)",
-  "Why I love broken outputs",
-  "A poem about not knowing",
+  "gait validity ≠ a pretty skeleton",
+  "what counts as evidence after an attack works?",
+  "what makes a product survive after the fun prototype bit?",
+  "can a portfolio be a tool instead of a brochure?",
 ];
 
 export const writings = [

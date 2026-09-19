@@ -32,7 +32,7 @@ export default function LabHeader({ soundEnabled }) {
   }, [theme]);
 
   useEffect(() => {
-    const sections = ["work", "research", "words"];
+    const sections = ["work", "contributions", "research", "words"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -68,6 +68,7 @@ export default function LabHeader({ soundEnabled }) {
       <nav className="lab-nav" aria-label="primary">
         {[
           ["work", "work"],
+          ["contributions", "contrib"],
           ["research", "research"],
           ["words", "writing"],
         ].map(([id, label]) => (
