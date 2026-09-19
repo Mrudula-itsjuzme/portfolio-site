@@ -26,6 +26,7 @@ import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
 import InteractionDock from "./InteractionDock";
 import GlobalStickyNotes, { makeGlobalNote } from "./GlobalStickyNotes";
+import Scrapboard from "./Scrapboard";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -53,28 +54,28 @@ const MOCAP_MEDIA = [
     id: "capture",
     type: "video",
     label: "annotated capture",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/annotated_front.mp4",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/annotated_front.mp4",
     note: "front camera · MediaPipe overlay",
   },
   {
     id: "quality",
     type: "image",
     label: "quality improvement",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/offline_quality_improvement_card.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/offline_quality_improvement_card.png",
     note: "before / after pipeline quality",
   },
   {
     id: "sync",
     type: "image",
     label: "sync sweep",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/sync_offset_sweep_card.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/docs/figures/sync_offset_sweep_card.png",
     note: "camera offset search",
   },
   {
     id: "reprojection",
     type: "image",
     label: "reprojection",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
     note: "documented benchmark output",
   },
 ];
@@ -83,25 +84,25 @@ const QUESTS_MEDIA = [
   {
     id: "quests",
     label: "quest hub",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
     note: "actual QA capture · quest flow",
   },
   {
     id: "map",
     label: "world map",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/15-map-final.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/15-map-final.png",
     note: "actual QA capture · explore/map",
   },
   {
     id: "rewards",
     label: "rewards",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
     note: "actual QA capture · progression",
   },
   {
     id: "profile",
     label: "profile",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
+    src: "https://github.com/Mrudula-itsjuzme/quests/raw/refs/heads/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
     note: "actual QA capture · explorer profile",
   },
 ];
@@ -110,19 +111,19 @@ const CYBERBIO_MEDIA = [
   {
     id: "defense",
     label: "baseline vs defended",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
     note: "multi-seed robustness comparison",
   },
   {
     id: "ablation",
     label: "ablation",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/ablation_study_chart.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/ablation_study_chart.png",
     note: "attack / defense ablation",
   },
   {
     id: "mcmc",
     label: "MCMC drift",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
+    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
     note: "drift across search steps",
   },
 ];
@@ -131,20 +132,158 @@ const ARCHIS_MEDIA = [
   {
     id: "hero",
     label: "workspace",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/archis-hero.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/archis-hero.svg",
     note: "repo hero · current product direction",
   },
   {
     id: "loop",
     label: "semantic loop",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/semantic-loop.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/semantic-loop.svg",
     note: "semantic interaction loop",
   },
   {
     id: "concept",
     label: "workspace concept",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/workspace-concept.svg",
+    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/workspace-concept.svg",
     note: "product workspace concept",
+  },
+];
+
+const MOCAP_BOARD = [
+  {
+    id: "quality",
+    type: "image",
+    src: MOCAP_MEDIA[1].src,
+    label: "quality improvement",
+    caption: "before / after pipeline quality",
+    initial: { x: 34, y: 44, r: -1.2 },
+    kind: "proof-large",
+  },
+  {
+    id: "sync",
+    type: "image",
+    src: MOCAP_MEDIA[2].src,
+    label: "sync sweep",
+    caption: "camera offset search",
+    initial: { x: 690, y: 52, r: 2.2 },
+    kind: "proof-small",
+  },
+  {
+    id: "reprojection",
+    type: "image",
+    src: MOCAP_MEDIA[3].src,
+    label: "reprojection",
+    caption: "documented benchmark output",
+    initial: { x: 710, y: 300, r: -1.6 },
+    kind: "proof-small",
+  },
+  {
+    id: "jitter",
+    type: "image",
+    src: "https://github.com/Mrudula-itsjuzme/Motion-capture/raw/refs/heads/main/results/session_may16_dual/markerless_benchmark/temporal_jitter_plot.png",
+    label: "temporal jitter",
+    caption: "raw vs stabilized trajectory",
+    initial: { x: 105, y: 388, r: 1.3 },
+    kind: "proof-medium",
+  },
+];
+
+const QUESTS_BOARD = [
+  {
+    id: "quests",
+    type: "image",
+    src: QUESTS_MEDIA[0].src,
+    label: "quest hub",
+    caption: "actual QA capture · quest flow",
+    initial: { x: 310, y: 42, r: -1.1 },
+    kind: "proof-phone-main",
+  },
+  {
+    id: "map",
+    type: "image",
+    src: QUESTS_MEDIA[1].src,
+    label: "world map",
+    caption: "actual QA capture · explore/map",
+    initial: { x: 690, y: 72, r: 2.2 },
+    kind: "proof-phone",
+  },
+  {
+    id: "rewards",
+    type: "image",
+    src: QUESTS_MEDIA[2].src,
+    label: "rewards",
+    caption: "actual QA capture · progression",
+    initial: { x: 675, y: 330, r: -2 },
+    kind: "proof-phone",
+  },
+  {
+    id: "profile",
+    type: "image",
+    src: QUESTS_MEDIA[3].src,
+    label: "profile",
+    caption: "actual QA capture · explorer profile",
+    initial: { x: 70, y: 310, r: 1.4 },
+    kind: "proof-phone",
+  },
+];
+
+const CYBERBIO_BOARD = [
+  {
+    id: "defense",
+    type: "image",
+    src: CYBERBIO_MEDIA[0].src,
+    label: "baseline vs defended",
+    caption: "multi-seed robustness comparison",
+    initial: { x: 44, y: 46, r: -1 },
+    kind: "proof-large",
+  },
+  {
+    id: "ablation",
+    type: "image",
+    src: CYBERBIO_MEDIA[1].src,
+    label: "ablation",
+    caption: "attack / defense ablation",
+    initial: { x: 700, y: 74, r: 2 },
+    kind: "proof-small",
+  },
+  {
+    id: "mcmc",
+    type: "image",
+    src: CYBERBIO_MEDIA[2].src,
+    label: "MCMC drift",
+    caption: "drift across search steps",
+    initial: { x: 665, y: 324, r: -1.6 },
+    kind: "proof-small",
+  },
+];
+
+const ARCHIS_BOARD = [
+  {
+    id: "hero",
+    type: "image",
+    src: ARCHIS_MEDIA[0].src,
+    label: "workspace",
+    caption: "current product direction",
+    initial: { x: 40, y: 42, r: -1 },
+    kind: "proof-large",
+  },
+  {
+    id: "loop",
+    type: "image",
+    src: ARCHIS_MEDIA[1].src,
+    label: "semantic loop",
+    caption: "relationship / intent loop",
+    initial: { x: 710, y: 78, r: 2 },
+    kind: "proof-small",
+  },
+  {
+    id: "concept",
+    type: "image",
+    src: ARCHIS_MEDIA[2].src,
+    label: "workspace concept",
+    caption: "product workspace concept",
+    initial: { x: 690, y: 330, r: -1.5 },
+    kind: "proof-small",
   },
 ];
 
@@ -211,17 +350,9 @@ function SectionHead({ kicker, title, accent, sub, id }) {
 
 function MocapProject({ p, index }) {
   const ref = useReveal();
-  const [activeMedia, setActiveMedia] = useState(MOCAP_MEDIA[0]);
-  const [mediaKey, setMediaKey] = useState(0);
-
-  const chooseMedia = (item) => {
-    setActiveMedia(item);
-    setMediaKey((k) => k + 1);
-  };
-
   return (
     <article ref={ref} className="project project-mocap reveal" aria-label={p.name}>
-      <div className="mocap-project-head">
+      <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
             <span className="project-index">{String(index).padStart(2, "0")} /</span>
@@ -230,82 +361,38 @@ function MocapProject({ p, index }) {
           </div>
           <p className="project-blurb">{p.blurb}</p>
         </div>
-
         <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
           <span>GitHub</span>
           <strong>source + experiments ↗</strong>
         </a>
       </div>
 
-      <div className="mocap-evidence-shell">
-        <div className="mocap-media-stage">
-          <div className="mocap-media-topbar">
-            <span className="rec-dot" />
-            <span>{activeMedia.label}</span>
-            <a href={activeMedia.src} target="_blank" rel="noreferrer">open original ↗</a>
-          </div>
-
-          <div className="mocap-media-main" key={mediaKey}>
-            {activeMedia.type === "video" ? (
-              <video
-                src={activeMedia.src}
-                controls
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Annotated motion capture result video"
-              />
-            ) : (
-              <img src={activeMedia.src} alt={activeMedia.label} loading="lazy" />
-            )}
-          </div>
-
-          <div className="mocap-media-caption">
-            <span>{activeMedia.note}</span>
-            <span>real output from the repo</span>
-          </div>
-        </div>
-
-        <div className="mocap-media-rail" aria-label="motion capture result views">
-          {MOCAP_MEDIA.map((item) => (
-            <button
-              type="button"
-              key={item.id}
-              className={activeMedia.id === item.id ? "active" : ""}
-              onClick={() => chooseMedia(item)}
-            >
-              <span className="rail-index">{item.type === "video" ? "▶" : "↗"}</span>
-              <span>
-                <strong>{item.label}</strong>
-                <small>{item.note}</small>
-              </span>
-            </button>
-          ))}
-        </div>
+      <div className="project-doodle-layer" aria-hidden="true">
+        <ArrowDoodle className="section-doodle doodle-a clay" />
+        <Sparkle className="section-doodle doodle-b mossy" size={16} />
       </div>
+
+      <Scrapboard
+        className="mocap-scrapboard"
+        variant="paper"
+        items={MOCAP_BOARD}
+        note={{
+          kicker: "documented run",
+          text: "4.78 px mean reprojection · 0.993 triangulation · jitter ↓ 77%",
+        }}
+      />
 
       <div className="mocap-bottom-grid">
         <div className="mocap-data mocap-data-inline">
           <div className="data-title">documented run</div>
           <table className="fact-table">
-            <tbody>
-              {p.facts.map(([k, v]) => (
-                <tr key={k}>
-                  <td>{k}</td>
-                  <td>{v}</td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody>
           </table>
         </div>
-
         <div className="mocap-notes">
-          <span className="mocap-note-label">what I’m validating now</span>
+          <span className="mocap-note-label">validating now</span>
           <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
-          <div className="tag-row">
-            {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
-          </div>
+          <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
         </div>
       </div>
     </article>
@@ -315,39 +402,6 @@ function MocapProject({ p, index }) {
 /* ------------------------------------------------------------------ */
 /* Project: Quests — cinematic / product                               */
 /* ------------------------------------------------------------------ */
-
-function ProofGallery({ items, className = "" }) {
-  const [activeId, setActiveId] = useState(items[0]?.id);
-  const active = items.find((item) => item.id === activeId) || items[0];
-
-  if (!active) return null;
-
-  return (
-    <div className={"proof-gallery " + className}>
-      <div className="proof-gallery-main">
-        <div className="proof-gallery-bar">
-          <span>{active.label}</span>
-          <a href={active.src} target="_blank" rel="noreferrer">open original ↗</a>
-        </div>
-        <img src={active.src} alt={active.label} loading="lazy" />
-        <small>{active.note}</small>
-      </div>
-      <div className="proof-gallery-tabs">
-        {items.map((item) => (
-          <button
-            type="button"
-            key={item.id}
-            className={item.id === active.id ? "active" : ""}
-            onClick={() => setActiveId(item.id)}
-          >
-            <span>{item.label}</span>
-            <small>{item.note}</small>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function QuestsProject({ p, index }) {
   const ref = useReveal();
@@ -368,20 +422,24 @@ function QuestsProject({ p, index }) {
         </a>
       </div>
 
-      <ProofGallery items={QUESTS_MEDIA} className="quests-proof-gallery" />
-
-      <div className="project-proof-bottom">
-        <div className="product-note">
-          <span className="product-note-label">closed beta / right now</span>
-          <p>3–4 testers · persistence fixes · UX fixes · release polish</p>
-        </div>
-        <table className="fact-table">
-          <tbody>
-            {p.facts.map(([k, v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}
-          </tbody>
-        </table>
+      <div className="project-doodle-layer" aria-hidden="true">
+        <PaperPlaneDoodle className="section-doodle doodle-a clay" size={30} />
+        <StarDoodle className="section-doodle doodle-b mossy" size={18} />
       </div>
 
+      <Scrapboard
+        className="quests-scrapboard"
+        variant="paper"
+        items={QUESTS_BOARD}
+        note={{
+          kicker: "closed beta / right now",
+          text: "3–4 testers · persistence fixes · UX fixes · release polish",
+        }}
+      />
+
+      <div className="project-proof-bottom">
+        <table className="fact-table"><tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody></table>
+      </div>
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
     </article>
   );
@@ -410,11 +468,24 @@ function CyberBioProject({ p, index }) {
         </a>
       </div>
 
-      <ProofGallery items={CYBERBIO_MEDIA} className="cyberbio-proof-gallery" />
+      <div className="project-doodle-layer" aria-hidden="true">
+        <Constellation className="section-doodle doodle-a mossy" />
+        <Sparkle className="section-doodle doodle-b clay" size={15} />
+      </div>
+
+      <Scrapboard
+        className="cyberbio-scrapboard"
+        variant="lab"
+        items={CYBERBIO_BOARD}
+        note={{
+          kicker: "current pass",
+          text: "multi-seed stats · representation sensitivity · physical checks",
+        }}
+      />
 
       <div className="project-proof-bottom">
         <div className="reaction">
-          {p.facts.map(([k, v], i) => (
+          {p.facts.map(([k,v],i) => (
             <div className="r-line" key={k}>
               <span className="r-key">{k}</span>
               <span className="r-arrow">{i === p.facts.length - 1 ? "⇒" : "→"}</span>
@@ -422,12 +493,7 @@ function CyberBioProject({ p, index }) {
             </div>
           ))}
         </div>
-        <div className="mocap-notes">
-          <span className="mocap-note-label">current pass</span>
-          <p>multi-seed stats · representation sensitivity · physical checks · cleaner reporting</p>
-        </div>
       </div>
-
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
     </article>
   );
@@ -478,7 +544,20 @@ function ArchisProject({ p, index }) {
         </div>
       </div>
 
-      <ProofGallery items={ARCHIS_MEDIA} className="archis-proof-gallery" />
+      <div className="project-doodle-layer" aria-hidden="true">
+        <ArrowDoodle className="section-doodle doodle-a mossy" />
+        <CoffeeRing className="section-doodle doodle-b clay" />
+      </div>
+
+      <Scrapboard
+        className="archis-scrapboard"
+        variant="draft"
+        items={ARCHIS_BOARD}
+        note={{
+          kicker: "prototype",
+          text: "architect-first · intent-preserving edits · linked 2D / 3D",
+        }}
+      />
 
       <div className="archis-real-flow" aria-label="Archis workflow">
         <div className="archis-step"><span>01</span><strong>architect draft</strong><small>start from authored geometry</small></div>
@@ -812,7 +891,8 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- research + community ---------------- */}
-          <section className="lab-section" id="research" aria-label="research and community">
+          <section className="lab-section section-has-doodles" id="research" aria-label="research and community">
+            <div className="section-doodle-pair research-doodles" aria-hidden="true"><StarDoodle size={18} /><Sparkle size={13} /></div>
             <SectionHead
               kicker="research + people"
               title="Things I’ve"
@@ -881,7 +961,8 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- words + experiments ---------------- */}
-          <section className="lab-section" id="words" aria-label="writing and experiments">
+          <section className="lab-section section-has-doodles" id="words" aria-label="writing and experiments">
+            <div className="section-doodle-pair words-doodles" aria-hidden="true"><CatDoodle size={30} /><VinylDoodle /></div>
             <SectionHead
               kicker="outside the code"
               title="Writing &"
@@ -1018,7 +1099,7 @@ export default function LabPage() {
           </section>
 
           {/* ---------------- project constellation ---------------- */}
-          <section className="lab-section constellation-section" aria-label="more projects">
+          <section className="lab-section constellation-section section-has-doodles" aria-label="more projects">
             <div className="constellation-head reveal">
               <span className="lab-kicker">the rest of the tabs</span>
               <h2 className="lab-h2">Project <span className="accent">constellation</span></h2>
@@ -1131,18 +1212,6 @@ export default function LabPage() {
         onAddNote={handleAddNote}
       />
 
-            {/* ambient doodles stay in edge lanes */}
-      <CoffeeRing className="doodle edge-doodle edge-right interactive-doodle" style={{ top: 120 }} onClick={triggerSparkle} />
-      <Sparkle className="doodle edge-doodle edge-left clay twinkle interactive-doodle" size={18} style={{ top: 420 }} onClick={triggerSparkle} />
-      <ArrowDoodle className="doodle edge-doodle edge-left mossy" style={{ top: 900 }} />
-      <Sparkle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={13} style={{ top: 2100 }} onClick={triggerSparkle} />
-      <CatDoodle className="doodle edge-doodle edge-right clay floaty slow interactive-doodle" size={42} style={{ top: 3400 }} onClick={triggerSparkle} />
-      <Sparkle className="doodle edge-doodle edge-left pinky twinkle interactive-doodle" size={16} style={{ top: 4300 }} onClick={triggerSparkle} />
-      <StarDoodle className="doodle edge-doodle edge-right mossy twinkle slow interactive-doodle" size={20} style={{ top: 5200 }} onClick={triggerSparkle} />
-      <PaperPlaneDoodle className="doodle edge-doodle edge-left clay floaty interactive-doodle" size={30} style={{ top: 2650 }} onClick={triggerSparkle} />
-      <VinylDoodle className="doodle edge-doodle edge-right pinky interactive-doodle" style={{ top: 4550 }} onClick={triggerSparkle} />
-      <CoffeeRing className="doodle edge-doodle edge-left mossy" style={{ top: 6100, opacity: 0.35 }} />
-      <Constellation className="doodle edge-doodle edge-left clay interactive-doodle" style={{ top: 5900, opacity: 0.45 }} onClick={triggerSparkle} />
-    </div>
+          </div>
   );
 }
