@@ -25,7 +25,6 @@ import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
 import InteractionDock from "./InteractionDock";
 import GlobalStickyNotes, { makeGlobalNote } from "./GlobalStickyNotes";
-import ScreenLife from "./ScreenLife";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -76,6 +75,75 @@ const MOCAP_MEDIA = [
     label: "reprojection",
     src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
     note: "documented benchmark output",
+  },
+];
+
+const QUESTS_MEDIA = [
+  {
+    id: "quests",
+    label: "quest hub",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/10-quests-fixed.png",
+    note: "actual QA capture · quest flow",
+  },
+  {
+    id: "map",
+    label: "world map",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/15-map-final.png",
+    note: "actual QA capture · explore/map",
+  },
+  {
+    id: "rewards",
+    label: "rewards",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/14-rewards-stable.png",
+    note: "actual QA capture · progression",
+  },
+  {
+    id: "profile",
+    label: "profile",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/12-profile-fixed.png",
+    note: "actual QA capture · explorer profile",
+  },
+];
+
+const CYBERBIO_MEDIA = [
+  {
+    id: "defense",
+    label: "baseline vs defended",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
+    note: "multi-seed robustness comparison",
+  },
+  {
+    id: "ablation",
+    label: "ablation",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/ablation_study_chart.png",
+    note: "attack / defense ablation",
+  },
+  {
+    id: "mcmc",
+    label: "MCMC drift",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
+    note: "drift across search steps",
+  },
+];
+
+const ARCHIS_MEDIA = [
+  {
+    id: "hero",
+    label: "workspace",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/archis-hero.svg",
+    note: "repo hero · current product direction",
+  },
+  {
+    id: "loop",
+    label: "semantic loop",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/semantic-loop.svg",
+    note: "semantic interaction loop",
+  },
+  {
+    id: "concept",
+    label: "workspace concept",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/workspace-concept.svg",
+    note: "product workspace concept",
   },
 ];
 
@@ -247,42 +315,73 @@ function MocapProject({ p, index }) {
 /* Project: Quests — cinematic / product                               */
 /* ------------------------------------------------------------------ */
 
+function ProofGallery({ items, className = "" }) {
+  const [activeId, setActiveId] = useState(items[0]?.id);
+  const active = items.find((item) => item.id === activeId) || items[0];
+
+  if (!active) return null;
+
+  return (
+    <div className={"proof-gallery " + className}>
+      <div className="proof-gallery-main">
+        <div className="proof-gallery-bar">
+          <span>{active.label}</span>
+          <a href={active.src} target="_blank" rel="noreferrer">open original ↗</a>
+        </div>
+        <img src={active.src} alt={active.label} loading="lazy" />
+        <small>{active.note}</small>
+      </div>
+      <div className="proof-gallery-tabs">
+        {items.map((item) => (
+          <button
+            type="button"
+            key={item.id}
+            className={item.id === active.id ? "active" : ""}
+            onClick={() => setActiveId(item.id)}
+          >
+            <span>{item.label}</span>
+            <small>{item.note}</small>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function QuestsProject({ p, index }) {
   const ref = useReveal();
   return (
     <article ref={ref} className="project project-quests reveal" aria-label={p.name}>
-      <div className="project-meta-row">
-        <span className="project-index">{String(index).padStart(2, "0")} /</span>
-        <h3 className="project-title">
-          <a href={p.github} target="_blank" rel="noreferrer">{p.name}</a>
-        </h3>
-        <span className="project-year">{p.year}</span>
+      <div className="project-proof-head">
+        <div>
+          <div className="project-meta-row">
+            <span className="project-index">{String(index).padStart(2, "0")} /</span>
+            <h3 className="project-title">{p.name}</h3>
+            <span className="project-year">{p.year}</span>
+          </div>
+          <p className="project-blurb">{p.blurb}</p>
+        </div>
+        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
+          <span>GitHub</span>
+          <strong>repo + release ↗</strong>
+        </a>
       </div>
 
-      <div className="quests-real-grid">
-        <div>
-          <p className="project-blurb">{p.blurb}</p>
-          <div className="tag-row">
-            {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
-          </div>
-        </div>
+      <ProofGallery items={QUESTS_MEDIA} className="quests-proof-gallery" />
+
+      <div className="project-proof-bottom">
         <div className="product-note">
           <span className="product-note-label">closed beta / right now</span>
-          <p>
-            tiny tester pool. real persistence bugs. UI feedback that actually changed the build.
-            exactly the unglamorous part i wanted to reach.
-          </p>
-          <a href={p.github} target="_blank" rel="noreferrer">open the repo ↗</a>
+          <p>3–4 testers · persistence fixes · UX fixes · release polish</p>
         </div>
+        <table className="fact-table">
+          <tbody>
+            {p.facts.map(([k, v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}
+          </tbody>
+        </table>
       </div>
 
-      <table className="fact-table">
-        <tbody>
-          {p.facts.map(([k, v]) => (
-            <tr key={k}><td>{k}</td><td>{v}</td></tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
     </article>
   );
 }
@@ -294,60 +393,41 @@ function QuestsProject({ p, index }) {
 function CyberBioProject({ p, index }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-cyberbio reveal tilt-2" aria-label={p.name}>
-      <div className="cyber-grid">
-        <div className="molecule" data-magnetic aria-hidden="true">
-          <svg viewBox="0 0 200 200" width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-            <g stroke="rgba(121,199,197,0.75)" strokeWidth="1.4" fill="none">
-              <path d="M40 120 L70 70 L120 90 L150 50" />
-              <path d="M70 70 L60 130 L120 150 L150 110 L120 90" />
-              <path d="M60 130 L110 160 L160 140" />
-            </g>
-            {[
-              [40, 120], [70, 70], [120, 90], [150, 50], [60, 130],
-              [120, 150], [150, 110], [110, 160], [160, 140],
-            ].map(([cx, cy], i) => (
-              <circle key={i} cx={cx} cy={cy} r={5 + (i % 3)} fill="rgba(121,199,197,0.85)" />
-            ))}
-          </svg>
-          <span className="attack-arrow" style={{ left: "8%", top: "10%" }}>attack →</span>
-          <span className="attack-arrow" style={{ right: "10%", top: "42%" }}>defend →</span>
-          <span className="attack-arrow" style={{ left: "12%", bottom: "9%", color: "var(--butter)" }}>
-            understand ↓
-          </span>
-        </div>
-
+    <article ref={ref} className="project project-cyberbio reveal" aria-label={p.name}>
+      <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
             <span className="project-index">{String(index).padStart(2, "0")} /</span>
-            <h3 className="project-title">
-              <a href={p.github} target="_blank" rel="noreferrer">
-                {p.name}
-              </a>
-            </h3>
+            <h3 className="project-title">{p.name}</h3>
             <span className="project-year">{p.year}</span>
           </div>
           <p className="project-blurb">{p.blurb}</p>
+        </div>
+        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
+          <span>GitHub</span>
+          <strong>experiments + outputs ↗</strong>
+        </a>
+      </div>
 
-          <div className="reaction" style={{ marginTop: 20 }}>
-            {p.facts.map(([k, v], i) => (
-              <div className="r-line" key={k}>
-                <span className="r-key">{k}</span>
-                <span className="r-arrow">{i === p.facts.length - 1 ? "⇒" : "→"}</span>
-                <span>{v}</span>
-              </div>
-            ))}
-          </div>
+      <ProofGallery items={CYBERBIO_MEDIA} className="cyberbio-proof-gallery" />
 
-          <div className="tag-row">
-            {p.tags.map((t) => (
-              <span className="tag" key={t}>
-                {t}
-              </span>
-            ))}
-          </div>
+      <div className="project-proof-bottom">
+        <div className="reaction">
+          {p.facts.map(([k, v], i) => (
+            <div className="r-line" key={k}>
+              <span className="r-key">{k}</span>
+              <span className="r-arrow">{i === p.facts.length - 1 ? "⇒" : "→"}</span>
+              <span>{v}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mocap-notes">
+          <span className="mocap-note-label">current pass</span>
+          <p>multi-seed stats · representation sensitivity · physical checks · cleaner reporting</p>
         </div>
       </div>
+
+      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
     </article>
   );
 }
@@ -379,48 +459,36 @@ function ArchisProject({ p, index }) {
   const ref = useReveal();
   return (
     <article ref={ref} className="project project-archis reveal" aria-label={p.name}>
-      <div className="project-meta-row">
-        <span className="project-index">{String(index).padStart(2, "0")} /</span>
-        <h3 className="project-title">
-          <a href={p.github} target="_blank" rel="noreferrer">{p.name}</a>
-        </h3>
-        <span className="project-year">{p.year}</span>
-        <a className="btn-quiet" href={p.demo} target="_blank" rel="noreferrer">prototype ↗</a>
+      <div className="project-proof-head">
+        <div>
+          <div className="project-meta-row">
+            <span className="project-index">{String(index).padStart(2, "0")} /</span>
+            <h3 className="project-title">{p.name}</h3>
+            <span className="project-year">{p.year}</span>
+          </div>
+          <p className="project-blurb">{p.blurb}</p>
+        </div>
+        <div className="project-link-stack">
+          <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>source + research ↗</strong>
+          </a>
+          <a className="btn-quiet" href={p.demo} target="_blank" rel="noreferrer">live prototype ↗</a>
+        </div>
       </div>
 
-      <p className="project-blurb">{p.blurb}</p>
+      <ProofGallery items={ARCHIS_MEDIA} className="archis-proof-gallery" />
 
       <div className="archis-real-flow" aria-label="Archis workflow">
-        <div className="archis-step">
-          <span>01</span>
-          <strong>blueprint</strong>
-          <small>start with what the architect actually drew</small>
-        </div>
+        <div className="archis-step"><span>01</span><strong>architect draft</strong><small>start from authored geometry</small></div>
         <div className="archis-flow-arrow">→</div>
-        <div className="archis-step">
-          <span>02</span>
-          <strong>interpret</strong>
-          <small>infer relationships, but keep uncertainty visible</small>
-        </div>
+        <div className="archis-step"><span>02</span><strong>semantic model</strong><small>constraints + relationships + intent hypotheses</small></div>
         <div className="archis-flow-arrow">→</div>
-        <div className="archis-step">
-          <span>03</span>
-          <strong>change carefully</strong>
-          <small>make the smallest useful edit without erasing intent</small>
-        </div>
+        <div className="archis-step"><span>03</span><strong>minimal edit</strong><small>show impact before accepting change</small></div>
       </div>
 
-      <table className="fact-table">
-        <tbody>
-          {p.facts.map(([k, v]) => (
-            <tr key={k}><td>{k}</td><td>{v}</td></tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="tag-row">
-        {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
-      </div>
+      <table className="fact-table"><tbody>{p.facts.map(([k,v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody></table>
+      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
     </article>
   );
 }
@@ -586,7 +654,6 @@ export default function LabPage() {
 
       <DoodleCanvas active={doodleCanvasActive} onClose={() => setDoodleCanvasActive(false)} />
       <GlobalStickyNotes notes={userNotes} onChange={setUserNotes} />
-      <ScreenLife />
 
       <div className="lab">
         {toastMsg && <div className="lab-toast" role="status">{toastMsg}</div>}
@@ -955,6 +1022,17 @@ export default function LabPage() {
                   <span className="constellation-kind">{p.kind}</span>
                   <h3>{p.name}</h3>
                   <p>{p.note}</p>
+                  {p.proofImage ? (
+                    <div className="constellation-proof-image">
+                      <img src={p.proofImage} alt="" loading="lazy" />
+                      <small>{p.proofLabel}</small>
+                    </div>
+                  ) : p.proofLines ? (
+                    <div className="constellation-proof-lines">
+                      <small>{p.proofLabel}</small>
+                      {p.proofLines.map((line) => <span key={line}>{line}</span>)}
+                    </div>
+                  ) : null}
                   <span className="constellation-link">peek ↗</span>
                 </a>
               ))}

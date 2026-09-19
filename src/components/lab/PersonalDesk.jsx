@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 
-const TASK_KEY = "mrudula-desk-tasks-v1";
-const NOTE_KEY = "mrudula-desk-scratch-v1";
-const PROJECT_KEY = "mrudula-desk-projects-v1";
+const TASK_KEY = "mrudula-desk-tasks-v2";
+const NOTE_KEY = "mrudula-desk-scratch-v2";
+const PROJECT_KEY = "mrudula-desk-projects-v2";
 
 function load(key, fallback) {
   try {
@@ -54,9 +54,10 @@ function MiniCalendar() {
 export default function PersonalDesk({ onToggleDoodle, doodleActive }) {
   const [open, setOpen] = useState(false);
   const [tasks, setTasks] = useState(() => load(TASK_KEY, [
-    { id: "q", text: "ship the next Quests build", done: false },
-    { id: "m", text: "one good mocap validation run", done: false },
-    { id: "c", text: "finish CyberBio evidence cleanup", done: false },
+    { id: "q", text: "Quests: next beta build", done: false },
+    { id: "m", text: "Mocap: clean validation run", done: false },
+    { id: "c", text: "CyberBio: canonical experiment pass", done: false },
+    { id: "a", text: "Archis: test the prototype with a real plan", done: false },
   ]));
   const [scratch, setScratch] = useState(() => {
     try { return localStorage.getItem(NOTE_KEY) || ""; } catch { return ""; }
@@ -65,7 +66,8 @@ export default function PersonalDesk({ onToggleDoodle, doodleActive }) {
     Quests: "shipping",
     Mocap: "research",
     CyberBio: "cleanup",
-    Portfolio: "alive",
+    Archis: "building",
+    "Semantic Workspace": "building",
   }));
   const [newTask, setNewTask] = useState("");
 
