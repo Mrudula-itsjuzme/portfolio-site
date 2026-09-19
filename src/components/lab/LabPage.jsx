@@ -1002,7 +1002,6 @@ export default function LabPage() {
               ))}
             </div>
           </section>
-          </section>
         </main>
 
         {/* ---------------- footer ---------------- */}
