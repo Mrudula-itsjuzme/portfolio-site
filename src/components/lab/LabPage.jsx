@@ -700,13 +700,7 @@ export default function LabPage() {
             />
             <MocapProject p={featuredProjects[0]} index={1} />
             <QuestsProject p={featuredProjects[1]} index={2} />
-            <span className="marginalia" className="work-aside work-aside-quests" aria-hidden="true">
-              ← the gamification rabbit hole
-            </span>
             <CyberBioProject p={featuredProjects[2]} index={3} />
-            <span className="marginalia" className="work-aside work-aside-cyber" aria-hidden="true">
-              attack, defend, then understand ↓
-            </span>
             <ArchisProject p={featuredProjects[3]} index={4} />
           </section>
 
