@@ -44,7 +44,19 @@ export default function DoodleCanvas({ active, onClose }) {
     sizeCanvas(false);
     const onResize = () => sizeCanvas(true);
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const observer = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => {
+          const canvas = canvasRef.current;
+          if (!canvas) return;
+          const targetHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+          if (Math.abs(canvas.height - targetHeight) > 4) sizeCanvas(true);
+        })
+      : null;
+    observer?.observe(document.body);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      observer?.disconnect();
+    };
   }, [sizeCanvas]);
 
   useEffect(() => {
