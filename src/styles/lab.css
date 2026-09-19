@@ -2985,3 +2985,279 @@ html[data-fullscreen="true"] .hero,
     transition: none !important;
   }
 }
+
+
+/* ============================================================
+   full-screen desk + global notes + temporary ink
+   ============================================================ */
+
+.lab {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 clamp(28px, 4.2vw, 78px) 110px;
+}
+
+.hero {
+  min-height: calc(100vh - 58px);
+  padding: clamp(42px, 6vh, 76px) 0;
+  align-items: center;
+  grid-template-columns: minmax(430px, .86fr) minmax(600px, 1.14fr);
+  gap: clamp(42px, 5vw, 86px);
+}
+
+.hero > * {
+  min-width: 0;
+}
+
+.hero-workboard {
+  width: 100%;
+  min-height: clamp(500px, 66vh, 690px);
+}
+
+.lab-section {
+  width: 100%;
+}
+
+/* user sticky notes are page objects, not hero decorations */
+.global-note-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 125;
+}
+
+.global-sticky {
+  position: absolute;
+  width: 185px;
+  min-height: 118px;
+  padding: 24px 18px 18px;
+  color: #171512;
+  border: 1px solid rgba(23,21,18,.14);
+  box-shadow: 4px 7px 18px rgba(23,21,18,.16);
+  font-family: var(--hand);
+  font-size: 19px;
+  line-height: 1.15;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  pointer-events: auto;
+  transition: box-shadow .16s ease, filter .16s ease;
+}
+
+.global-sticky.dragging {
+  cursor: grabbing;
+  box-shadow: 11px 18px 32px rgba(23,21,18,.24);
+  filter: saturate(1.05);
+}
+
+.global-sticky.note-pink { background: #efc4c4; }
+.global-sticky.note-butter { background: #f2df9e; }
+.global-sticky.note-sage { background: #d6dfca; }
+.global-sticky.note-paper { background: #eee5d6; }
+
+.global-note-tape {
+  position: absolute;
+  top: -9px;
+  left: 48px;
+  width: 88px;
+  height: 19px;
+  background: rgba(227,205,101,.55);
+  transform: rotate(-2deg);
+  border-left: 1px solid rgba(23,21,18,.05);
+  border-right: 1px solid rgba(23,21,18,.05);
+}
+
+.global-note-delete {
+  position: absolute;
+  right: 6px;
+  top: 5px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  background: transparent;
+  color: rgba(23,21,18,.45);
+  font: 18px/1 var(--mono);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .12s ease, transform .12s ease;
+}
+
+.global-sticky:hover .global-note-delete,
+.global-note-delete:focus-visible {
+  opacity: 1;
+}
+
+.global-note-delete:hover {
+  transform: rotate(8deg) scale(1.1);
+  color: #171512;
+}
+
+.global-note-x {
+  position: absolute;
+  inset: 11px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.global-note-x::before,
+.global-note-x::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  top: 50%;
+  width: 108%;
+  height: 3px;
+  background: rgba(89,45,38,.72);
+  border-radius: 999px;
+  transform-origin: center;
+}
+
+.global-note-x::before { transform: rotate(28deg) scaleX(0); }
+.global-note-x::after { transform: rotate(-25deg) scaleX(0); }
+
+.global-sticky.crossed .global-note-x {
+  opacity: 1;
+}
+
+.global-sticky.crossed .global-note-x::before {
+  animation: note-cross-a .22s ease forwards;
+}
+
+.global-sticky.crossed .global-note-x::after {
+  animation: note-cross-b .22s ease .12s forwards;
+}
+
+.global-sticky.crossed .global-note-text {
+  opacity: .62;
+}
+
+@keyframes note-cross-a { to { transform: rotate(28deg) scaleX(1); } }
+@keyframes note-cross-b { to { transform: rotate(-25deg) scaleX(1); } }
+
+/* ink layer exists all session, but only catches input in ink mode */
+.doodle-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1500;
+  pointer-events: none;
+}
+
+.doodle-canvas-wrapper.active {
+  pointer-events: auto;
+}
+
+.doodle-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  cursor: crosshair;
+}
+
+.doodle-canvas-wrapper.active .doodle-canvas {
+  pointer-events: auto;
+}
+
+.doodle-toolbar {
+  z-index: 1510;
+}
+
+.doodle-canvas.eraser-wipe-now {
+  animation: canvas-erase .62s ease forwards;
+}
+
+@keyframes canvas-erase {
+  0% { clip-path: inset(0 0 0 0); opacity: 1; }
+  100% { clip-path: inset(0 0 0 100%); opacity: .15; }
+}
+
+/* previous-session ink gets physically wiped on reload */
+.reload-erase-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1490;
+  pointer-events: none;
+  overflow: hidden;
+  animation: reload-erase-layer .96s ease forwards;
+}
+
+.reload-erase-layer img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: reload-ink-wipe .9s cubic-bezier(.65,.02,.25,1) forwards;
+}
+
+.reload-eraser {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 58px;
+  left: -64px;
+  display: grid;
+  place-items: center;
+  writing-mode: vertical-rl;
+  font: 9px var(--mono);
+  letter-spacing: .14em;
+  color: rgba(23,21,18,.48);
+  background:
+    linear-gradient(90deg, rgba(243,235,221,.2), rgba(243,235,221,.98) 42%, rgba(243,235,221,.98));
+  animation: reload-eraser-sweep .9s cubic-bezier(.65,.02,.25,1) forwards;
+}
+
+@keyframes reload-ink-wipe {
+  0% { clip-path: inset(0 0 0 0); opacity: .95; }
+  96% { clip-path: inset(0 0 0 100%); opacity: .7; }
+  100% { clip-path: inset(0 0 0 100%); opacity: 0; }
+}
+
+@keyframes reload-eraser-sweep {
+  from { left: -64px; }
+  to { left: calc(100% + 10px); }
+}
+
+@keyframes reload-erase-layer {
+  0%, 90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 1120px) {
+  .hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .hero-workboard {
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 720px) {
+  .lab {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero {
+    padding-top: 34px;
+  }
+
+  .global-sticky {
+    width: 160px;
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reload-erase-layer,
+  .reload-erase-layer img,
+  .reload-eraser,
+  .global-sticky.crossed .global-note-x::before,
+  .global-sticky.crossed .global-note-x::after,
+  .doodle-canvas.eraser-wipe-now {
+    animation: none !important;
+  }
+}
