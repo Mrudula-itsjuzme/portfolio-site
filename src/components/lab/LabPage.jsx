@@ -25,6 +25,7 @@ import PersonalDesk from "./PersonalDesk";
 import MovableScrap from "./MovableScrap";
 import InteractionDock from "./InteractionDock";
 import GlobalStickyNotes, { makeGlobalNote } from "./GlobalStickyNotes";
+import ScreenLife from "./ScreenLife";
 import useReveal, { useGlobalReveal } from "./useReveal";
 import { playClickSound, playPaperSound } from "./sound";
 import {
@@ -585,6 +586,7 @@ export default function LabPage() {
 
       <DoodleCanvas active={doodleCanvasActive} onClose={() => setDoodleCanvasActive(false)} />
       <GlobalStickyNotes notes={userNotes} onChange={setUserNotes} />
+      <ScreenLife />
 
       <div className="lab">
         {toastMsg && <div className="lab-toast" role="status">{toastMsg}</div>}
