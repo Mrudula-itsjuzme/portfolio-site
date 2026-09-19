@@ -8,6 +8,8 @@ import {
   community,
   recentThoughts,
   writings,
+  publishedWriting,
+  publicationCount,
   currentExperiments,
   unfinishedIdeas,
   heroSticky,
@@ -797,6 +799,41 @@ export default function LabPage() {
               accent="loose ends"
               sub="Notes, essays, and ideas I haven’t managed to stop thinking about."
             />
+            <div className="published-writing-shelf reveal">
+              <div className="published-writing-head">
+                <div>
+                  <span className="published-kicker">published elsewhere</span>
+                  <h3>Books, journals & anthologies</h3>
+                </div>
+                <div className="publication-count-card">
+                  <strong>{publicationCount.value}</strong>
+                  <span>{publicationCount.label}</span>
+                  <small>{publicationCount.note}</small>
+                </div>
+              </div>
+
+              <div className="published-writing-grid">
+                {publishedWriting.map((item) => (
+                  <a
+                    key={item.id}
+                    className="published-writing-card"
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="published-type">{item.kind}</span>
+                    <span className="published-status">● {item.status}</span>
+                    <h4>{item.title}</h4>
+                    <p>{item.detail}</p>
+                    <div className="published-meta">
+                      <span>{item.venue}</span>
+                      <span>{item.year}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <div className="two-col">
               <div className="paper-block block-tilt-r reveal" style={{ position: "relative" }}>
                 <CatDoodle
@@ -818,7 +855,7 @@ export default function LabPage() {
                     </li>
                   ))}
                 </ul>
-                <h3 style={{ marginTop: 18 }}>writing</h3>
+                <h3 style={{ marginTop: 18 }}>online writing</h3>
                 <ul className="paper-list">
                   {writings.map((w) => (
                     <li key={w.id}>
