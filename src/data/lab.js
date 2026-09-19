@@ -294,21 +294,46 @@ export const researchPapers = [
 export const community = [
   {
     name: "INIT Club",
-    role: "Co-founder",
-    blurb: "Started with friends because something we wanted didn't exist; now people actually show up.",
-    href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+    role: "Co-founder · VP, Non-Tech",
+    blurb: "Co-founded the club and helped run events, collaborations, partnerships, and community operations.",
+    href: "https://initclub.vercel.app/",
+    linkLabel: "official site",
+  },
+  {
+    name: "IETE Amrita",
+    role: "AI/ML vertical member",
+    blurb: "Part of the AI/ML vertical in IETE Student Forum, Amrita Coimbatore.",
+    href: "https://avvsf.ietecbe.org/",
+    linkLabel: "official site",
   },
   {
     name: "Poetry Club",
     role: "Member",
-    blurb: "Words that don't compile. Still counts.",
+    blurb: "Weekly poetry community at campus.",
     href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+    linkLabel: "profile",
   },
   {
     name: "Hacktoberfest @ INIT",
     role: "Organizer",
-    blurb: "Open-source month, run through the club.",
-    href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+    blurb: "Open-source month, run through INIT.",
+    href: "https://initclub.vercel.app/",
+    linkLabel: "club site",
+  },
+];
+
+export const selectionTrail = [
+  {
+    name: "Arc180 Fellows",
+    stage: "interview / product-pitch stage",
+    note: "Reached the interview stage for the 2026 founder fellowship.",
+    href: "https://www.arc180fellows.com/",
+  },
+  {
+    name: "Polaris Fellowship",
+    stage: "Round 2 screening",
+    note: "Advanced past Round 1 into the 2026 screening/build stage.",
+    href: "https://fellowship.polariscampus.com/",
   },
 ];
 

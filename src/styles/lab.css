@@ -4242,3 +4242,129 @@ html[data-fullscreen="true"] .hero,
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+/* ============================================================
+   community verification + selection trail
+   ============================================================ */
+
+.community-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.community-card-head h4 {
+  margin-right: auto;
+}
+
+.community-verify {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  color: var(--forest);
+  opacity: .7;
+}
+
+.index-card:hover .community-verify {
+  opacity: 1;
+}
+
+.selection-trail {
+  margin-top: 26px;
+  padding: 16px 18px 18px;
+  border: 1px dashed rgba(23,21,18,.18);
+  background:
+    linear-gradient(rgba(247,241,230,.68), rgba(247,241,230,.68)),
+    repeating-linear-gradient(90deg, transparent 0 72px, rgba(49,74,53,.05) 72px 73px);
+}
+
+.selection-trail-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.selection-trail-head > span {
+  font-family: var(--hand);
+  font-size: 20px;
+  color: var(--forest);
+}
+
+.selection-trail-head small {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: rgba(23,21,18,.45);
+}
+
+.selection-trail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+}
+
+.selection-chip {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  min-height: 118px;
+  padding: 14px 16px 28px;
+  text-decoration: none !important;
+  color: var(--ink);
+  border: 1px solid rgba(23,21,18,.14);
+  background: var(--cream);
+  box-shadow: var(--shadow-paper);
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+
+.selection-chip:nth-child(2) {
+  transform: rotate(.45deg);
+}
+
+.selection-chip:hover {
+  transform: translateY(-3px) rotate(0deg);
+  box-shadow: var(--shadow-lift);
+}
+
+.selection-name {
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.selection-chip strong {
+  font: 9px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  color: var(--forest);
+}
+
+.selection-chip small {
+  font-size: 9.5px;
+  line-height: 1.45;
+  color: rgba(23,21,18,.58);
+}
+
+.selection-chip i {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  font-style: normal;
+  font-size: 8px;
+  color: var(--clay);
+}
+
+@media (max-width: 720px) {
+  .selection-trail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selection-trail-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
