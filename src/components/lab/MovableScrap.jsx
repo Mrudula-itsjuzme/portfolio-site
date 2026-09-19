@@ -23,6 +23,16 @@ export default function MovableScrap({ id, x, y, rotation = 0, tone = "paper", p
     }
   }, [id, x, y]);
 
+  const bounds = useCallback(() => {
+    const parent = parentRef?.current;
+    const el = ref.current;
+    if (!parent || !el) return { maxX: 9999, maxY: 9999 };
+    return {
+      maxX: Math.max(0, parent.clientWidth - el.offsetWidth),
+      maxY: Math.max(0, parent.clientHeight - el.offsetHeight),
+    };
+  }, [parentRef]);
+
   useEffect(() => {
     const shuffle = () => {
       const b = bounds();
@@ -47,16 +57,6 @@ export default function MovableScrap({ id, x, y, rotation = 0, tone = "paper", p
       window.removeEventListener("lab:reset-layout", resetLayout);
     };
   }, [bounds, id, x, y]);
-
-  const bounds = useCallback(() => {
-    const parent = parentRef?.current;
-    const el = ref.current;
-    if (!parent || !el) return { maxX: 9999, maxY: 9999 };
-    return {
-      maxX: Math.max(0, parent.clientWidth - el.offsetWidth),
-      maxY: Math.max(0, parent.clientHeight - el.offsetHeight),
-    };
-  }, [parentRef]);
 
   const onPointerDown = (e) => {
     if (e.button !== 0 || window.matchMedia("(pointer: coarse)").matches) return;
