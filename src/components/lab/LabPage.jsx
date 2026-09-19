@@ -46,6 +46,37 @@ const IMG = {
   eeg: "diagrams/eeg.png",
 };
 
+const MOCAP_MEDIA = [
+  {
+    id: "capture",
+    type: "video",
+    label: "annotated capture",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/annotated_front.mp4",
+    note: "front camera · MediaPipe overlay",
+  },
+  {
+    id: "quality",
+    type: "image",
+    label: "quality improvement",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/offline_quality_improvement_card.png",
+    note: "before / after pipeline quality",
+  },
+  {
+    id: "sync",
+    type: "image",
+    label: "sync sweep",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/figures/sync_offset_sweep_card.png",
+    note: "camera offset search",
+  },
+  {
+    id: "reprojection",
+    type: "image",
+    label: "reprojection",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/results/session_may16_dual/markerless_benchmark/reprojection_error_plot.png",
+    note: "documented benchmark output",
+  },
+];
+
 const GALLERY = [
   {
     src: IMG.motion,
@@ -107,111 +138,104 @@ function SectionHead({ kicker, title, accent, sub, id }) {
 /* Project: Motion Capture — technical / spatial                       */
 /* ------------------------------------------------------------------ */
 
-function MocapProject({ p, index, onOpenLightbox }) {
+function MocapProject({ p, index }) {
   const ref = useReveal();
-  const stageRef = useRef(null);
-  const reduced = usePrefersReducedMotion();
-  const coarse = useCoarsePointer();
-  const [scan, setScan] = useState(38);
+  const [activeMedia, setActiveMedia] = useState(MOCAP_MEDIA[0]);
+  const [mediaKey, setMediaKey] = useState(0);
 
-  useEffect(() => {
-    if (reduced || coarse || !stageRef.current) return;
-    const el = stageRef.current;
-    const onMove = (e) => {
-      const r = el.getBoundingClientRect();
-      setScan(((e.clientY - r.top) / r.height) * 100);
-    };
-    el.addEventListener("mousemove", onMove, { passive: true });
-    return () => el.removeEventListener("mousemove", onMove);
-  }, [reduced, coarse]);
+  const chooseMedia = (item) => {
+    setActiveMedia(item);
+    setMediaKey((k) => k + 1);
+  };
 
   return (
-    <article ref={ref} className={`project project-mocap reveal tilt-1`} aria-label={p.name}>
-      <div className="project-meta-row">
-        <span className="project-index">{String(index).padStart(2, "0")} /</span>
-        <h3 className="project-title">
-          <a href={p.github} target="_blank" rel="noreferrer">
-            {p.name}
-          </a>
-        </h3>
-        <span className="project-year">{p.year}</span>
-      </div>
-      <p className="project-blurb">{p.blurb}</p>
+    <article ref={ref} className="project project-mocap reveal" aria-label={p.name}>
+      <div className="mocap-project-head">
+        <div>
+          <div className="project-meta-row">
+            <span className="project-index">{String(index).padStart(2, "0")} /</span>
+            <h3 className="project-title">{p.name}</h3>
+            <span className="project-year">{p.year}</span>
+          </div>
+          <p className="project-blurb">{p.blurb}</p>
+        </div>
 
-      <div
-        ref={stageRef}
-        className="mocap-stage parallax-layer clickable-stage"
-        style={{ marginTop: 26, cursor: "pointer" }}
-        onClick={() => onOpenLightbox(0)}
-        title="open image"
-        data-magnetic
-      >
-        <span className="mocap-tag" aria-hidden="true">
-          <span className="rec-dot" />
-          cam 02 · rec · ⛶ expand
-        </span>
-        <span className="corner tl" aria-hidden="true" />
-        <span className="corner tr" aria-hidden="true" />
-        <span className="corner bl" aria-hidden="true" />
-        <span className="corner br" aria-hidden="true" />
-        <img src={IMG.motion} alt={`Motion capture tracking view — ${p.annotations[0]}`} />
-        <span className="scanline" aria-hidden="true" />
-        <span
-          className="anno"
-          style={{ left: "5%", top: "12%", transform: `rotate(-2deg) translateY(${reduced ? 0 : (scan - 50) * 0.06}px)` }}
-        >
-          {p.annotations[0]}
-          <span className="anno-line" />
-        </span>
-        <span
-          className="anno"
-          style={{ right: "6%", top: "48%", transform: "rotate(1.5deg)" }}
-        >
-          {p.annotations[1]}
-          <span className="anno-line" />
-        </span>
-        <span
-          className="anno"
-          style={{ left: "38%", bottom: "9%", color: "var(--butter)", transform: "rotate(-1deg)" }}
-        >
-          {p.annotations[2]}
-        </span>
-        {!reduced && (
-          <span
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: `${scan}%`,
-              height: "1px",
-              background: "rgba(121,199,197,0.5)",
-              transition: "top 0.08s linear",
-            }}
-          />
-        )}
+        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
+          <span>GitHub</span>
+          <strong>source + experiments ↗</strong>
+        </a>
       </div>
 
-      <div className="mocap-data">
-        <div className="data-title">recorded run · annotations</div>
-        <table className="fact-table">
-          <tbody>
-            {p.facts.map(([k, v]) => (
-              <tr key={k}>
-                <td>{k}</td>
-                <td>{v}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mocap-evidence-shell">
+        <div className="mocap-media-stage">
+          <div className="mocap-media-topbar">
+            <span className="rec-dot" />
+            <span>{activeMedia.label}</span>
+            <a href={activeMedia.src} target="_blank" rel="noreferrer">open original ↗</a>
+          </div>
+
+          <div className="mocap-media-main" key={mediaKey}>
+            {activeMedia.type === "video" ? (
+              <video
+                src={activeMedia.src}
+                controls
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Annotated motion capture result video"
+              />
+            ) : (
+              <img src={activeMedia.src} alt={activeMedia.label} loading="lazy" />
+            )}
+          </div>
+
+          <div className="mocap-media-caption">
+            <span>{activeMedia.note}</span>
+            <span>real output from the repo</span>
+          </div>
+        </div>
+
+        <div className="mocap-media-rail" aria-label="motion capture result views">
+          {MOCAP_MEDIA.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              className={activeMedia.id === item.id ? "active" : ""}
+              onClick={() => chooseMedia(item)}
+            >
+              <span className="rail-index">{item.type === "video" ? "▶" : "↗"}</span>
+              <span>
+                <strong>{item.label}</strong>
+                <small>{item.note}</small>
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="tag-row">
-        {p.tags.map((t) => (
-          <span className="tag" key={t}>
-            {t}
-          </span>
-        ))}
+      <div className="mocap-bottom-grid">
+        <div className="mocap-data mocap-data-inline">
+          <div className="data-title">documented run</div>
+          <table className="fact-table">
+            <tbody>
+              {p.facts.map(([k, v]) => (
+                <tr key={k}>
+                  <td>{k}</td>
+                  <td>{v}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mocap-notes">
+          <span className="mocap-note-label">what I’m validating now</span>
+          <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
+          <div className="tag-row">
+            {p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}
+          </div>
+        </div>
       </div>
     </article>
   );
@@ -674,16 +698,13 @@ export default function LabPage() {
               accent="work"
               sub="The projects I can explain without pretending they’re more finished than they are."
             />
-            <MocapProject p={featuredProjects[0]} index={1} onOpenLightbox={openLightbox} />
-            <span className="marginalia" style={{ right: "2%", top: "28%", transform: "rotate(2deg)" }} aria-hidden="true">
-              two cameras, one skeleton →
-            </span>
+            <MocapProject p={featuredProjects[0]} index={1} />
             <QuestsProject p={featuredProjects[1]} index={2} />
-            <span className="marginalia" style={{ left: "1%", top: "46%", transform: "rotate(-2deg)" }} aria-hidden="true">
+            <span className="marginalia" className="work-aside work-aside-quests" aria-hidden="true">
               ← the gamification rabbit hole
             </span>
             <CyberBioProject p={featuredProjects[2]} index={3} />
-            <span className="marginalia" style={{ right: "3%", top: "62%", transform: "rotate(1.5deg)" }} aria-hidden="true">
+            <span className="marginalia" className="work-aside work-aside-cyber" aria-hidden="true">
               attack, defend, then understand ↓
             </span>
             <ArchisProject p={featuredProjects[3]} index={4} />
