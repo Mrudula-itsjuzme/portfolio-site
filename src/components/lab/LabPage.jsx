@@ -6,6 +6,7 @@ import {
   contributions,
   researchPapers,
   community,
+  selectionTrail,
   recentThoughts,
   writings,
   publishedWriting,
@@ -850,9 +851,29 @@ export default function LabPage() {
                     style={{ textDecoration: "none", color: "inherit", display: "block" }}
                     onClick={() => playClickSound(soundEnabled)}
                   >
-                    <h4>{c.name}</h4>
+                    <div className="community-card-head">
+                      <h4>{c.name}</h4>
+                      <span className="community-verify">{c.linkLabel || "verify"} ↗</span>
+                    </div>
                     <span className="card-role">{c.role}</span>
                     <p>{c.blurb}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="selection-trail reveal" aria-label="selection trail">
+              <div className="selection-trail-head">
+                <span>selection trail</span>
+                <small>not wins. just stages i reached.</small>
+              </div>
+              <div className="selection-trail-grid">
+                {selectionTrail.map((item) => (
+                  <a href={item.href} target="_blank" rel="noreferrer" key={item.name} className="selection-chip">
+                    <span className="selection-name">{item.name}</span>
+                    <strong>{item.stage}</strong>
+                    <small>{item.note}</small>
+                    <i>official ↗</i>
                   </a>
                 ))}
               </div>
