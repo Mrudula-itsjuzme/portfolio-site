@@ -305,10 +305,10 @@ export const community = [
 ];
 
 export const recentThoughts = [
-  "What even is attention?",
-  "On building in public (kinda)",
-  "Why I love broken outputs",
-  "A poem about not knowing",
+  "gait validity ≠ a pretty skeleton",
+  "what counts as evidence after an attack works?",
+  "what makes a product survive after the fun prototype bit?",
+  "can a portfolio be a tool instead of a brochure?",
 ];
 
 export const writings = [
