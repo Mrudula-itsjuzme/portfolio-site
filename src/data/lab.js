@@ -1,9 +1,9 @@
 export const identity = {
   name: "MRUDULA",
   handle: "mrudula.exe",
-  roles: ["AI engineering student, Amrita", "researcher", "builder", "overthinker"],
+  roles: ["AI engineering student", "researcher", "builder", "overthinker"],
   subtext:
-    "Third-year AI student. I research, break, and rebuild things until they make sense — motion capture, adversarial ML, EEG reconstruction, and whatever the current rabbit hole is.",
+    "Third-year AI engineering student. I build systems, test weird ideas, and keep the failures visible long enough to learn from them — from markerless motion capture and adversarial ML to products that escape the notebook.",
   links: {
     github: "https://github.com/Mrudula-itsjuzme",
     linkedin: "https://www.linkedin.com/in/pedamallusaimrudula/",
@@ -14,9 +14,9 @@ export const identity = {
 
 export const currentStatuses = [
   "same brain, new problems",
-  "training a model right now",
+  "shipping small things before they become big things",
   "debugging mocap (again)",
-  "reading adversarial ML papers",
+  "turning experiments into evidence",
   "iterating on Quests beta",
   "overcaffeinated and refactoring",
   "asking what happens if it works",
@@ -26,7 +26,7 @@ export const currentStatuses = [
 export const heroSticky = [
   "make this cooler",
   "fix mocap (again)",
-  "publish Quests ?",
+  "ship Quests",
   "stop procrastinating",
   "write",
   "be a little kinder",
@@ -65,13 +65,13 @@ export const featuredProjects = [
     github: "https://github.com/Mrudula-itsjuzme/quests",
     tags: ["react", "mobile", "gamification"],
     blurb:
-      "A quest hub spanning React + Flutter clients, Express API, PostgreSQL state, and Supabase auth — daily/weekly/monthly quests with rarity rules, cooldowns, idempotent rewards, and user-owned progression.",
+      "A mobile-first quest system built with React, Vite, Capacitor, Express, PostgreSQL, and Supabase — with rarity rules, cooldowns, idempotent rewards, server-authoritative progression, and a tiny closed beta that keeps finding the useful bugs.",
     annotations: ["small steps, wilder days", "XP ledger + streaks", "prod mode rejects shortcuts"],
     facts: [
-      ["clients", "React web + Flutter, one backend state model"],
-      ["auth", "real OIDC / JWT via Supabase"],
+      ["client", "React + Vite + Capacitor mobile shell"],
+      ["auth", "Supabase-backed auth + protected writes"],
       ["writes", "versioned, idempotency-key required"],
-      ["schema", "ordered transactional migrations"],
+      ["beta", "3–4 testers · persistence + UX fixes in progress"],
     ],
     variant: "quests",
   },
@@ -136,7 +136,7 @@ export const researchPapers = [
     detail: "Time-Varying EEG Signal Reconstruction using ADMM & Graph Methods",
     meta: "Iterative graph optimization · artifact removal & reconstruction",
     href: "https://github.com/Mrudula-itsjuzme/MFC3_D3_EEG_Recon_ADMM",
-    tag: "published",
+    tag: "project",
   },
   {
     title: "CyberBio (in progress)",
@@ -358,8 +358,8 @@ note to self: numbers are not boring when they stop people from guessing.`,
 export const currentExperiments = [
   { label: "Quests beta", note: "iterating" },
   { label: "mocap pipeline", note: "fixing (again)" },
-  { label: "CyberBio v2 ideas", note: "sketching" },
-  { label: "what to break next", note: "planning" },
+  { label: "CyberBio validation", note: "tightening evidence" },
+  { label: "portfolio", note: "shipping this one" },
 ];
 
 export const unfinishedIdeas = [
