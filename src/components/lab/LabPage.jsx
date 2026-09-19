@@ -9,7 +9,6 @@ import {
   recentThoughts,
   writings,
   publishedWriting,
-  publicationCount,
   currentExperiments,
   unfinishedIdeas,
   heroSticky,
@@ -804,11 +803,6 @@ export default function LabPage() {
                 <div>
                   <span className="published-kicker">published elsewhere</span>
                   <h3>Books, journals & anthologies</h3>
-                </div>
-                <div className="publication-count-card">
-                  <strong>{publicationCount.value}</strong>
-                  <span>{publicationCount.label}</span>
-                  <small>{publicationCount.note}</small>
                 </div>
               </div>
 
