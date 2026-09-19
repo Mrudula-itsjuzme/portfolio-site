@@ -1014,6 +1014,7 @@ export default function LabPage() {
               <Constellation />
             </div>
           </section>
+        </main>
 
         {/* ---------------- footer ---------------- */}
         <footer className="lab-footer lab-footer-final">
