@@ -405,7 +405,6 @@ function MocapProject({ p, index }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Project: Quests/* ------------------------------------------------------------------ */
 /* Project: Quests — cinematic / product                               */
 /* ------------------------------------------------------------------ */
 
@@ -461,7 +460,6 @@ function QuestsProject({ p, index }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Project: CyberBio/* ------------------------------------------------------------------ */
 /* Project: CyberBio — experimental / scientific                       */
 /* ------------------------------------------------------------------ */
 
@@ -518,7 +516,6 @@ function CyberBioProject({ p, index }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Project: Archis/* ------------------------------------------------------------------ */
 /* Project: Archis — blueprint → interpreted space → 3D                */
 /* ------------------------------------------------------------------ */
 
@@ -590,7 +587,6 @@ function ArchisProject({ p, index }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Page/* ------------------------------------------------------------------ */
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -1157,9 +1153,7 @@ export default function LabPage() {
             </div>
 
             <div className="constellation-doodles" aria-hidden="true">
-              <PaperPlaneDoodle size={44} />
-              <StarDoodle size={24} />
-              <Sparkle size={16} />
+              <PaperPlaneDoodle size={38} />
               <Constellation />
             </div>
           </section>
@@ -1201,6 +1195,22 @@ export default function LabPage() {
                 <div><strong>{contributions.filter((p) => p.status === "merged").length}</strong><small>merged PRs</small></div>
                 <div><strong>{contributions.filter((p) => p.status === "open").length}</strong><small>open PRs</small></div>
               </div>
+            </div>
+
+            <div className="closing-shelf-strip">
+              <span className="closing-shelf-label">a few things to open next</span>
+              {publishedWriting.slice(0, 2).map((item) => (
+                <a href={item.href} target="_blank" rel="noreferrer" key={item.id}>
+                  <small>{item.kind}</small>
+                  <strong>{item.title}</strong>
+                </a>
+              ))}
+              {writings.slice(0, 2).map((item) => (
+                <a href={item.href} target="_blank" rel="noreferrer" key={item.title}>
+                  <small>{item.status}</small>
+                  <strong>{item.title}</strong>
+                </a>
+              ))}
             </div>
           </section>
         </main>
