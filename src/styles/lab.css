@@ -4789,3 +4789,270 @@ html[data-fullscreen="true"] .hero,
     display: none;
   }
 }
+
+
+/* ============================================================
+   warm night palette + compact useful footer
+   ============================================================ */
+
+[data-theme="night"] {
+  --paper: #1a1513;
+  --paper-alt: #221b18;
+  --ink: #f1e8dc;
+  --charcoal: #261f1b;
+  --forest: #a5b694;
+  --moss: #879b72;
+  --sage: #b7c4a8;
+  --pink: #d7a0a0;
+  --butter: #d8c36f;
+  --clay: #d49a76;
+  --cream: #2c241f;
+  --cyan: #90c7c1;
+  --shadow-paper: 0 1px 2px rgba(0,0,0,.24), 0 8px 22px rgba(0,0,0,.28);
+  --shadow-lift: 0 2px 4px rgba(0,0,0,.3), 0 18px 38px rgba(0,0,0,.36);
+}
+
+[data-theme="night"] body {
+  background:
+    radial-gradient(1100px 620px at 88% -8%, rgba(135,155,114,.11), transparent 58%),
+    radial-gradient(900px 560px at -8% 38%, rgba(212,154,118,.10), transparent 56%),
+    #1a1513;
+}
+
+[data-theme="night"] .lab-header {
+  background: rgba(38,31,27,.96);
+  border-bottom-color: rgba(241,232,220,.08);
+}
+
+[data-theme="night"] .hero-workboard,
+[data-theme="night"] .project-scrapboard.board-paper,
+[data-theme="night"] .project-scrapboard.board-lab,
+[data-theme="night"] .project-scrapboard.board-draft {
+  background:
+    linear-gradient(rgba(43,35,30,.97), rgba(43,35,30,.97)),
+    repeating-linear-gradient(0deg, transparent 0 29px, rgba(241,232,220,.035) 29px 30px);
+  border-color: rgba(241,232,220,.08);
+}
+
+[data-theme="night"] .project-scrapboard.board-draft {
+  background:
+    linear-gradient(rgba(45,37,32,.97), rgba(45,37,32,.97)),
+    linear-gradient(90deg, rgba(165,182,148,.055) 1px, transparent 1px),
+    linear-gradient(rgba(165,182,148,.055) 1px, transparent 1px);
+  background-size: auto, 24px 24px, 24px 24px;
+}
+
+[data-theme="night"] .paper-block,
+[data-theme="night"] .index-card,
+[data-theme="night"] .drawer,
+[data-theme="night"] .selection-trail,
+[data-theme="night"] .published-writing-shelf,
+[data-theme="night"] .constellation-card,
+[data-theme="night"] .closing-card,
+[data-theme="night"] .mocap-data,
+[data-theme="night"] .mocap-notes,
+[data-theme="night"] .project-cyberbio .reaction {
+  background: #2a221e;
+  color: var(--ink);
+  border-color: rgba(241,232,220,.08);
+}
+
+[data-theme="night"] .proof-paper {
+  background: #332a25;
+  border-color: rgba(241,232,220,.09);
+}
+
+[data-theme="night"] .proof-paper img,
+[data-theme="night"] .proof-paper video {
+  background: #efe7da;
+}
+
+[data-theme="night"] .proof-note {
+  background: #6b5c32;
+  color: #fff4df;
+}
+
+[data-theme="night"] .tag,
+[data-theme="night"] .chip,
+[data-theme="night"] .hero-role {
+  background: rgba(165,182,148,.10);
+  border-color: rgba(165,182,148,.17);
+  color: #dfe8d6;
+}
+
+[data-theme="night"] .paper-list,
+[data-theme="night"] .lab-sub,
+[data-theme="night"] .project-blurb,
+[data-theme="night"] .constellation-card p,
+[data-theme="night"] .selection-chip small,
+[data-theme="night"] .published-writing-card p {
+  color: rgba(241,232,220,.72);
+}
+
+[data-theme="night"] .selection-chip,
+[data-theme="night"] .published-writing-card {
+  background: #302722;
+  color: var(--ink);
+  border-color: rgba(241,232,220,.08);
+}
+
+[data-theme="night"] .selection-trail {
+  background:
+    linear-gradient(rgba(42,34,30,.92), rgba(42,34,30,.92)),
+    repeating-linear-gradient(90deg, transparent 0 72px, rgba(165,182,148,.045) 72px 73px);
+}
+
+.closing-desk {
+  position: relative;
+  margin-top: 44px;
+  padding-top: 8px;
+  padding-bottom: 24px;
+}
+
+.closing-desk-head {
+  margin-bottom: 18px;
+}
+
+.closing-desk-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .9fr .9fr;
+  gap: 16px;
+}
+
+.closing-card {
+  position: relative;
+  min-height: 180px;
+  padding: 18px 20px;
+  border: 1px solid rgba(23,21,18,.13);
+  background: var(--cream);
+  box-shadow: var(--shadow-paper);
+}
+
+.closing-card:nth-child(1) { transform: rotate(-.4deg); }
+.closing-card:nth-child(2) { transform: rotate(.45deg); }
+.closing-card:nth-child(3) { transform: rotate(-.2deg); }
+
+.closing-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 8px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.closing-row,
+.closing-links > a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(23,21,18,.12);
+  text-decoration: none !important;
+}
+
+.closing-row:last-child,
+.closing-links > a:last-child {
+  border-bottom: 0;
+}
+
+.closing-row > span,
+.closing-links > a {
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.closing-row small {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--clay);
+}
+
+.closing-proof {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.closing-proof > div {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.closing-proof strong {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--forest);
+}
+
+.closing-proof small {
+  font-size: 9px;
+  color: rgba(23,21,18,.6);
+}
+
+.closing-desk-doodles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.closing-desk-doodles > :first-child {
+  position: absolute;
+  right: -18px;
+  top: 6px;
+  color: var(--clay);
+  opacity: .72;
+}
+
+.closing-desk-doodles > :last-child {
+  position: absolute;
+  left: -20px;
+  bottom: 18px;
+  color: var(--moss);
+  opacity: .58;
+  transform: rotate(-12deg);
+}
+
+.lab-footer-tight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 54px;
+  padding-top: 16px;
+  padding-bottom: 18px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(23,21,18,.12);
+}
+
+.lab-footer-tight .to-top {
+  margin: 0;
+}
+
+[data-theme="night"] .closing-proof small,
+[data-theme="night"] .closing-row small {
+  color: rgba(241,232,220,.62);
+}
+
+[data-theme="night"] .closing-row,
+[data-theme="night"] .closing-links > a {
+  border-bottom-color: rgba(241,232,220,.09);
+}
+
+@media (max-width: 880px) {
+  .closing-desk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .closing-card,
+  .closing-card:nth-child(1),
+  .closing-card:nth-child(2),
+  .closing-card:nth-child(3) {
+    transform: none;
+  }
+}
