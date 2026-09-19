@@ -22,6 +22,25 @@ export default function InteractionDock({ doodleActive, onToggleDoodle }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    const reactive = Array.from(document.querySelectorAll(
+      ".constellation-card, .project, .contribution-row, .index-card, .paper-block"
+    ));
+    const moveHandlers = reactive.map((el) => {
+      const onMove = (e) => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty("--hover-x", ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + "%");
+        el.style.setProperty("--hover-y", ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + "%");
+        el.classList.add("reactive-surface");
+      };
+      const onLeave = () => el.classList.remove("reactive-surface");
+      el.addEventListener("pointermove", onMove);
+      el.addEventListener("pointerleave", onLeave);
+      return () => {
+        el.removeEventListener("pointermove", onMove);
+        el.removeEventListener("pointerleave", onLeave);
+      };
+    });
+
     const onKey = (e) => {
       const tag = document.activeElement?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -36,7 +55,10 @@ export default function InteractionDock({ doodleActive, onToggleDoodle }) {
       }
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      moveHandlers.forEach((dispose) => dispose());
+    };
   }, [onToggleDoodle]);
 
   const shuffle = () => {
