@@ -1022,6 +1022,17 @@ export default function LabPage() {
                   <span className="constellation-kind">{p.kind}</span>
                   <h3>{p.name}</h3>
                   <p>{p.note}</p>
+                  {p.proofImage ? (
+                    <div className="constellation-proof-image">
+                      <img src={p.proofImage} alt="" loading="lazy" />
+                      <small>{p.proofLabel}</small>
+                    </div>
+                  ) : p.proofLines ? (
+                    <div className="constellation-proof-lines">
+                      <small>{p.proofLabel}</small>
+                      {p.proofLines.map((line) => <span key={line}>{line}</span>)}
+                    </div>
+                  ) : null}
                   <span className="constellation-link">peek ↗</span>
                 </a>
               ))}
