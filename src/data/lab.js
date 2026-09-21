@@ -16,7 +16,9 @@ export const currentStatuses = [
   "quests · closed beta fixes",
   "mocap · gait validation",
   "cyberbio · evidence pass",
-  "open source · PRs in review",
+  "cloud / graphrag · integration",
+  "archis · team build",
+  "INIT · building community",
 ];
 
 export const heroSticky = [
@@ -32,7 +34,7 @@ export const currentWorks = [
     name: "Quests",
     status: "closed beta",
     note: "3–4 testers are finding the boring bugs that matter: persistence, UX friction, and whether the progression loop actually sticks.",
-    next: "next build → persistence + release polish",
+    next: "next → persistence + release polish",
     href: "https://github.com/Mrudula-itsjuzme/quests",
     tone: "butter",
   },
@@ -55,6 +57,24 @@ export const currentWorks = [
     tone: "pink",
   },
   {
+    id: "now-cloud",
+    name: "Cloud / GraphRAG",
+    status: "integration",
+    note: "A cloud-native research platform joining object, relational, vector, and graph storage with queued jobs, retrieval, APIs, and deployment plumbing.",
+    next: "next → wire the full service path",
+    href: "https://github.com/Noha-JM/Semantic_Workspace",
+    tone: "paper",
+  },
+  {
+    id: "now-archis",
+    name: "Archis",
+    status: "team build",
+    note: "Growing the semantic architecture workspace from a prototype into a multidisciplinary build around intent, constraints, linked 2D/3D, and change impact.",
+    next: "next → make the shared architecture legible to the team",
+    href: "https://github.com/Mrudula-itsjuzme/Archis",
+    tone: "sage",
+  },
+  {
     id: "now-portfolio",
     name: "This site",
     status: "alive",
@@ -62,6 +82,15 @@ export const currentWorks = [
     next: "next → keep only the fun parts that earn their space",
     href: "https://github.com/Mrudula-itsjuzme/portfolio-site",
     tone: "paper",
+  },
+  {
+    id: "now-init",
+    name: "INIT Club",
+    status: "co-founder",
+    note: "Building the club itself alongside the events: collaborations, workshops, hackathons, sponsor conversations, and the systems that keep the community moving.",
+    next: "next → ship the next thing worth showing up for",
+    href: "https://initclub.vercel.app/",
+    tone: "butter",
   },
 ];
 
@@ -212,19 +241,6 @@ export const productProjects = [
     meta: "built with Meghana Kotharu",
     variant: "voice",
   },
-  {
-    name: "AnswerBubble",
-    href: "https://github.com/Mrudula-itsjuzme/Answer_bubble",
-    note: "Desktop AI meeting copilot with live transcription, question detection, floating answers, notes, and local semantic memory.",
-    proofLines: [
-      "<500 ms question detection path",
-      "multi-provider LLM failover",
-      "Tauri desktop overlay",
-      "no raw audio stored",
-    ],
-    meta: "React + TypeScript + Tauri",
-    variant: "desktop",
-  },
 ];
 
 export const researchRows = [
@@ -257,6 +273,7 @@ export const researchRows = [
 ];
 
 export const otherBuilds = [
+  { name: "AnswerBubble · paused", href: "https://github.com/Mrudula-itsjuzme/Answer_bubble" },
   { name: "AI Council", href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/" },
   { name: "Habbit", href: "https://github.com/Mrudula-itsjuzme/mind" },
 ];
