@@ -158,13 +158,6 @@ const GALLERY = [
     alt: "Motion capture dual camera setup",
   },
   {
-    src: IMG.solar,
-    title: "Quests — HABBIT Quest Engine",
-    tag: "Project 02",
-    caption: "Daily quest hub, XP ledger, streak tracking, and progression state.",
-    alt: "Quests app screenshot",
-  },
-  {
     src: IMG.portfolio,
     title: "Archis — Interpreted Space Draft",
     tag: "Project 04",
@@ -369,7 +362,7 @@ function CyberBioProject({ p, index }) {
               <div><strong>{k}</strong><p>{v}</p></div>
             </div>
           ))}
-          <small>current pass: multi-seed stats · representation sensitivity · physical checks</small>
+          <small>paused state: validation complete · physical-oracle bundle prepared · no QM result claimed</small>
         </aside>
       </div>
 
