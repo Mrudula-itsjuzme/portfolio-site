@@ -15,7 +15,7 @@ export const identity = {
 export const currentStatuses = [
   "quests · closed beta fixes",
   "mocap · gait validation",
-  "cyberbio · evidence pass",
+  "cyberbio · paused / oracle-ready",
   "cloud / graphrag · integration",
   "archis · team build",
   "INIT · building community",
@@ -24,7 +24,7 @@ export const currentStatuses = [
 export const heroSticky = [
   "ship Quests",
   "gait validity > pretty skeleton",
-  "physical oracle?",
+  "CyberBio: parked until real oracle compute",
   "write something not for linkedin",
 ];
 
@@ -50,9 +50,9 @@ export const currentWorks = [
   {
     id: "now-cyberbio",
     name: "CyberBio",
-    status: "evidence pass",
-    note: "The attacks work. Now I’m trying to make the conclusions harder to fool: multi-seed stats, representation sensitivity, physical checks, cleaner reporting.",
-    next: "next → freeze the canonical experiment",
+    status: "paused cleanly",
+    note: "The evidence pass is done: representation sensitivity is measured, negative results are preserved, the physical-oracle shortlist is frozen, and cheap extra experiments are no longer the useful next move.",
+    next: "next → multi-seed retraining or independent physical oracle",
     href: "https://github.com/Mrudula-itsjuzme/cyberbio",
     tone: "pink",
   },
@@ -77,9 +77,9 @@ export const currentWorks = [
   {
     id: "now-portfolio",
     name: "This site",
-    status: "alive",
-    note: "Turning a portfolio into a place I can actually use: movable scraps, doodles, a local desk, current work, and less recruiter theatre.",
-    next: "next → keep only the fun parts that earn their space",
+    status: "shipped",
+    note: "The portfolio is now a finished working surface: projects, evidence, publications, contributions, writing, movable scraps, doodles, and a recruiter-readable fallback without flattening it into a template.",
+    next: "done → only update when the work itself changes",
     href: "https://github.com/Mrudula-itsjuzme/portfolio-site",
     tone: "paper",
   },
@@ -192,13 +192,13 @@ export const featuredProjects = [
     github: "https://github.com/Mrudula-itsjuzme/cyberbio",
     tags: ["deep learning", "materials", "adversarial ml"],
     blurb:
-      "A leakage-audited adversarial robustness study for polymer sequence models, now centered on polyVERSE bandgap prediction with sealed test data, five-seed benchmarks, representation-preserving controls, and chemistry-changing stress tests.",
+      "A leakage-audited adversarial robustness study for polymer sequence models, now paused at the point where the next defensible evidence requires either frozen multi-seed retraining or an independent physical oracle.",
     annotations: ["attack →", "defend →", "understand →"],
     facts: [
-      ["active lineage", "polyVERSE bandgap · 4,209 records"],
-      ["baseline", "sealed-test MAE 0.4619 eV · R² 0.8019"],
-      ["representation drift", "0.8968 → 0.4079 eV on scaffold split"],
-      ["stress test", "MCMC-style drift ≈0.22 → ≈0.18 eV with consistency regularization"],
+      ["validation", "631 molecules · 16 equivalent views requested"],
+      ["ordinary Transformer", "multi-view mean worsened MAE by +0.0418 eV"],
+      ["augmented Transformer", "multi-view mean improved MAE by −0.0165 eV"],
+      ["next evidence", "physical-oracle bundle prepared · no QM result claimed yet"],
     ],
     variant: "cyberbio",
   },
