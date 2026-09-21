@@ -687,8 +687,11 @@ export default function LabPage() {
                 const positions = [
                   { x: 12, y: 58, r: -2.2 },
                   { x: 250, y: 42, r: 1.6 },
-                  { x: 34, y: 250, r: 1.2 },
-                  { x: 278, y: 246, r: -1.5 },
+                  { x: 34, y: 240, r: 1.2 },
+                  { x: 278, y: 232, r: -1.5 },
+                  { x: 16, y: 422, r: -1.2 },
+                  { x: 254, y: 414, r: 1.4 },
+                  { x: 132, y: 600, r: -0.8 },
                 ];
                 const p = positions[i] || { x: 20 + i * 24, y: 70 + i * 36, r: 0 };
                 return (
@@ -737,7 +740,7 @@ export default function LabPage() {
               kicker="products"
               title="Built to be"
               accent="used"
-              sub="Two product builds that deserve more than a tiny repo chip."
+              sub="A product build that deserves more than a tiny repo chip. Paused experiments live elsewhere."
             />
 
             <div className="product-duo reveal">
