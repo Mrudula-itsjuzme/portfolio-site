@@ -1,9 +1,9 @@
 export const identity = {
   name: "MRUDULA",
   handle: "mrudula.exe",
-  roles: ["AI engineering student", "researcher", "builder", "writer"],
+  roles: ["computer vision", "adversarial ML", "software", "writer"],
   subtext:
-    "Third-year AI engineering student. I build systems, test weird ideas, and keep the failures visible long enough to learn from them — from markerless motion capture and adversarial ML to products that escape the notebook.",
+    "I’m Pedamallu Sai Mrudula, an AI Engineering student at Amrita (2028), first-author IEEE Access researcher, and INIT Club co-founder. I work on computer vision, adversarial ML, and software that turns experiments into usable tools.",
   links: {
     github: "https://github.com/Mrudula-itsjuzme",
     linkedin: "https://www.linkedin.com/in/pedamallusaimrudula/",
