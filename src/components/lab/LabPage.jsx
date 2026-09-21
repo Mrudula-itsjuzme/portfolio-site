@@ -659,6 +659,9 @@ export default function LabPage() {
                 <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>
                   see the work ↓
                 </a>
+                <a className="btn-quiet" href={`${import.meta.env.BASE_URL}profile.html`}>
+                  profile + publications ↗
+                </a>
                 <button
                   type="button"
                   className="btn-add-note"
