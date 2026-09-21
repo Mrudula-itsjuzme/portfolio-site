@@ -2381,7 +2381,7 @@ html[data-fullscreen="true"] .hero,
 
 .hero-workboard {
   position: relative;
-  min-height: 510px;
+  min-height: 820px;
   margin-top: 8px;
   border: 1px solid rgba(23,21,18,.18);
   background:
@@ -2619,7 +2619,7 @@ html[data-fullscreen="true"] .hero,
   }
 
   .hero-workboard {
-    min-height: 500px;
+    min-height: 820px;
     max-width: 620px;
   }
 }
