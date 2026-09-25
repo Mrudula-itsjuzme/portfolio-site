@@ -18,7 +18,6 @@ import {
 } from "../../data/lab";
 import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
-import LightboxModal from "./LightboxModal";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
 import PersonalDesk from "./PersonalDesk";
@@ -42,9 +41,6 @@ import {
 
 const IMG = {
   motion: "diagrams/motion.png",
-  solar: "diagrams/solar.png",
-  portfolio: "diagrams/portfolio.png",
-  eeg: "diagrams/eeg.png",
 };
 
 const CYBERBIO_MEDIA = [
@@ -146,37 +142,6 @@ const ARCHIS_BOARD = [
     caption: "product workspace concept",
     initial: { x: 690, y: 330, r: -1.5 },
     kind: "proof-small",
-  },
-];
-
-const GALLERY = [
-  {
-    src: IMG.motion,
-    title: "Motion Capture — Markerless Tracking",
-    tag: "Project 01",
-    caption: "Dual-camera 3D triangulation, joint tracking, and trajectory stabilization.",
-    alt: "Motion capture dual camera setup",
-  },
-  {
-    src: IMG.portfolio,
-    title: "Archis — Interpreted Space Draft",
-    tag: "Project 04",
-    caption: "2D Floor plan converted to initial spatial layout and intent hypotheses.",
-    alt: "Interpreted space draft",
-  },
-  {
-    src: IMG.eeg,
-    title: "Archis — Semantic 3D Room Model",
-    tag: "Project 04",
-    caption: "Interactive 3D geometry surviving original architectural intent.",
-    alt: "3D room model",
-  },
-  {
-    src: IMG.portfolio,
-    title: "2am Desk Scene",
-    tag: "Workspace",
-    caption: "Still here… (and it’s kind of beautiful)",
-    alt: "Desk scene polaroid photo",
   },
 ];
 
@@ -467,12 +432,7 @@ export default function LabPage() {
   const [doodleCanvasActive, setDoodleCanvasActive] = useState(false);
   const [selectedEssay, setSelectedEssay] = useState(null);
 
-  const [lightboxState, setLightboxState] = useState({
-    isOpen: false,
-    index: 0,
-  });
-
-  const [toastMsg, setToastMsg] = useState("");
+const [toastMsg, setToastMsg] = useState("");
   const [userNotes, setUserNotes] = useState(() => {
     try {
       const saved = localStorage.getItem("lab-user-notes");
@@ -565,19 +525,6 @@ export default function LabPage() {
     },
     [soundEnabled]
   );
-
-  const openLightbox = useCallback(
-    (index) => {
-      playClickSound(soundEnabled);
-      setLightboxState({ isOpen: true, index });
-    },
-    [soundEnabled]
-  );
-
-  const closeLightbox = useCallback(() => {
-    playPaperSound(soundEnabled);
-    setLightboxState({ isOpen: false, index: 0 });
-  }, [soundEnabled]);
 
   // scroll progress bar
   useEffect(() => {
@@ -1027,15 +974,6 @@ export default function LabPage() {
           <span>© {new Date().getFullYear()} Mrudula</span>
         </footer>
       </div>{/* end .lab */}
-
-      {/* Lightbox Modal */}
-      <LightboxModal
-        isOpen={lightboxState.isOpen}
-        onClose={closeLightbox}
-        items={GALLERY}
-        currentIndex={lightboxState.index}
-        onSelectIndex={(idx) => setLightboxState((s) => ({ ...s, index: idx }))}
-      />
 
       {/* Essay Reader Modal */}
       <EssayModal
