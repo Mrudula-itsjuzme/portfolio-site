@@ -1,112 +1,68 @@
-# Digital Library Portfolio
+# Mrudula — Portfolio
 
-An immersive library-themed portfolio for **Pedamallu Sai Mrudula**, built to present research, engineering projects, and creative technical work as a browsable digital archive.
+Personal portfolio for Pedamallu Sai Mrudula.
 
-Instead of placing projects in a standard grid, the interface turns repositories into books on a shelf. Each project becomes an artifact that can be opened, explored, and understood in context.
+The current site is a scrapbook/workbench-style React portfolio focused on real project evidence, published research, open-source contributions, writing, and active builds. It intentionally avoids a generic project-card layout.
 
-## Concept
+## What is on the site
 
-The portfolio combines resume data, GitHub repository metadata, motion, sound, and 3D-inspired interaction into one narrative experience.
+- selected technical projects with evidence and limitations
+- published research and metrics
+- open-source contributions with direct PR links
+- current work and experiments
+- writing and published pieces
+- movable scraps, sticky notes, doodles, and lightweight interactions
+- recruiter-friendly profile and resume links
 
-The central idea is simple: a technical portfolio should not feel like a filing cabinet. It should feel like entering a world built from the work itself.
+## Current featured work
 
-## Features
+- Motion Capture — dual-camera markerless 3D motion capture and gait analysis
+- CyberBio — adversarial robustness for materials sequence models
+- Archis — intent-preserving architecture workspace
+- Quests / Wild Realm — mobile-first gamified exploration platform
 
-- interactive 3D-inspired bookshelf
-- repositories presented as project books
-- page-flip project viewer
-- GitHub repository fetching and categorization
-- static `repos.json` fallback for reliable public rendering
-- resume and profile archive
-- atmospheric sound with saved user preference
-- motion-led transitions using Framer Motion
-- static production build support
+## Stack
 
-## System overview
+- React
+- Vite
+- CSS
+- Framer Motion
+- GitHub Pages
+
+The deployed site does not depend on a runtime GitHub ingestion service. Project content is curated directly in the portfolio so stale repository metadata or random repository images cannot silently change the site.
+
+## Structure
 
 ```text
-Resume PDF + GitHub repositories
-              ↓
-      Data extraction scripts
-              ↓
-      Prepared JSON / API layer
-              ↓
-         React portfolio UI
-              ↓
- Bookshelf + project-book viewer
+src/
+  components/lab/   scrapbook/workbench UI
+  data/lab.js       curated portfolio content
+  styles/lab.css    visual system and responsive layout
+
+public/
+  diagrams/         small set of local portfolio visuals
+  profile.html      lightweight profile/publications view
+  resume.pdf        downloadable resume
 ```
-
-## Tech stack
-
-| Layer | Tools |
-|---|---|
-| Frontend | React, Vite, Framer Motion |
-| 3D and visuals | Three.js, React Three Fiber, Drei |
-| Book interaction | React PageFlip |
-| Backend | Node.js, Express |
-| Data extraction | pdf-parse, GitHub API scripts |
-| Export utilities | html2canvas, jsPDF |
 
 ## Run locally
 
 ```bash
-git clone https://github.com/Mrudula-itsjuzme/portfolio-site.git
-cd portfolio-site
 npm install
-npm run dev
+npm run dev:client
 ```
 
-Development services:
-
-```text
-Client: http://localhost:5173
-Server: http://localhost:5000
-```
-
-An optional GitHub token can be added for repository-data fetching:
-
-```env
-GITHUB_TOKEN=your_token_here
-```
-
-Create a production build with:
+Production build:
 
 ```bash
 npm run build
+npm run preview
 ```
 
-## Important files
+## Deployment
 
-| File | Purpose |
-|---|---|
-| `assets/resume.pdf` | source profile and resume data |
-| `scripts/fetch-repos.js` | fetches and prepares repository metadata |
-| `public/repos.json` | static repository-data fallback |
-| `src/pages/Home.jsx` | main library stage and sound behaviour |
-| `src/components/Bookshelf.jsx` | bookshelf rendering system |
-| `src/components/BookViewer.jsx` | interactive project-book viewer |
+GitHub Pages deploys from `main` through `.github/workflows/deploy.yml`.
 
-## Design approach
+## Notes
 
-The site is designed as a quiet digital archive rather than a conventional portfolio dashboard.
-
-Motion and sound are used to create atmosphere, but the content remains the centre of the experience. The bookshelf metaphor gives each project a physical sense of place while still preserving direct links, descriptions, technologies, and repository evidence.
-
-The architecture also keeps a static metadata fallback so the portfolio does not depend entirely on unauthenticated GitHub API requests at runtime.
-
-## Current status
-
-The core library experience, repository ingestion, book viewer, and static-data workflow are implemented. Current refinement areas include accessibility, reduced-motion behaviour, keyboard navigation, low-performance fallbacks, and continued verification of project metadata.
-
-## Roadmap
-
-- improve keyboard navigation and focus states
-- strengthen reduced-motion and audio controls
-- add a lightweight mode for low-performance devices
-- add filtering by project category and status
-- automate repository-metadata refreshes
-- continue replacing fallback content with verified project data
-
-## Author
-
-Built by [Pedamallu Sai Mrudula](https://github.com/Mrudula-itsjuzme) as a personal portfolio and creative frontend-engineering project.
+The portfolio is deliberately evidence-first. Project states, metrics, limitations, and links should be updated when the underlying work changes rather than padded with placeholder screenshots or decorative generated imagery.
