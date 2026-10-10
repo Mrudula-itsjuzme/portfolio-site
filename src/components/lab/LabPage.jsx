@@ -39,9 +39,33 @@ import {
   VinylDoodle,
 } from "./Doodles";
 
-const IMG = {
-  motion: "diagrams/motion.png",
-};
+const MOCAP_PROOF = [
+  { label: "Capture pipeline", note: "actual capture system screenshot", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-overview.png" },
+  { label: "Reprojection errors", note: "measured geometric validation", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/reports/figures/final_reprojection_histogram.png" },
+  { label: "Joint-angle output", note: "measured kinematics", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/reports/figures/final_joint_angles.png" },
+];
+
+const QUESTS_PROOF = [
+  { label: "Quest screen", note: "recorded application UI", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/10-quests-fixed.png" },
+  { label: "Map", note: "recorded exploration screen", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/15-map-final.png" },
+  { label: "Rewards", note: "recorded rewards flow", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/14-rewards-stable.png" },
+  { label: "Profile", note: "recorded profile screen", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/12-profile-fixed.png" },
+];
+
+function EvidenceGallery({ items, variant = "" }) {
+  return (
+    <div className={`project-evidence-gallery ${variant}`}>
+      {items.map((item) => (
+        <figure className="project-evidence-item" key={item.src}>
+          <a href={item.src} target="_blank" rel="noreferrer" title={`Open original: ${item.label}`}>
+            <img src={item.src} alt={item.label} loading="lazy" />
+          </a>
+          <figcaption><strong>{item.label}</strong><span>{item.note}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
 
 const CYBERBIO_MEDIA = [
   {
@@ -195,10 +219,7 @@ function MocapProject({ p, index }) {
       </div>
 
       <div className="mocap-clean-layout">
-        <figure className="mocap-local-visual">
-          <img src={IMG.motion} alt="Motion Capture project diagram" loading="lazy" />
-          <figcaption>pipeline / gait-analysis project visual</figcaption>
-        </figure>
+        <EvidenceGallery items={MOCAP_PROOF} variant="evidence-mocap" />
 
         <aside className="mocap-metrics-panel">
           <span className="panel-kicker">documented run</span>
@@ -243,6 +264,8 @@ function QuestsProject({ p, index }) {
           <strong>repo + release ↗</strong>
         </a>
       </div>
+
+      <EvidenceGallery items={QUESTS_PROOF} variant="evidence-quests" />
 
       <div className="quests-system-layout">
         <div className="quests-loop-card">
@@ -382,19 +405,10 @@ function ArchisProject({ p, index }) {
         </div>
       </div>
 
-      <div className="archis-concept-sheet">
-        <figure className="archis-hero-panel">
-          <img src={ARCHIS_MEDIA[0].src} alt="Archis workspace concept" loading="lazy" />
-          <figcaption>workspace · current product direction</figcaption>
-        </figure>
-        <figure className="archis-support-panel">
-          <img src={ARCHIS_MEDIA[1].src} alt="Archis semantic loop" loading="lazy" />
-          <figcaption>semantic loop</figcaption>
-        </figure>
-        <figure className="archis-support-panel">
-          <img src={ARCHIS_MEDIA[2].src} alt="Archis workspace concept detail" loading="lazy" />
-          <figcaption>workspace concept</figcaption>
-        </figure>
+      <div className="archis-technical-proof" aria-label="Archis implemented system">
+        <div><small>01 / input</small><strong>Architect-authored 2D plan</strong><span>Existing floor-plan geometry remains the source of truth.</span></div>
+        <div><small>02 / model</small><strong>Shared semantic representation</strong><span>Spatial relationships, constraints and linked 2D/3D views.</span></div>
+        <div><small>03 / edits</small><strong>Deterministic change impact</strong><span>Track what a proposed change affects before applying it.</span></div>
       </div>
 
       <div className="archis-flow-clean">
