@@ -333,6 +333,13 @@ export const community = [
     linkLabel: "official site",
   },
   {
+    name: "iDEA Club",
+    role: "Ideator · Member",
+    blurb: "Part of Amrita's iDEA Club as an Ideator, exploring ideas, collaborating with builders, and helping bring concepts into working projects.",
+    href: "https://www.linkedin.com/in/pedamallusaimrudula/",
+    linkLabel: "profile",
+  },
+  {
     name: "IETE Amrita",
     role: "AI/ML vertical member",
     blurb: "Part of the AI/ML vertical in IETE Student Forum, Amrita Coimbatore.",
@@ -347,11 +354,11 @@ export const community = [
     linkLabel: "profile",
   },
   {
-    name: "Hacktoberfest @ INIT",
+    name: "Hacktoberfest Hack Day · Coimbatore 2026",
     role: "Organizer · October 8, 2026",
-    blurb: "Co-organized Hacktoberfest Hack Day Coimbatore with INIT × iDEA Club, in collaboration with Major League Hacking. A full-day Open Source × AI hackathon at Amrita.",
-    href: "https://initclub.vercel.app/",
-    linkLabel: "club site",
+    blurb: "Co-organized the October 8 Open Source × AI Hack Day at Amrita with INIT Club × iDEA Club, in collaboration with Major League Hacking and sponsored by SkySync. Coordinated event planning, participant experience, volunteers, and judging operations.",
+    href: "https://events.mlh.com/events/15020-hacktoberfest-hack-day-coimbatore-x-init-club-idea-club",
+    linkLabel: "event page",
   },
 ];
 
