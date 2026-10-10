@@ -13,16 +13,16 @@ export const identity = {
 };
 
 export const currentStatuses = [
-  "quests · closed beta fixes",
+  "quests · core build complete",
   "mocap · gait validation",
   "cyberbio · paused / oracle-ready",
   "cloud / graphrag · integration",
   "archis · team build",
-  "INIT · building community",
+  "INIT · Hacktoberfest Hack Day organized",
 ];
 
 export const heroSticky = [
-  "ship Quests",
+  "document Quests release + lessons",
   "gait validity > pretty skeleton",
   "CyberBio: parked until real oracle compute",
   "write something not for linkedin",
@@ -32,9 +32,9 @@ export const currentWorks = [
   {
     id: "now-quests",
     name: "Quests",
-    status: "closed beta",
-    note: "3–4 testers are finding the boring bugs that matter: persistence, UX friction, and whether the progression loop actually sticks.",
-    next: "next → persistence + release polish",
+    status: "core build complete",
+    note: "Built the core mobile-first game and progression systems, including server-authoritative rewards, evidence-backed captures, maps and native integration. Continuing to polish usability and reliability.",
+    next: "next → document outcomes + polish",
     href: "https://github.com/Mrudula-itsjuzme/quests",
     tone: "butter",
   },
@@ -173,13 +173,13 @@ export const featuredProjects = [
     github: "https://github.com/Mrudula-itsjuzme/quests",
     tags: ["react", "mobile", "gamification"],
     blurb:
-      "A released mobile-first exploration platform with native Android/iOS builds, server-authoritative progression, evidence-backed captures, maps, rewards, public profiles, and a closed beta still finding the useful bugs.",
+      "A mobile-first exploration platform with native Android/iOS builds, server-authoritative progression, evidence-backed captures, maps, rewards, and public profiles. Core implementation completed; ongoing work focuses on reliability and polish.",
     annotations: ["small steps, wilder days", "XP ledger + streaks", "prod mode rejects shortcuts"],
     facts: [
       ["release", "v1.2.0 · web + native mobile builds"],
       ["progression", "server-authoritative + idempotent rewards"],
       ["world layer", "maps, GPS capture clusters, profiles, journal"],
-      ["beta", "3–4 testers · persistence + UX fixes in progress"],
+      ["status", "core project completed · usability polish ongoing"],
     ],
     variant: "quests",
   },
@@ -263,6 +263,12 @@ export const researchRows = [
     primaryLabel: "paper",
   },
   {
+    name: "Intelligent Data Communication Technologies & IoT",
+    label: "ACCEPTED · IDCIoT 2027",
+    note: "Research paper accepted for presentation and publication at IDCIoT 2027 (January 21–23, 2027). Acceptance is confirmed; not yet published.",
+    metrics: ["accepted September 2026", "conference January 2027", "publication pending"],
+  },
+  {
     name: "EEG Reconstruction",
     label: "TEAM PROJECT",
     note: "Time-varying EEG reconstruction using local graph structure and ADMM optimization.",
@@ -274,6 +280,8 @@ export const researchRows = [
 
 export const otherBuilds = [
   { name: "AnswerBubble · paused", href: "https://github.com/Mrudula-itsjuzme/Answer_bubble" },
+  { name: "PROMUSE · cross-domain speech emotion research", href: "https://github.com/Mrudula-itsjuzme" },
+  { name: "Sentinel · incident policy simulator", href: "https://github.com/Mrudula-itsjuzme" },
   { name: "AI Council", href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/" },
   { name: "Habbit", href: "https://github.com/Mrudula-itsjuzme/mind" },
 ];
@@ -292,6 +300,13 @@ export const researchPapers = [
     meta: "96% binary · 91% across 12 fault classes",
     href: "https://github.com/Mrudula-itsjuzme/solarpanel-fault-detection",
     tag: "published",
+  },
+  {
+    title: "IDCIoT 2027 — Accepted Paper",
+    detail: "Research paper accepted for presentation and publication at IDCIoT 2027",
+    meta: "accepted September 2026 · conference January 21–23, 2027 · not yet published",
+    href: "https://github.com/Mrudula-itsjuzme",
+    tag: "accepted",
   },
   {
     title: "EEG Reconstruction (ADMM)",
@@ -313,7 +328,7 @@ export const community = [
   {
     name: "INIT Club",
     role: "Co-founder · VP, Non-Tech",
-    blurb: "Co-founded the club and helped run events, collaborations, partnerships, and community operations.",
+    blurb: "Co-founded the student open-source club; lead community operations, partnerships, and events, including the October 2026 Hacktoberfest Hack Day with iDEA Club and MLH.",
     href: "https://initclub.vercel.app/",
     linkLabel: "official site",
   },
@@ -333,8 +348,8 @@ export const community = [
   },
   {
     name: "Hacktoberfest @ INIT",
-    role: "Organizer",
-    blurb: "Open-source month, run through INIT.",
+    role: "Organizer · October 8, 2026",
+    blurb: "Co-organized Hacktoberfest Hack Day Coimbatore with INIT × iDEA Club, in collaboration with Major League Hacking. A full-day Open Source × AI hackathon at Amrita.",
     href: "https://initclub.vercel.app/",
     linkLabel: "club site",
   },
@@ -567,10 +582,10 @@ note to self: numbers are not boring when they stop people from guessing.`,
 ];
 
 export const currentExperiments = [
-  { label: "Quests beta", note: "iterating" },
+  { label: "Quests", note: "core build complete" },
   { label: "mocap pipeline", note: "fixing (again)" },
   { label: "CyberBio validation", note: "tightening evidence" },
-  { label: "portfolio", note: "shipping this one" },
+  { label: "PROMUSE speech emotion", note: "cross-domain evaluation" },
 ];
 
 export const unfinishedIdeas = [
