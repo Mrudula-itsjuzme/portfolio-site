@@ -6961,3 +6961,22 @@ figcaption {
     border-bottom: 1px solid rgba(23,21,18,.08);
   }
 }
+
+/* Project evidence: original repo screenshots and experiment outputs, not concept renders. */
+.project-evidence-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0 24px;min-width:0}
+.project-evidence-gallery.evidence-quests{grid-template-columns:repeat(4,minmax(0,1fr))}
+.project-evidence-item{margin:0;min-width:0;overflow:hidden;border:1px solid var(--line,rgba(0,0,0,.12));border-radius:10px;background:var(--paper,#fff)}
+.project-evidence-item a{display:block;overflow:hidden;background:rgba(0,0,0,.035)}
+.project-evidence-item img{width:100%;height:190px;object-fit:contain;display:block;transition:transform .2s ease}
+.project-evidence-item a:hover img{transform:scale(1.02)}
+.project-evidence-item figcaption{padding:10px 12px 12px;display:flex;flex-direction:column;gap:3px;font-size:.8rem}
+.project-evidence-item figcaption strong{font-weight:600}
+.project-evidence-item figcaption span{opacity:.72}
+.archis-technical-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:20px 0 24px}
+.archis-technical-proof>div{display:flex;flex-direction:column;gap:9px;padding:22px;border:1px solid var(--line,rgba(0,0,0,.12));border-radius:10px;background:var(--paper,#fff)}
+.archis-technical-proof small{opacity:.65;font-size:.75rem}
+.archis-technical-proof strong{font-size:1rem}
+.archis-technical-proof span{font-size:.84rem;line-height:1.55;opacity:.75}
+@media(max-width:760px){.project-evidence-gallery,.project-evidence-gallery.evidence-quests{grid-template-columns:repeat(2,minmax(0,1fr))}.project-evidence-item img{height:165px}.archis-technical-proof{grid-template-columns:1fr}}
+@media(max-width:410px){.project-evidence-gallery,.project-evidence-gallery.evidence-quests{grid-template-columns:1fr}.project-evidence-item img{height:auto;max-height:340px}}
+@media(prefers-reduced-motion:reduce){.project-evidence-item img{transition:none}.project-evidence-item a:hover img{transform:none}}
