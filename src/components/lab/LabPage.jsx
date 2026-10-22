@@ -695,22 +695,24 @@ const [toastMsg, setToastMsg] = useState("");
               kicker="products"
               title="Built to be"
               accent="used"
-              sub="A product build that deserves more than a tiny repo chip. Paused experiments live elsewhere."
+              sub="Things people can use, and the systems underneath them. Real builds, real links, no invented demos."
             />
 
-            <div className="product-duo reveal">
+            <div className="product-duo product-showcase reveal">
               {productProjects.map((p) => (
                 <article className={"product-feature-card product-" + p.variant} key={p.name}>
                   <div className="product-feature-head">
                     <div>
-                      <span className="product-eyebrow">{p.variant === "voice" ? "voice / learning" : "desktop / systems"}</span>
+                      <span className="product-eyebrow">{p.category || "product / system"}</span>
                       <h3>{p.name}</h3>
                       {p.repoName ? <small>repo: {p.repoName}</small> : null}
                     </div>
-                    <span className="product-mark" aria-hidden="true">{p.variant === "voice" ? "◉" : "⌘"}</span>
+                    <span className="product-mark" aria-hidden="true">{String(productProjects.indexOf(p) + 1).padStart(2, "0")}</span>
                   </div>
 
+                  <h4 className="product-headline">{p.headline}</h4>
                   <p>{p.note}</p>
+                  <div className={"product-illustration product-illustration-" + p.visual} aria-hidden="true"><div className="product-art-ring"><span>{p.visual === "voice" ? "◉" : p.visual === "nodes" ? "◇" : "✳"}</span></div><span className="product-art-caption">{p.visual === "voice" ? "listen · learn · speak" : p.visual === "nodes" ? "documents · vectors · graph" : "coordinate · compare · compose"}</span></div>
 
                   <div className="product-proof-stack">
                     {p.proofLines.map((line) => <span key={line}>{line}</span>)}
