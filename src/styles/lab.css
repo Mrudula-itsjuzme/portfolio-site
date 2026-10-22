@@ -7057,3 +7057,14 @@ figcaption {
  .product-showcase .product-feature-head h3 {font-size:44px}
 }
 @media(prefers-reduced-motion:reduce){.product-showcase .product-feature-card{transition:none}}
+
+/* Compact, evidence-first Motion Capture layout */
+.project-mocap .mocap-clean-layout{align-items:start;grid-template-columns:minmax(0,1.5fr) minmax(290px,.75fr);gap:22px}
+.project-mocap .project-evidence-gallery{align-self:start;grid-template-columns:repeat(2,minmax(0,1fr));margin:0;gap:12px}
+.project-mocap .project-evidence-item{height:auto;align-self:start;border-radius:5px;background:#f7f1e6}
+.project-mocap .project-evidence-item a{background:#f8f4ec}
+.project-mocap .project-evidence-item img{height:205px;max-height:205px;object-fit:contain}
+.project-mocap .project-evidence-item figcaption{padding:12px 14px;gap:4px;min-height:0;font-size:11px}
+.project-mocap .project-evidence-item figcaption span{font-size:10px}
+@media(max-width:1000px){.project-mocap .mocap-clean-layout{grid-template-columns:1fr}.project-mocap .project-evidence-gallery{margin-bottom:6px}}
+@media(max-width:540px){.project-mocap .project-evidence-gallery{grid-template-columns:1fr}.project-mocap .project-evidence-item img{height:auto;max-height:260px}}
