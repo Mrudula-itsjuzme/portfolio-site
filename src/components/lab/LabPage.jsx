@@ -721,8 +721,8 @@ const [toastMsg, setToastMsg] = useState("");
                   <div className="product-feature-foot">
                     <small>{p.meta}</small>
                     <div>
-                      {p.demo ? <a href={p.demo} target="_blank" rel="noreferrer">live app ↗</a> : null}
-                      <a href={p.href} target="_blank" rel="noreferrer">GitHub ↗</a>
+                      {p.demo && p.demo !== p.href ? <a href={p.demo} target="_blank" rel="noreferrer">try it live ↗</a> : null}
+                      <a href={p.href} target="_blank" rel="noreferrer">{p.variant === "council" ? "PyPI package ↗" : "source + details ↗"}</a>
                     </div>
                   </div>
                 </article>
