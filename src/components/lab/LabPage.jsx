@@ -71,19 +71,19 @@ const CYBERBIO_MEDIA = [
   {
     id: "defense",
     label: "baseline vs defended",
-    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
     note: "multi-seed robustness comparison",
   },
   {
     id: "ablation",
     label: "ablation",
-    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/ablation_study_chart.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/ablation_study_chart.png",
     note: "attack / defense ablation",
   },
   {
     id: "mcmc",
     label: "MCMC drift",
-    src: "https://github.com/Mrudula-itsjuzme/cyberbio/raw/refs/heads/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
     note: "drift across search steps",
   },
 ];
@@ -92,19 +92,19 @@ const ARCHIS_MEDIA = [
   {
     id: "hero",
     label: "workspace",
-    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/archis-hero.svg",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/archis-hero.svg",
     note: "repo hero · current product direction",
   },
   {
     id: "loop",
     label: "semantic loop",
-    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/semantic-loop.svg",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/semantic-loop.svg",
     note: "semantic interaction loop",
   },
   {
     id: "concept",
     label: "workspace concept",
-    src: "https://github.com/Mrudula-itsjuzme/archis/raw/refs/heads/main/docs/assets/workspace-concept.svg",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/workspace-concept.svg",
     note: "product workspace concept",
   },
 ];
