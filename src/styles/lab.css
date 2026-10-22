@@ -7142,3 +7142,64 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
 @media(max-width:540px) {
  #work .project-mocap .project-evidence-gallery {grid-template-columns:1fr}
 }
+
+/* Motion Capture: visual evidence first, compact facts below, no empty side gutter */
+#work .project-mocap .mocap-clean-layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:14px;
+  align-items:start;
+}
+#work .project-mocap .project-evidence-gallery {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin:0;
+}
+#work .project-mocap .project-evidence-item img {
+  width:100%;
+  height:235px;
+  max-height:none;
+  object-fit:contain;
+}
+#work .project-mocap .mocap-metrics-panel {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  column-gap:20px;
+  row-gap:12px;
+  align-items:start;
+  padding:18px 22px;
+  background:var(--cream);
+}
+#work .project-mocap .mocap-metrics-panel .panel-kicker {
+  grid-column:1/-1;
+  margin:0;
+  font-size:10px;
+}
+#work .project-mocap .mocap-metrics-panel .metric-row {
+  min-width:0;
+  padding:8px 0 12px;
+  border-bottom:0;
+  border-top:1px solid rgba(23,21,18,.15);
+}
+#work .project-mocap .mocap-metrics-panel .metric-row span {font-size:10px;line-height:1.45}
+#work .project-mocap .mocap-metrics-panel .metric-row strong {font-size:12px;line-height:1.55;overflow-wrap:anywhere}
+#work .project-mocap .mocap-now {
+  grid-column:1/-1;
+  margin:0;
+  padding:11px 0 0;
+  border-top:1px solid rgba(23,21,18,.15);
+}
+#work .project-mocap .mocap-now p {font-size:16px;margin-top:4px}
+[data-theme="night"] #work .project-mocap .mocap-metrics-panel {background:#302923;border-color:#675b4e}
+[data-theme="night"] #work .project-mocap .mocap-metrics-panel .metric-row,
+[data-theme="night"] #work .project-mocap .mocap-now {border-color:rgba(255,245,228,.22)}
+@media(max-width:900px) {
+ #work .project-mocap .mocap-metrics-panel {grid-template-columns:repeat(2,minmax(0,1fr))}
+ #work .project-mocap .project-evidence-item img {height:190px}
+}
+@media(max-width:550px) {
+ #work .project-mocap .project-evidence-gallery {grid-template-columns:minmax(0,1fr)}
+ #work .project-mocap .project-evidence-item img {height:auto;max-height:260px}
+ #work .project-mocap .mocap-metrics-panel {grid-template-columns:minmax(0,1fr);padding:16px}
+}
