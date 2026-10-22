@@ -44,13 +44,6 @@ const MOCAP_PROOF = [
   { label: "Reprojection errors", note: "measured geometric validation", src: "/project-images/mocap-reprojection.png" },
 ];
 
-const QUESTS_PROOF = [
-  { label: "Quest screen", note: "recorded application UI", src: "/project-images/quests-screen.png" },
-  { label: "Map", note: "recorded exploration screen", src: "/project-images/quests-map.png" },
-  { label: "Rewards", note: "recorded rewards flow", src: "/project-images/quests-rewards.png" },
-  { label: "Profile", note: "recorded profile screen", src: "/project-images/quests-profile.png" },
-];
-
 function EvidenceGallery({ items, variant = "" }) {
   return (
     <div className={`project-evidence-gallery ${variant}`}>
@@ -720,7 +713,7 @@ const [toastMsg, setToastMsg] = useState("");
                     <small>{p.meta}</small>
                     <div>
                       {p.demo && p.demo !== p.href ? <a href={p.demo} target="_blank" rel="noreferrer">try it live ↗</a> : null}
-                      <a href={p.href} target="_blank" rel="noreferrer">{p.variant === "council" ? "PyPI package ↗" : "source + details ↗"}</a>
+                      <a href={p.href} target="_blank" rel="noreferrer">source + details ↗</a>
                     </div>
                   </div>
                 </article>
