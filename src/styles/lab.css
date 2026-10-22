@@ -7106,3 +7106,39 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
   .product-showcase .product-feature-card,
   .product-showcase .product-feature-card:first-child {padding:24px}
 }
+
+/* Night theme: legible evidence cards and compact Motion Capture layout */
+[data-theme="night"] .project-mocap .project-evidence-item {
+  background:#302923;
+  border-color:rgba(245,235,217,.24);
+}
+[data-theme="night"] .project-mocap .project-evidence-item a {
+  background:#f7f1e6;
+}
+[data-theme="night"] .project-mocap .project-evidence-item figcaption {
+  background:#302923;
+  color:#f7efe2;
+}
+[data-theme="night"] .project-mocap .project-evidence-item figcaption strong {color:#fff7e9;opacity:1}
+[data-theme="night"] .project-mocap .project-evidence-item figcaption span {color:#e5d8c8;opacity:1}
+[data-theme="night"] .project-mocap .mocap-metrics-panel,
+[data-theme="night"] .project-mocap .mocap-metrics-panel .metric-row {
+  color:#f7efe2;
+}
+[data-theme="night"] .project-mocap .mocap-metrics-panel .metric-row > span,
+[data-theme="night"] .project-mocap .mocap-metrics-panel .panel-kicker {
+  color:#d5bfa4;opacity:1;
+}
+[data-theme="night"] .project-mocap .mocap-metrics-panel .metric-row strong {color:#fff8ee}
+[data-theme="night"] .project-mocap .mocap-now p {color:#eee0cc}
+#work .project-mocap .mocap-clean-layout {align-items:start}
+#work .project-mocap .project-evidence-gallery {align-self:start;align-items:start}
+#work .project-mocap .project-evidence-item {align-self:start}
+#work .project-mocap .tag-row {margin-top:16px}
+@media(max-width:980px) {
+ #work .project-mocap .mocap-clean-layout {grid-template-columns:1fr}
+ #work .project-mocap .project-evidence-gallery {grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:540px) {
+ #work .project-mocap .project-evidence-gallery {grid-template-columns:1fr}
+}
