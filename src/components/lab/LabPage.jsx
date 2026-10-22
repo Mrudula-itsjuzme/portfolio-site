@@ -265,8 +265,6 @@ function QuestsProject({ p, index }) {
         </a>
       </div>
 
-      <EvidenceGallery items={QUESTS_PROOF} variant="evidence-quests" />
-
       <div className="quests-system-layout">
         <div className="quests-loop-card">
           <span className="panel-kicker">the loop</span>
