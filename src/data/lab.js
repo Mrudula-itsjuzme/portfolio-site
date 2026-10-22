@@ -292,7 +292,6 @@ export const otherBuilds = [
   { name: "AnswerBubble · paused", href: "https://github.com/Mrudula-itsjuzme/Answer_bubble" },
   { name: "PROMUSE · cross-domain speech emotion research", href: "https://github.com/Mrudula-itsjuzme" },
   { name: "Sentinel · incident policy simulator", href: "https://github.com/Mrudula-itsjuzme" },
-  { name: "AI Council", href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/" },
   { name: "Habbit", href: "https://github.com/Mrudula-itsjuzme/mind" },
 ];
 
@@ -621,7 +620,6 @@ export const currentlyBoard = [
 ];
 
 export const sideRepos = [
-  { name: "ai-council", href: "https://github.com/Mrudula-itsjuzme/Ai-Council", note: "multi-model AI coordination library" },
   { name: "eeg-svd", href: "https://github.com/Mrudula-itsjuzme/EEG-signal-reconstruction-using-SVD", note: "SVD-based artifact removal" },
   { name: "aircraft-yolo", href: "https://github.com/Mrudula-itsjuzme/aircraft-data-training", note: "YOLOv8 aircraft detection pipeline" },
   { name: "ai-greenhouse", href: "https://github.com/Mrudula-itsjuzme/ai_greenhouse", note: "Arduino smart greenhouse" },
