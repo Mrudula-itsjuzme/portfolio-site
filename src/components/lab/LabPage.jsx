@@ -40,16 +40,16 @@ import {
 } from "./Doodles";
 
 const MOCAP_PROOF = [
-  { label: "Capture pipeline", note: "actual capture system screenshot", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/screenshots/architecture-overview.png" },
-  { label: "Reprojection errors", note: "measured geometric validation", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/reports/figures/final_reprojection_histogram.png" },
-  { label: "Joint-angle output", note: "measured kinematics", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/Motion-capture/main/docs/reports/figures/final_joint_angles.png" },
+  { label: "Capture pipeline", note: "actual capture system screenshot", src: "/project-images/mocap-architecture.png" },
+  { label: "Reprojection errors", note: "measured geometric validation", src: "/project-images/mocap-reprojection.png" },
+  { label: "Joint-angle output", note: "measured kinematics", src: "/project-images/mocap-joints.png" },
 ];
 
 const QUESTS_PROOF = [
-  { label: "Quest screen", note: "recorded application UI", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/10-quests-fixed.png" },
-  { label: "Map", note: "recorded exploration screen", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/15-map-final.png" },
-  { label: "Rewards", note: "recorded rewards flow", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/14-rewards-stable.png" },
-  { label: "Profile", note: "recorded profile screen", src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/quests/main/audit/user-journey-2026-09-07/12-profile-fixed.png" },
+  { label: "Quest screen", note: "recorded application UI", src: "/project-images/quests-screen.png" },
+  { label: "Map", note: "recorded exploration screen", src: "/project-images/quests-map.png" },
+  { label: "Rewards", note: "recorded rewards flow", src: "/project-images/quests-rewards.png" },
+  { label: "Profile", note: "recorded profile screen", src: "/project-images/quests-profile.png" },
 ];
 
 function EvidenceGallery({ items, variant = "" }) {
@@ -92,19 +92,19 @@ const ARCHIS_MEDIA = [
   {
     id: "hero",
     label: "workspace",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/archis-hero.svg",
+    src: "/project-images/archis-hero.svg",
     note: "repo hero · current product direction",
   },
   {
     id: "loop",
     label: "semantic loop",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/semantic-loop.svg",
+    src: "/project-images/archis-loop.svg",
     note: "semantic interaction loop",
   },
   {
     id: "concept",
     label: "workspace concept",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/archis/main/docs/assets/workspace-concept.svg",
+    src: "/project-images/archis-concept.svg",
     note: "product workspace concept",
   },
 ];
