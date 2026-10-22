@@ -228,20 +228,42 @@ export const featuredProjects = [
 export const productProjects = [
   {
     name: "MisSpoke",
+    category: "01 / VOICE + LEARNING",
+    headline: "A language partner that actually listens.",
     repoName: "speak134",
     href: "https://github.com/Mrudula-itsjuzme/speak134",
     demo: "https://misspoke1.vercel.app",
     note: "Voice-first language learning with adaptive AI tutors, multilingual practice, local learning memory, and session analytics.",
-    proofLines: [
-      "ElevenLabs conversational voice",
-      "OpenRouter tutor layer",
-      "IndexedDB learning memory",
-      "Supabase auth + multilingual translation",
-    ],
+    proofLines: ["ElevenLabs voice", "adaptive tutor", "IndexedDB memory", "Supabase"],
     meta: "built with Meghana Kotharu",
     variant: "voice",
+    visual: "voice",
+  },
+  {
+    name: "Semantic Workspace",
+    category: "02 / RESEARCH + SYSTEMS",
+    headline: "Research, connected beyond folders.",
+    href: "https://github.com/Noha-JM/Semantic_Workspace",
+    note: "A cloud-native semantic research workspace connecting document storage, structured metadata, embeddings, graphs and retrieval workflows.",
+    proofLines: ["vector retrieval", "knowledge graph", "cloud services", "GraphRAG"],
+    meta: "collaborative build · architecture + infrastructure",
+    variant: "workspace",
+    visual: "nodes",
+  },
+  {
+    name: "AI Council",
+    category: "03 / DEVELOPER TOOLS",
+    headline: "More than one model at the table.",
+    href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/",
+    demo: "https://pypi.org/project/ai-council-orchestrator/1.0.0/",
+    note: "A published Python package exploring orchestration across multiple AI models, rather than relying on a single model for every task.",
+    proofLines: ["Python package", "multi-model", "orchestration", "PyPI release"],
+    meta: "available on PyPI · v1.0.0",
+    variant: "council",
+    visual: "orbit",
   },
 ];
+
 
 export const researchRows = [
   {
