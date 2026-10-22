@@ -250,18 +250,6 @@ export const productProjects = [
     variant: "workspace",
     visual: "nodes",
   },
-  {
-    name: "AI Council",
-    category: "03 / DEVELOPER TOOLS",
-    headline: "More than one model at the table.",
-    href: "https://pypi.org/project/ai-council-orchestrator/1.0.0/",
-    demo: "https://pypi.org/project/ai-council-orchestrator/1.0.0/",
-    note: "A published Python package exploring orchestration across multiple AI models, rather than relying on a single model for every task.",
-    proofLines: ["Python package", "multi-model", "orchestration", "PyPI release"],
-    meta: "available on PyPI · v1.0.0",
-    variant: "council",
-    visual: "orbit",
-  },
 ];
 
 
