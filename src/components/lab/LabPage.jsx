@@ -711,7 +711,6 @@ const [toastMsg, setToastMsg] = useState("");
 
                   <h4 className="product-headline">{p.headline}</h4>
                   <p>{p.note}</p>
-                  <div className={"product-illustration product-illustration-" + p.visual} aria-hidden="true"><div className="product-art-ring"><span>{p.visual === "voice" ? "◉" : p.visual === "nodes" ? "◇" : "✳"}</span></div><span className="product-art-caption">{p.visual === "voice" ? "listen · learn · speak" : p.visual === "nodes" ? "documents · vectors · graph" : "coordinate · compare · compose"}</span></div>
 
                   <div className="product-proof-stack">
                     {p.proofLines.map((line) => <span key={line}>{line}</span>)}
