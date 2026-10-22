@@ -7068,3 +7068,26 @@ figcaption {
 .project-mocap .project-evidence-item figcaption span{font-size:10px}
 @media(max-width:1000px){.project-mocap .mocap-clean-layout{grid-template-columns:1fr}.project-mocap .project-evidence-gallery{margin-bottom:6px}}
 @media(max-width:540px){.project-mocap .project-evidence-gallery{grid-template-columns:1fr}.project-mocap .project-evidence-item img{height:auto;max-height:260px}}
+
+/* Products: compact full-width case studies, no ornamental filler */
+.product-showcase{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.product-showcase .product-feature-card,
+.product-showcase .product-feature-card:first-child{
+ grid-column:1/-1;min-height:0;padding:32px 38px;
+ display:flex;flex-direction:column;gap:0;
+ border:1px solid rgba(35,35,27,.15);border-radius:3px;
+ background:rgba(255,253,247,.65);
+ box-shadow:none;transform:none;
+}
+.product-showcase .product-feature-card:first-child > :not(.product-illustration){max-width:none}
+.product-showcase .product-feature-head h3{font-size:clamp(32px,3.7vw,54px);line-height:1.07}
+.product-showcase .product-headline{margin:12px 0 4px;font-size:clamp(18px,2vw,25px)}
+.product-showcase .product-feature-card > p{max-width:900px;font-size:12px;margin:10px 0 18px}
+.product-showcase .product-proof-stack{gap:8px}
+.product-showcase .product-feature-foot{margin-top:10px;padding-top:20px;border-top:1px solid rgba(35,35,27,.10)}
+.product-showcase .product-feature-card:hover{transform:none;box-shadow:0 4px 16px rgba(35,35,27,.035)}
+.product-showcase .product-mark{width:38px;height:38px}
+@media(max-width:600px){
+.product-showcase .product-feature-card,.product-showcase .product-feature-card:first-child{padding:23px 20px}
+.product-showcase .product-feature-foot{align-items:start;gap:14px}
+}
