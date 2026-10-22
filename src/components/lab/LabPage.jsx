@@ -42,7 +42,6 @@ import {
 const MOCAP_PROOF = [
   { label: "Capture pipeline", note: "actual capture system screenshot", src: "/project-images/mocap-architecture.png" },
   { label: "Reprojection errors", note: "measured geometric validation", src: "/project-images/mocap-reprojection.png" },
-  { label: "Joint-angle output", note: "measured kinematics", src: "/project-images/mocap-joints.png" },
 ];
 
 const QUESTS_PROOF = [
