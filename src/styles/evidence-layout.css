@@ -1,0 +1,72 @@
+/* Evidence layout calibration: keep figures readable without oversized frames. */
+.cyberbio-report-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(14px, 1.4vw, 22px);
+  align-items: stretch;
+}
+.cyberbio-primary {
+  grid-row: auto;
+  padding: clamp(10px, 1.15vw, 16px);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cyberbio-primary img {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+}
+.cyberbio-sideplots {
+  min-width: 0;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.2vw, 18px);
+}
+.cyberbio-sideplots figure {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(9px, 1vw, 14px);
+}
+.cyberbio-sideplots img {
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  height: clamp(190px, 17vw, 250px);
+  min-height: 0;
+  object-fit: contain;
+}
+.cyberbio-report-grid figcaption {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.cyberbio-findings {
+  margin-top: 4px;
+}
+.cyberbio-findings .finding-row {
+  min-width: 0;
+}
+@media (min-width: 1051px) {
+  .cyberbio-primary img { max-height: 520px; }
+}
+@media (max-width: 1050px) {
+  .cyberbio-report-grid { grid-template-columns: 1fr; }
+  .cyberbio-sideplots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+  }
+  .cyberbio-primary img { max-height: 440px; }
+  .cyberbio-sideplots img { height: clamp(175px, 24vw, 270px); }
+}
+@media (max-width: 600px) {
+  .cyberbio-report-grid { gap: 12px; }
+  .cyberbio-sideplots { grid-template-columns: 1fr; }
+  .cyberbio-primary img { max-height: none; }
+  .cyberbio-sideplots img { height: auto; max-height: none; }
+  .cyberbio-primary, .cyberbio-sideplots figure { padding: 10px; }
+  .cyberbio-findings { grid-template-columns: 1fr; }
+}
