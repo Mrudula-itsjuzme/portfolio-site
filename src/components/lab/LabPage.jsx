@@ -973,6 +973,7 @@ const [toastMsg, setToastMsg] = useState("");
             <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
             <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
             <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
+            <a href={identity.links.orcid} target="_blank" rel="noreferrer">ORCID ↗</a>
             <a href={identity.links.email} onClick={handleCopyEmail}>email ↗</a>
           </nav>
 
