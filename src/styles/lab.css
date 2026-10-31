@@ -7250,3 +7250,19 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
 
 .lab-more-links .compact-only-link{display:none}
 @media(max-width:375px){.lab-more-links .compact-only-link{display:block}}
+
+
+/* Unified featured-project editorial treatment: Archis is the reference layout. */
+#work .project-text-evidence{background:transparent!important;min-height:0!important}
+#work .project-text-evidence .archis-technical-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#work .project-text-evidence .archis-technical-proof>div{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:126px;padding:16px;border:1px solid rgba(23,21,18,.14);border-radius:11px;background:var(--paper-alt);box-shadow:none;min-width:0}
+#work .project-text-evidence .archis-technical-proof small{font-family:var(--mono);font-size:11px;color:var(--muted, #777);letter-spacing:.035em}
+#work .project-text-evidence .archis-technical-proof strong{font-family:var(--mono);font-size:15px;font-weight:700;line-height:1.4}
+#work .project-text-evidence .archis-technical-proof span{font-family:var(--mono);font-size:13px;line-height:1.6;opacity:.8}
+#work .project-text-evidence .archis-flow-clean{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:center;margin:24px 0 18px;padding:17px 10px;font-size:11px;line-height:1.7;text-align:center}
+#work .project-text-evidence .technical-flow-part{display:inline-flex;align-items:center;gap:10px}
+#work .project-text-evidence .technical-flow-part b{font-weight:400;color:var(--clay)}
+#work .project-text-evidence .fact-table{max-width:100%;width:100%}
+#work .project-text-evidence .project-evidence-note{font:11px/1.7 var(--mono);opacity:.72;margin:12px 0 0;max-width:930px}
+[data-theme="night"] #work .project-text-evidence .archis-technical-proof>div{border-color:rgba(247,241,230,.18)}
+@media(max-width:760px){#work .project-text-evidence .archis-technical-proof{grid-template-columns:1fr}#work .project-text-evidence .archis-technical-proof>div{min-height:0;padding:15px;gap:7px}#work .project-text-evidence .archis-flow-clean{justify-content:flex-start;font-size:10px}}
