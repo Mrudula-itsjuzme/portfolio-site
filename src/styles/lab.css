@@ -7247,3 +7247,6 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
  .lab-more-links:before{content:"Explore";display:block;padding:4px 12px;color:var(--sage);font-size:10px;text-transform:uppercase;letter-spacing:.13em}
  .lab-more-links a[href="/research.html"]{display:block}
 }
+
+.lab-more-links .compact-only-link{display:none}
+@media(max-width:375px){.lab-more-links .compact-only-link{display:block}}
