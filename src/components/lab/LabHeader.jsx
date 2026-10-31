@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { identity } from "../../data/lab";
 import { playClickSound } from "./sound";
 
@@ -11,6 +11,7 @@ export default function LabHeader({ soundEnabled }) {
     }
   });
   const [activeSection, setActiveSection] = useState("");
+  const moreRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -40,6 +41,30 @@ export default function LabHeader({ soundEnabled }) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const closeOnOutside = (event) => {
+      if (moreRef.current && !moreRef.current.contains(event.target)) {
+        moreRef.current.open = false;
+      }
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape" && moreRef.current?.open) {
+        moreRef.current.open = false;
+        moreRef.current.querySelector("summary")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", closeOnOutside);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutside);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
+
+  const closeMore = () => {
+    if (moreRef.current) moreRef.current.open = false;
+  };
+
   const toggleTheme = useCallback(() => {
     playClickSound(soundEnabled);
     setTheme((current) => (current === "paper" ? "night" : "paper"));
@@ -68,15 +93,17 @@ export default function LabHeader({ soundEnabled }) {
           </a>
         ))}
 
-        <details className="lab-more-menu">
-          <summary>more <span aria-hidden="true">⌄</span></summary>
+        <details className="lab-more-menu" ref={moreRef}>
+          <summary aria-label="More navigation and contact links">more <span aria-hidden="true">⌄</span></summary>
           <div className="lab-more-links">
-            <a href="/research.html">publications ↗</a>
-            <a href="/work-with-me.html">hire / collaborate ↗</a>
-            <a href="/resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
-            <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
-            <a href={identity.links.orcid} target="_blank" rel="noreferrer">ORCID ↗</a>
-            <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
+            <a className="mobile-only-link" href="#contributions" onClick={closeMore}>contributions</a>
+            <a className="mobile-only-link" href="#words" onClick={closeMore}>writing</a>
+            <a href="/research.html" onClick={closeMore}>publications ↗</a>
+            <a href="/work-with-me.html" onClick={closeMore}>hire / collaborate ↗</a>
+            <a href="/resume.pdf" target="_blank" rel="noreferrer" onClick={closeMore}>resume ↗</a>
+            <a href={identity.links.github} target="_blank" rel="noreferrer" onClick={closeMore}>github ↗</a>
+            <a href={identity.links.orcid} target="_blank" rel="noreferrer" onClick={closeMore}>ORCID ↗</a>
+            <a href={identity.links.linkedin} target="_blank" rel="noreferrer" onClick={closeMore}>linkedin ↗</a>
           </div>
         </details>
         <button type="button" className="header-pill-btn theme-btn" onClick={toggleTheme} title="switch the lights">
