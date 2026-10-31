@@ -7,6 +7,8 @@ export const identity = {
   links: {
     github: "https://github.com/Mrudula-itsjuzme",
     linkedin: "https://www.linkedin.com/in/pedamallusaimrudula/",
+    orcid: "https://orcid.org/0009-0006-4134-4450",
+    portfolio: "https://mrudula.tech/",
     email: "mailto:mrudulasankar2007@gmail.com",
     location: "Coimbatore, IN",
   },
