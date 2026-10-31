@@ -85,6 +85,7 @@ export default function LabHeader({ soundEnabled }) {
         <a href={identity.links.github} target="_blank" rel="noreferrer" className="nav-ext">
           github ↗
         </a>
+        <a href={identity.links.orcid} target="_blank" rel="noreferrer" className="nav-ext">ORCID ↗</a>
         <a href={identity.links.linkedin} target="_blank" rel="noreferrer" className="nav-ext">
           linkedin ↗
         </a>
