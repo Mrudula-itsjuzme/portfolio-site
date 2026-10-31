@@ -529,6 +529,13 @@ const [toastMsg, setToastMsg] = useState("");
               </div>
             </div>
 
+            <details className="hero-desk-drawer">
+              <summary className="hero-desk-summary">
+                <span className="hero-desk-label">OPEN WORKBENCH / CURRENTLY BUILDING</span>
+                <strong>Notes from the worktable <span aria-hidden="true">↗</span></strong>
+                <span className="hero-desk-preview">Motion Capture · CyberBio · Archis · and works in progress</span>
+                <span className="hero-desk-hint">Expand the draggable research scraps ↓</span>
+              </summary>
             <div
               ref={heroVisualsRef}
               className="hero-workboard"
@@ -574,6 +581,7 @@ const [toastMsg, setToastMsg] = useState("");
               <StarDoodle className="workboard-sparkle sparkle-b" size={24} aria-hidden="true" />
               <ArrowDoodle className="workboard-arrow" aria-hidden="true" />
             </div>
+            </details>
           </section>
 
           {/* ---------------- featured work ---------------- */}
@@ -584,10 +592,24 @@ const [toastMsg, setToastMsg] = useState("");
               accent="work"
               sub="The projects I can explain without pretending they’re more finished than they are."
             />
-            <MocapProject p={featuredProjects[0]} index={1} />
-            <QuestsProject p={featuredProjects[1]} index={2} />
-            <CyberBioProject p={featuredProjects[2]} index={3} />
-            <ArchisProject p={featuredProjects[3]} index={4} />
+            <div className="project-drawer-grid" aria-label="Explore four engineering projects">
+              {featuredProjects.map((project, i) => (
+                <details className="project-drawer" key={project.id}>
+                  <summary className="project-drawer-summary">
+                    <span className="project-drawer-index">{String(i + 1).padStart(2, "0")} / CASE FILE</span>
+                    <strong>{project.name}</strong>
+                    <span className="project-drawer-blurb">{project.tagline}</span>
+                    <span className="project-drawer-action">open technical evidence <span aria-hidden="true">↗</span></span>
+                  </summary>
+                  <div className="project-drawer-detail">
+                    {i === 0 && <MocapProject p={project} index={1} />}
+                    {i === 1 && <QuestsProject p={project} index={2} />}
+                    {i === 2 && <CyberBioProject p={project} index={3} />}
+                    {i === 3 && <ArchisProject p={project} index={4} />}
+                  </div>
+                </details>
+              ))}
+            </div>
           </section>
 
           {/* ---------------- products ---------------- */}
