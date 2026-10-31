@@ -63,19 +63,19 @@ const CYBERBIO_MEDIA = [
   {
     id: "defense",
     label: "baseline vs defended",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/baseline_vs_defended_multiseed.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/results/materials/outputs/baseline_vs_defended_multiseed.png",
     note: "multi-seed robustness comparison",
   },
   {
     id: "ablation",
     label: "ablation",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/ablation_study_chart.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/results/materials/outputs/ablation_study_chart.png",
     note: "attack / defense ablation",
   },
   {
     id: "mcmc",
     label: "MCMC drift",
-    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/materials-adversarial/outputs/mcmc_steps_drift_curve.png",
+    src: "https://raw.githubusercontent.com/Mrudula-itsjuzme/cyberbio/main/results/materials/outputs/mcmc_steps_drift_curve.png",
     note: "drift across search steps",
   },
 ];
