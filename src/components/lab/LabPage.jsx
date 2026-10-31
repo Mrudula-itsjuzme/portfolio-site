@@ -184,10 +184,10 @@ function SectionHead({ kicker, title, accent, sub, id }) {
 /* Project: Motion Capture — technical / spatial                       */
 /* ------------------------------------------------------------------ */
 
-function MocapProject({ p, index }) {
+function TechnicalProject({ p, index, variant, cards, flow, footnote, repoLabel }) {
   const ref = useReveal();
   return (
-    <article ref={ref} className="project project-mocap project-layout-lab reveal" aria-label={p.name}>
+    <article ref={ref} className={`project project-${variant} project-layout-architecture project-text-evidence reveal`} aria-label={p.name}>
       <div className="project-proof-head">
         <div>
           <div className="project-meta-row">
@@ -198,156 +198,62 @@ function MocapProject({ p, index }) {
           <p className="project-blurb">{p.blurb}</p>
         </div>
         {p.repoPrivate ? (
-          <div className="project-private-badge">
-            <span>research repo</span>
-            <strong>private · evidence shown here</strong>
-          </div>
+          <div className="project-private-badge"><span>research repo</span><strong>private · methods summarized</strong></div>
         ) : (
           <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
-            <span>GitHub</span>
-            <strong>source + experiments ↗</strong>
+            <span>GitHub</span><strong>{repoLabel || "source + evidence"} ↗</strong>
           </a>
         )}
       </div>
-
-      <div className="mocap-clean-layout">
-        <EvidenceGallery items={MOCAP_PROOF} variant="evidence-mocap" />
-
-        <aside className="mocap-metrics-panel">
-          <span className="panel-kicker">documented run</span>
-          {p.facts.map(([k,v]) => (
-            <div className="metric-row" key={k}>
-              <span>{k}</span>
-              <strong>{v}</strong>
-            </div>
-          ))}
-          <div className="mocap-now">
-            <span>validating now</span>
-            <p>repeatability · camera quality gates · gait-event reliability · failure cases</p>
+      <div className="archis-technical-proof" aria-label={p.name + " engineering stages"}>
+        {cards.map((card, i) => (
+          <div key={card.title}>
+            <small>{String(i + 1).padStart(2, "0")} / {card.kicker}</small>
+            <strong>{card.title}</strong>
+            <span>{card.detail}</span>
           </div>
-        </aside>
+        ))}
       </div>
-
+      <div className="archis-flow-clean" aria-label={p.name + " engineering workflow"}>
+        {flow.map((part, i) => (
+          <span className="technical-flow-part" key={part}>{i > 0 && <b aria-hidden="true">→</b>}<span>{part}</span></span>
+        ))}
+      </div>
+      <table className="fact-table archis-facts"><tbody>{p.facts.map(([k, v]) => (
+        <tr key={k}><td>{k}</td><td>{v}</td></tr>
+      ))}</tbody></table>
+      {footnote && <p className="project-evidence-note">{footnote}</p>}
       <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
       <div className="project-edge-doodles" aria-hidden="true"><ArrowDoodle /><Sparkle size={14} /></div>
     </article>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Project: Quests — product system                                    */
-/* ------------------------------------------------------------------ */
-
-function QuestsProject({ p, index }) {
-  const ref = useReveal();
-  return (
-    <article ref={ref} className="project project-quests project-layout-product reveal" aria-label={p.name}>
-      <div className="project-proof-head">
-        <div>
-          <div className="project-meta-row">
-            <span className="project-index">{String(index).padStart(2, "0")} /</span>
-            <h3 className="project-title">{p.name}</h3>
-            <span className="project-year">{p.year}</span>
-          </div>
-          <p className="project-blurb">{p.blurb}</p>
-        </div>
-        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
-          <span>GitHub</span>
-          <strong>repo + release ↗</strong>
-        </a>
-      </div>
-
-      <div className="quests-system-layout">
-        <div className="quests-loop-card">
-          <span className="panel-kicker">the loop</span>
-          <div className="quests-loop">
-            <div><b>01</b><strong>pick</strong><small>daily / weekly / world quests</small></div>
-            <span>→</span>
-            <div><b>02</b><strong>do</strong><small>real-world action + capture</small></div>
-            <span>→</span>
-            <div><b>03</b><strong>verify</strong><small>rules first, human review when needed</small></div>
-            <span>→</span>
-            <div><b>04</b><strong>progress</strong><small>XP + coins without duplicate rewards</small></div>
-          </div>
-        </div>
-
-        <div className="quests-rules-card">
-          <span className="panel-kicker">things I refused to fake</span>
-          <div className="quests-rule-grid">
-            <div><strong>server-authoritative</strong><span>progression is not trusted to the client</span></div>
-            <div><strong>idempotent rewards</strong><span>same capture cannot quietly pay twice</span></div>
-            <div><strong>D → S rarity</strong><span>higher grades get stricter verification</span></div>
-            <div><strong>closed beta</strong><span>3–4 testers finding persistence + UX bugs</span></div>
-          </div>
-        </div>
-
-        <div className="quests-product-bar">
-          {p.facts.map(([k,v]) => (
-            <div key={k}><span>{k}</span><strong>{v}</strong></div>
-          ))}
-        </div>
-      </div>
-
-      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
-      <div className="project-edge-doodles" aria-hidden="true"><PaperPlaneDoodle size={28} /><StarDoodle size={16} /></div>
-    </article>
-  );
+function MocapProject({ p, index }) {
+  return <TechnicalProject p={p} index={index} variant="mocap" cards={[
+    { kicker: "capture", title: "Two cameras, one subject", detail: "Markerless synchronized observation and camera calibration." },
+    { kicker: "reconstruction", title: "Geometry before graphics", detail: "3D triangulation, temporal stability and movement analysis." },
+    { kicker: "validation", title: "No confident guesses", detail: "Metric-specific quality gates, provenance and abstention when data cannot support a claim." },
+  ]} flow={["camera frames", "3D reconstruction", "quality gates", "gait evidence"]}
+  footnote="Research validation remains ongoing; the displayed test count and engineering claims reflect the documented project state, not an external clinical benchmark." />;
 }
 
-/* ------------------------------------------------------------------ */
-/* Project: CyberBio — experimental / scientific                       */
-/* ------------------------------------------------------------------ */
+function QuestsProject({ p, index }) {
+  return <TechnicalProject p={p} index={index} variant="quests" repoLabel="repo + release" cards={[
+    { kicker: "action", title: "A real-world quest", detail: "Pick a daily, weekly or exploration challenge and submit evidence." },
+    { kicker: "verification", title: "Trust the server", detail: "Capture checks, authoritative progression and consistent rules." },
+    { kicker: "rewards", title: "One action, one payout", detail: "Idempotent rewards protect XP, coins and account progression." },
+  ]} flow={["choose", "complete", "verify", "progress"]}
+  footnote="Core product implemented; reliability and usability polish are ongoing. Release status is taken from the project's recorded overview." />;
+}
 
 function CyberBioProject({ p, index }) {
-  const ref = useReveal();
-  return (
-    <article ref={ref} className="project project-cyberbio project-layout-research reveal" aria-label={p.name}>
-      <div className="project-proof-head">
-        <div>
-          <div className="project-meta-row">
-            <span className="project-index">{String(index).padStart(2, "0")} /</span>
-            <h3 className="project-title">{p.name}</h3>
-            <span className="project-year">{p.year}</span>
-          </div>
-          <p className="project-blurb">{p.blurb}</p>
-        </div>
-        <a className="project-github-btn" href={p.github} target="_blank" rel="noreferrer">
-          <span>GitHub</span>
-          <strong>experiments + outputs ↗</strong>
-        </a>
-      </div>
-
-      <div className="cyberbio-report-grid">
-        <figure className="cyberbio-primary">
-          <img src={CYBERBIO_MEDIA[0].src} alt="Baseline versus defended model robustness across five seeds" loading="lazy" />
-          <figcaption>baseline vs defended · multi-seed robustness comparison</figcaption>
-        </figure>
-        <div className="cyberbio-sideplots">
-          <figure>
-            <img src={CYBERBIO_MEDIA[1].src} alt="CyberBio ablation study" loading="lazy" />
-            <figcaption>ablation</figcaption>
-          </figure>
-          <figure>
-            <img src={CYBERBIO_MEDIA[2].src} alt="CyberBio MCMC drift plot" loading="lazy" />
-            <figcaption>MCMC drift</figcaption>
-          </figure>
-        </div>
-        <aside className="cyberbio-findings">
-          <span className="panel-kicker">what survived scrutiny</span>
-          {p.facts.map(([k,v],i) => (
-            <div className="finding-row" key={k}>
-              <span>{String(i + 1).padStart(2,"0")}</span>
-              <div><strong>{k}</strong><p>{v}</p></div>
-            </div>
-          ))}
-          <small>paused state: validation complete · physical-oracle bundle prepared · no QM result claimed</small>
-        </aside>
-      </div>
-
-      <div className="tag-row">{p.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
-      <div className="project-edge-doodles" aria-hidden="true"><Constellation /><Sparkle size={14} /></div>
-    </article>
-  );
+  return <TechnicalProject p={p} index={index} variant="cyberbio" repoLabel="experiments + outputs" cards={[
+    { kicker: "threat", title: "Representation sensitivity", detail: "Examine how alternate SMILES views affect model predictions." },
+    { kicker: "experiments", title: "Control the comparison", detail: "Evaluate ordinary and augmented Transformer behavior under audited conditions." },
+    { kicker: "limits", title: "Stop at the evidence", detail: "Document negative results and require independent physical-oracle evidence for stronger claims." },
+  ]} flow={["polymer inputs", "equivalent views", "paired evaluation", "evidence audit"]}
+  footnote="Validation is not physical confirmation: the independent quantum-mechanical oracle has not yet established the disputed predictions." />;
 }
 
 /* ------------------------------------------------------------------ */
