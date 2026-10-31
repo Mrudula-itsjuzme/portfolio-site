@@ -66,3 +66,14 @@ GitHub Pages deploys from `main` through `.github/workflows/deploy.yml`.
 ## Notes
 
 The portfolio is deliberately evidence-first. Project states, metrics, limitations, and links should be updated when the underlying work changes rather than padded with placeholder screenshots or decorative generated imagery.
+
+## Searchable research and recruiter pages
+
+The original interactive homepage remains intact. Two additional, self-contained static HTML pages are copied by Vite from `public/` into the built site:
+
+- `/research.html`: peer-reviewed publications with DOI records, author-role labels, and a separate accepted-but-unpublished section
+- `/work-with-me.html`: quick recruiter overview, evidence links, resume PDF, and contact details
+
+Both are linked from the site header, profile and footer and included in `public/sitemap.xml`. Dedicated project pages are intentionally left for a separate design discussion.
+
+For verification and search performance, see [SEARCH_VISIBILITY.md](SEARCH_VISIBILITY.md). This change does not add analytics tracking or claim access to personal Google Search Console data.
