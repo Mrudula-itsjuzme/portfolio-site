@@ -7203,3 +7203,30 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
  #work .project-mocap .project-evidence-item img {height:auto;max-height:260px}
  #work .project-mocap .mocap-metrics-panel {grid-template-columns:minmax(0,1fr);padding:16px}
 }
+
+
+/* Compact portfolio navigation, replacing the previous ten-link header. */
+.lab-header{gap:12px;padding:12px clamp(16px,3vw,38px)}
+.lab-header .exe{font-size:15px;flex-shrink:0}
+.lab-header .lab-nav{margin-left:auto;flex:0 1 auto;min-width:0;justify-content:flex-end;flex-wrap:nowrap;gap:4px}
+.lab-more-menu{position:relative;flex-shrink:0;font-family:var(--mono);font-size:12px;color:var(--cream)}
+.lab-more-menu summary{display:flex;gap:7px;align-items:center;list-style:none;padding:7px 11px;border-radius:7px;cursor:pointer;color:var(--cream);border:1px solid rgba(247,241,230,.25)}
+.lab-more-menu summary::-webkit-details-marker{display:none}
+.lab-more-menu[open] summary,.lab-more-menu summary:hover{background:rgba(247,241,230,.14)}
+.lab-more-links{position:absolute;right:0;top:calc(100% + 12px);display:grid;gap:3px;min-width:210px;padding:9px;background:var(--charcoal);border:1px solid rgba(247,241,230,.25);border-radius:10px;box-shadow:0 15px 34px rgba(0,0,0,.35);z-index:300}
+.lab-more-links a{display:block;padding:10px 12px!important;font-size:12px!important;white-space:nowrap}
+.lab-more-menu summary:focus-visible,.lab-more-links a:focus-visible{outline:2px solid var(--butter);outline-offset:3px}
+@media(max-width:850px){
+ .lab-header{flex-wrap:nowrap;align-items:center}
+ .lab-header .lab-nav{order:initial;flex-basis:auto;width:auto;overflow:visible;justify-content:flex-end}
+ .lab-nav a{font-size:11px;padding:6px 7px}
+ .lab-more-links{max-height:70vh;overflow:auto}
+}
+@media(max-width:520px){
+ .lab-header .exe{font-size:12px}
+ .lab-header{padding:11px 12px}
+ .lab-nav a[href="#contributions"],.lab-nav a[href="#words"]{display:none}
+ .lab-nav{gap:0}
+ .lab-more-menu summary{padding:6px 8px}
+ .lab-more-links{position:fixed;right:12px;top:65px;max-width:calc(100vw - 24px)}
+}
