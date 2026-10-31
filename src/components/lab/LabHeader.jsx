@@ -97,6 +97,7 @@ export default function LabHeader({ soundEnabled }) {
           <summary aria-label="More navigation and contact links">more <span aria-hidden="true">⌄</span></summary>
           <div className="lab-more-links">
             <a className="mobile-only-link" href="#contributions" onClick={closeMore}>contributions</a>
+            <a className="mobile-only-link compact-only-link" href="#research" onClick={closeMore}>research section</a>
             <a className="mobile-only-link" href="#words" onClick={closeMore}>writing</a>
             <a href="/research.html" onClick={closeMore}>publications ↗</a>
             <a href="/work-with-me.html" onClick={closeMore}>hire / collaborate ↗</a>
