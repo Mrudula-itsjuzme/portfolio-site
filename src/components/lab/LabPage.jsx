@@ -971,6 +971,7 @@ const [toastMsg, setToastMsg] = useState("");
 
           <nav className="footer-links" aria-label="final links">
             <a href="/work-with-me.html">recruiter quick view ↗</a>
+            <a href="/projects/archis/">Archis case study ↗</a>
             <a href="/research.html">research papers ↗</a>
             <a href="resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
             <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
