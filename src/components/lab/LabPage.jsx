@@ -505,24 +505,27 @@ const [toastMsg, setToastMsg] = useState("");
                 ))}
               </div>
 
+              <div className="hero-proof-paths" aria-label="Quick paths to research, engineering, and resume">
+                <a className="hero-proof-path" href="/research.html">
+                  <span className="hero-proof-index">01 / RESEARCH</span>
+                  <strong>Published in IEEE Access</strong>
+                  <span>First-author work · verified DOI and publications ↗</span>
+                </a>
+                <a className="hero-proof-path" href="#work" onClick={() => playClickSound(soundEnabled)}>
+                  <span className="hero-proof-index">02 / ENGINEERING</span>
+                  <strong>Projects with evidence</strong>
+                  <span>Computer vision · adversarial ML · systems ↓</span>
+                </a>
+                <a className="hero-proof-path" href="/resume.pdf" target="_blank" rel="noreferrer">
+                  <span className="hero-proof-index">03 / RESUME</span>
+                  <strong>Recruiter-ready overview</strong>
+                  <span>Open the PDF ↗</span>
+                </a>
+              </div>
+
               <div className="hero-cta">
-                <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>
-                  see the work ↓
-                </a>
-                <a className="btn-quiet" href={`${import.meta.env.BASE_URL}profile.html`}>
-                  profile + publications ↗
-                </a>
-                <button
-                  type="button"
-                  className="btn-add-note"
-                  onClick={handleAddNote}
-                  title="Drop a sticky note anywhere on the page"
-                >
-                  + sticky note
-                </button>
-                <a className="btn-quiet" href={identity.links.github} target="_blank" rel="noreferrer">
-                  github ↗
-                </a>
+                <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>explore selected work ↓</a>
+                <a className="btn-quiet" href="/work-with-me.html">contact / opportunities ↗</a>
               </div>
             </div>
 
