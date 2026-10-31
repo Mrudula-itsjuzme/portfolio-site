@@ -1,9 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
-import { identity, currentStatuses } from "../../data/lab";
+import { identity } from "../../data/lab";
 import { playClickSound } from "./sound";
 
 export default function LabHeader({ soundEnabled }) {
-  const [statusIndex, setStatusIndex] = useState(0);
   const [theme, setTheme] = useState(() => {
     try {
       return localStorage.getItem("lab-theme") || "paper";
@@ -12,15 +11,6 @@ export default function LabHeader({ soundEnabled }) {
     }
   });
   const [activeSection, setActiveSection] = useState("");
-
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
-    const t = setInterval(() => {
-      setStatusIndex((i) => (i + 1) % currentStatuses.length);
-    }, 5200);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -58,12 +48,8 @@ export default function LabHeader({ soundEnabled }) {
   return (
     <header className="lab-header">
       <a href="#top" className="exe" aria-label="back to top" onClick={() => playClickSound(soundEnabled)}>
-        ✳ {identity.handle}
+        ✳ mrudula.tech
       </a>
-
-      <p className="lab-status" aria-live="off">
-        “{currentStatuses[statusIndex]}”
-      </p>
 
       <nav className="lab-nav" aria-label="primary">
         {[
@@ -82,16 +68,17 @@ export default function LabHeader({ soundEnabled }) {
           </a>
         ))}
 
-        <a href="/projects/archis/" className="nav-ext">Archis ↗</a>
-        <a href="/research.html" className="nav-ext">papers ↗</a>
-        <a href="/work-with-me.html" className="nav-ext">hire / collaborate ↗</a>
-        <a href={identity.links.github} target="_blank" rel="noreferrer" className="nav-ext">
-          github ↗
-        </a>
-        <a href={identity.links.orcid} target="_blank" rel="noreferrer" className="nav-ext">ORCID ↗</a>
-        <a href={identity.links.linkedin} target="_blank" rel="noreferrer" className="nav-ext">
-          linkedin ↗
-        </a>
+        <details className="lab-more-menu">
+          <summary>more <span aria-hidden="true">⌄</span></summary>
+          <div className="lab-more-links">
+            <a href="/research.html">publications ↗</a>
+            <a href="/work-with-me.html">hire / collaborate ↗</a>
+            <a href="/resume.pdf" target="_blank" rel="noreferrer">resume ↗</a>
+            <a href={identity.links.github} target="_blank" rel="noreferrer">github ↗</a>
+            <a href={identity.links.orcid} target="_blank" rel="noreferrer">ORCID ↗</a>
+            <a href={identity.links.linkedin} target="_blank" rel="noreferrer">linkedin ↗</a>
+          </div>
+        </details>
         <button type="button" className="header-pill-btn theme-btn" onClick={toggleTheme} title="switch the lights">
           {theme === "paper" ? "lights ↓" : "lights ↑"}
         </button>
