@@ -7230,3 +7230,20 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible {outline:2px solid
  .lab-more-menu summary{padding:6px 8px}
  .lab-more-links{position:fixed;right:12px;top:65px;max-width:calc(100vw - 24px)}
 }
+
+/* Accessible responsive navigation: hidden primary links remain reachable under More. */
+.lab-more-links .mobile-only-link{display:none}
+.lab-more-menu[open] .lab-more-links{z-index:1000}
+.lab-more-menu summary span{transition:transform .18s ease;display:inline-block}
+.lab-more-menu[open] summary span{transform:rotate(180deg)}
+.lab-more-links a:focus-visible{outline:2px solid var(--butter);outline-offset:-2px}
+@media(max-width:520px){
+ .lab-more-links .mobile-only-link{display:block}
+ .lab-header .lab-nav{min-width:0}
+ .lab-header .theme-btn{padding:5px 7px;font-size:10px}
+}
+@media(max-width:375px){
+ .lab-nav a[href="#research"]{display:none}
+ .lab-more-links:before{content:"Explore";display:block;padding:4px 12px;color:var(--sage);font-size:10px;text-transform:uppercase;letter-spacing:.13em}
+ .lab-more-links a[href="/research.html"]{display:block}
+}
