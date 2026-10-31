@@ -82,6 +82,7 @@ export default function LabHeader({ soundEnabled }) {
           </a>
         ))}
 
+        <a href="/projects/archis/" className="nav-ext">Archis ↗</a>
         <a href="/research.html" className="nav-ext">papers ↗</a>
         <a href="/work-with-me.html" className="nav-ext">hire / collaborate ↗</a>
         <a href={identity.links.github} target="_blank" rel="noreferrer" className="nav-ext">
