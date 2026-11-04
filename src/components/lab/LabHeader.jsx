@@ -100,6 +100,7 @@ export default function LabHeader({ soundEnabled }) {
             <a className="mobile-only-link compact-only-link" href="#research" onClick={closeMore}>research section</a>
             <a className="mobile-only-link" href="#words" onClick={closeMore}>writing</a>
             <a href="/research.html" onClick={closeMore}>publications ↗</a>
+            <a href="/impact.html" onClick={closeMore}>impact / community ↗</a>
             <a href="/work-with-me.html" onClick={closeMore}>hire / collaborate ↗</a>
             <a href="/resume.pdf" target="_blank" rel="noreferrer" onClick={closeMore}>resume ↗</a>
             <a href={identity.links.github} target="_blank" rel="noreferrer" onClick={closeMore}>github ↗</a>
