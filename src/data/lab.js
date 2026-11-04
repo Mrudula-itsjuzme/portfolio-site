@@ -1,9 +1,9 @@
 export const identity = {
   name: "MRUDULA",
   handle: "mrudula.exe",
-  roles: ["computer vision", "adversarial ML", "software", "writer"],
+  roles: ["computer vision", "adversarial ML", "compilers", "software"],
   subtext:
-    "I’m Pedamallu Sai Mrudula, an AI Engineering student at Amrita (2028), first-author IEEE Access researcher, and INIT Club co-founder. I work on computer vision, adversarial ML, and software that turns experiments into usable tools.",
+    "I’m Pedamallu Sai Mrudula, an AI Engineering student at Amrita (2028), first-author IEEE Access researcher, and INIT Club co-founder. I work on computer vision, adversarial ML, compiler optimization, and software that turns experiments into usable tools. Open to funded research and engineering internships.",
   links: {
     github: "https://github.com/Mrudula-itsjuzme",
     linkedin: "https://www.linkedin.com/in/pedamallusaimrudula/",
@@ -19,6 +19,7 @@ export const currentStatuses = [
   "mocap · gait validation",
   "cyberbio · paused / oracle-ready",
   "cloud / graphrag · integration",
+  "forge · LLVM optimization passes",
   "archis · team build",
   "INIT · Hacktoberfest Hack Day organized",
 ];
@@ -291,6 +292,7 @@ export const researchRows = [
 ];
 
 export const otherBuilds = [
+  { name: "Forge · LLVM compiler optimization toolkit", href: "https://github.com/Mrudula-itsjuzme/forge-llvm" },
   { name: "AnswerBubble · paused", href: "https://github.com/Mrudula-itsjuzme/Answer_bubble" },
   { name: "PROMUSE · cross-domain speech emotion research", href: "https://github.com/Mrudula-itsjuzme" },
   { name: "Sentinel · incident policy simulator", href: "https://github.com/Mrudula-itsjuzme" },
