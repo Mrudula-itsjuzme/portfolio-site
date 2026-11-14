@@ -16,7 +16,8 @@ import {
   unfinishedIdeas,
   heroSticky,
 } from "../../data/lab";
-import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
+import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
+import TiltPhoto from "./TiltPhoto";
 import LabHeader from "./LabHeader";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
@@ -530,7 +531,56 @@ const [toastMsg, setToastMsg] = useState("");
               </div>
             </div>
 
-                        <div
+                        <div ref={heroVisualsRef} className="hero-visuals original-scrapbook-hero">
+              <TiltPhoto
+                src="/diagrams/portfolio.png"
+                alt="A creative desk scene from my original portfolio scrapbook"
+                caption="still here… (and it’s kind of beautiful)"
+                rotate={2.4}
+                parallax={26}
+                className="parallax-layer"
+              />
+              {!coarse && !reduced && (
+                <div className="sticky-layer">
+                  <StickyNote
+                    id="hero-ideas"
+                    color="pink"
+                    rotation={-3.5}
+                    x={-60}
+                    y={-6}
+                    parentRef={heroVisualsRef}
+                    lines={heroSticky}
+                    title="sticky note: ideas"
+                  />
+                  <StickyNote
+                    id="hero-progress"
+                    color="butter"
+                    rotation={2.2}
+                    x={255}
+                    y={250}
+                    parentRef={heroVisualsRef}
+                    lines={["progress over", "perfection."]}
+                    title="sticky note: progress"
+                  />
+                </div>
+              )}
+              {(coarse || reduced) && (
+                <div className="sticky-note static note-pink original-mobile-note">
+                  {heroSticky.map((line) => <div key={line}>– {line}</div>)}
+                  <span className="note-fold" />
+                </div>
+              )}
+            </div>
+          </section>
+
+          <details className="hero-desk-drawer workbench-below-hero">
+            <summary className="hero-desk-summary">
+              <span className="hero-desk-label">OPEN WORKBENCH / CURRENTLY BUILDING</span>
+              <strong>What’s on my desk <span aria-hidden="true">↗</span></strong>
+              <span className="hero-desk-preview">Motion Capture · CyberBio · Archis · and works in progress</span>
+              <span className="hero-desk-hint">Open the draggable project scraps ↓</span>
+            </summary>
+            <div
               ref={heroVisualsRef}
               className="hero-workboard"
               aria-label="current work board"
@@ -575,7 +625,8 @@ const [toastMsg, setToastMsg] = useState("");
               <StarDoodle className="workboard-sparkle sparkle-b" size={24} aria-hidden="true" />
               <ArrowDoodle className="workboard-arrow" aria-hidden="true" />
             </div>
-          </section>
+
+          </details>
 
           {/* ---------------- featured work ---------------- */}
           <section className="lab-section" id="work" aria-label="featured work">
