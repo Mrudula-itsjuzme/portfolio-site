@@ -16,7 +16,7 @@ import {
   unfinishedIdeas,
   heroSticky,
 } from "../../data/lab";
-import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
+import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
@@ -325,6 +325,7 @@ function ArchisProject({ p, index }) {
 export default function LabPage() {
   useGlobalReveal();
   const deskRef = useRef(null);
+  const notesBoardRef = useRef(null);
   const heroVisualsRef = useRef(null);
   const heroTextRef = useReveal({ hidden: false });
   const coarse = useCoarsePointer();
@@ -582,6 +583,39 @@ const [toastMsg, setToastMsg] = useState("");
               <ArrowDoodle className="workboard-arrow" aria-hidden="true" />
             </div>
             </details>
+          </section>
+
+          {/* Original handwritten notes, visible without opening the workbench. */}
+          <section className="hero-sticky-section" aria-label="Sticky notes from my desk">
+            <div className="hero-sticky-heading">
+              <span className="lab-kicker">pinned to my desk ✎</span>
+              <span>little reminders, big unfinished ideas</span>
+            </div>
+            <div className="hero-sticky-board" ref={notesBoardRef}>
+              {heroSticky.map((note, i) => {
+                const positions = [
+                  { x: 12, y: 22, r: -3 },
+                  { x: 246, y: 30, r: 2.5 },
+                  { x: 480, y: 18, r: -1.8 },
+                  { x: 714, y: 28, r: 3 },
+                ];
+                const p = positions[i] || { x: 14 + (i % 4) * 234, y: 24, r: 0 };
+                return (
+                  <StickyNote
+                    key={`hero-sticky-${i}`}
+                    id={`hero-sticky-${i}`}
+                    color={["butter", "pink", "sage", "paper"][i % 4]}
+                    x={p.x}
+                    y={p.y}
+                    rotation={p.r}
+                    lines={[note]}
+                    title={`Desk note ${i + 1}: ${note}`}
+                    parentRef={notesBoardRef}
+                    dragDisabled={coarse || reduced}
+                  />
+                );
+              })}
+            </div>
           </section>
 
           {/* ---------------- featured work ---------------- */}
