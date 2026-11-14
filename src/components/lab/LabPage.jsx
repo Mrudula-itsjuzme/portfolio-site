@@ -327,6 +327,7 @@ export default function LabPage() {
   useGlobalReveal();
   const deskRef = useRef(null);
   const heroVisualsRef = useRef(null);
+  const workboardRef = useRef(null);
   const heroTextRef = useReveal({ hidden: false });
   const coarse = useCoarsePointer();
   const reduced = usePrefersReducedMotion();
@@ -581,7 +582,7 @@ const [toastMsg, setToastMsg] = useState("");
               <span className="hero-desk-hint">Open the draggable project scraps ↓</span>
             </summary>
             <div
-              ref={heroVisualsRef}
+              ref={workboardRef}
               className="hero-workboard"
               aria-label="current work board"
             >
@@ -609,7 +610,7 @@ const [toastMsg, setToastMsg] = useState("");
                     y={p.y}
                     rotation={p.r}
                     tone={work.tone}
-                    parentRef={heroVisualsRef}
+                    parentRef={workboardRef}
                   >
                     <div className="scrap-status">{work.status}</div>
                     <h3><a href={work.href} target="_blank" rel="noreferrer">{work.name}</a></h3>
