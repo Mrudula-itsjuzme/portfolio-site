@@ -16,7 +16,7 @@ import {
   unfinishedIdeas,
   heroSticky,
 } from "../../data/lab";
-import StickyNote, { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
+import { useCoarsePointer, usePrefersReducedMotion } from "./StickyNote";
 import LabHeader from "./LabHeader";
 import EssayModal from "./EssayModal";
 import DoodleCanvas from "./DoodleCanvas";
@@ -325,19 +325,10 @@ function ArchisProject({ p, index }) {
 export default function LabPage() {
   useGlobalReveal();
   const deskRef = useRef(null);
-  const notesBoardRef = useRef(null);
   const heroVisualsRef = useRef(null);
   const heroTextRef = useReveal({ hidden: false });
   const coarse = useCoarsePointer();
   const reduced = usePrefersReducedMotion();
-  const [compactNotes, setCompactNotes] = useState(() => window.matchMedia("(max-width: 1000px)").matches);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1000px)");
-    const update = () => setCompactNotes(mq.matches);
-    update();
-    mq.addEventListener?.("change", update);
-    return () => mq.removeEventListener?.("change", update);
-  }, []);
   const progressRef = useRef(null);
 
   const [soundEnabled, setSoundEnabled] = useState(() => {
@@ -534,18 +525,12 @@ const [toastMsg, setToastMsg] = useState("");
 
               <div className="hero-cta">
                 <a className="btn-ink" href="#work" onClick={() => playClickSound(soundEnabled)}>explore selected work ↓</a>
+                <button type="button" className="btn-add-note" onClick={handleAddNote} title="Drop a sticky note anywhere on the page">+ sticky note</button>
                 <a className="btn-quiet" href="/work-with-me.html">contact / opportunities ↗</a>
               </div>
             </div>
 
-            <details className="hero-desk-drawer">
-              <summary className="hero-desk-summary">
-                <span className="hero-desk-label">OPEN WORKBENCH / CURRENTLY BUILDING</span>
-                <strong>Notes from the worktable <span aria-hidden="true">↗</span></strong>
-                <span className="hero-desk-preview">Motion Capture · CyberBio · Archis · and works in progress</span>
-                <span className="hero-desk-hint">Expand the draggable research scraps ↓</span>
-              </summary>
-            <div
+                        <div
               ref={heroVisualsRef}
               className="hero-workboard"
               aria-label="current work board"
@@ -589,40 +574,6 @@ const [toastMsg, setToastMsg] = useState("");
               <Sparkle className="workboard-sparkle sparkle-a" size={18} aria-hidden="true" />
               <StarDoodle className="workboard-sparkle sparkle-b" size={24} aria-hidden="true" />
               <ArrowDoodle className="workboard-arrow" aria-hidden="true" />
-            </div>
-            </details>
-          </section>
-
-          {/* Original handwritten notes, visible without opening the workbench. */}
-          <section className="hero-sticky-section" aria-label="Sticky notes from my desk">
-            <div className="hero-sticky-heading">
-              <span className="lab-kicker">pinned to my desk ✎</span>
-              <span>little reminders, big unfinished ideas</span>
-            </div>
-            <div className="hero-sticky-board" ref={notesBoardRef}>
-              {heroSticky.map((note, i) => {
-                const positions = [
-                  { x: 12, y: 22, r: -3 },
-                  { x: 246, y: 30, r: 2.5 },
-                  { x: 480, y: 18, r: -1.8 },
-                  { x: 714, y: 28, r: 3 },
-                ];
-                const p = positions[i] || { x: 14 + (i % 4) * 234, y: 24, r: 0 };
-                return (
-                  <StickyNote
-                    key={`hero-sticky-${i}`}
-                    id={`hero-sticky-${i}`}
-                    color={["butter", "pink", "sage", "paper"][i % 4]}
-                    x={p.x}
-                    y={p.y}
-                    rotation={p.r}
-                    lines={[note]}
-                    title={`Desk note ${i + 1}: ${note}`}
-                    parentRef={notesBoardRef}
-                    dragDisabled={coarse || reduced || compactNotes}
-                  />
-                );
-              })}
             </div>
           </section>
 
