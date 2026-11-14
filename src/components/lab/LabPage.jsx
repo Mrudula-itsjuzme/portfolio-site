@@ -330,6 +330,14 @@ export default function LabPage() {
   const heroTextRef = useReveal({ hidden: false });
   const coarse = useCoarsePointer();
   const reduced = usePrefersReducedMotion();
+  const [compactNotes, setCompactNotes] = useState(() => window.matchMedia("(max-width: 1000px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1000px)");
+    const update = () => setCompactNotes(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => mq.removeEventListener?.("change", update);
+  }, []);
   const progressRef = useRef(null);
 
   const [soundEnabled, setSoundEnabled] = useState(() => {
@@ -611,7 +619,7 @@ const [toastMsg, setToastMsg] = useState("");
                     lines={[note]}
                     title={`Desk note ${i + 1}: ${note}`}
                     parentRef={notesBoardRef}
-                    dragDisabled={coarse || reduced}
+                    dragDisabled={coarse || reduced || compactNotes}
                   />
                 );
               })}
